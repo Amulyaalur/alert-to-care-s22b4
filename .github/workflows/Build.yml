@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: alert-to-care-s22b4.sln 
+      Solution_Name: AlertToCareApi.sln 
  
     steps:
     - name: Checkout
