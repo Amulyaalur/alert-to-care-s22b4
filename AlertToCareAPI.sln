@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlertToCareAPI", "AlertToCareAPI\AlertToCareAPI.csproj", "{27D5B992-C188-403C-8766-A0DD02300476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlertToCareAPI", "AlertToCareAPI\AlertToCareAPI.csproj", "{27D5B992-C188-403C-8766-A0DD02300476}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Test", "API.Test\API.Test.csproj", "{46125C86-5EC3-4D4B-8853-649B6351082A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API.Test", "API.Test\API.Test.csproj", "{46125C86-5EC3-4D4B-8853-649B6351082A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

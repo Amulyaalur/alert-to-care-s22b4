@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\AlertToCareAPI",
+    "\\AlertToCareAPI\\ICUDatabase",
+    "\\AlertToCareAPI\\ICUDatabase\\Entities",
+    "\\API.Test"
+  ],
+  "SelectedNode": "\\AlertToCareAPI\\ICUDatabase\\Entities\\Vitals.cs",
+  "PreviewInSolutionExplorer": false
+}
