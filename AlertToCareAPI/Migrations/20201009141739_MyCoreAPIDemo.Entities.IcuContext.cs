@@ -3,10 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AlertToCareAPI.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class MyCoreAPIDemoEntitiesIcuContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Beds",
+                columns: table => new
+                {
+                    BedId = table.Column<Guid>(nullable: false),
+                    IcuId = table.Column<Guid>(nullable: false),
+                    BedStatus = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Beds", x => x.BedId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ICUs",
                 columns: table => new
@@ -105,6 +118,9 @@ namespace AlertToCareAPI.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Beds");
+
             migrationBuilder.DropTable(
                 name: "Patients");
 

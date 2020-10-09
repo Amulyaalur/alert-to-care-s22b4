@@ -2,12 +2,13 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 public class IcuContext : DbContext
 {
-    public IcuContext(DbContextOptions<IcuContext> options) : base(options)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        Database.Migrate();
+        optionsBuilder.UseSqlite("Filename=PatientDatabase.db");
     }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<PatientAddress> PatientAddress { get; set; }
     public DbSet<ICU> ICUs { get; set; }
     public DbSet<Vitals> Vitals { get; set; }
+    public DbSet<Beds> Beds { get; set; }
 }

@@ -18,6 +18,10 @@ namespace AlertToCareAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            using (var client = new IcuContext())
+            {
+                client.Database.EnsureCreated();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -25,8 +29,12 @@ namespace AlertToCareAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFrameworkSqlite()
+    
+       .AddDbContext<IcuContext>();
             services.AddControllers();
-            services.AddDbContext<IcuContext>(op => op.UseSqlite(Configuration["ConnectionString:IcuDatabase"]));
+            services.AddSingleton<Repository.IMonitoringRepository, Repository.MonitoringRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

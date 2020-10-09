@@ -8,14 +8,31 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlertToCareAPI.Migrations
 {
     [DbContext(typeof(IcuContext))]
-    [Migration("20201008095441_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201009141739_MyCoreAPIDemo.Entities.IcuContext")]
+    partial class MyCoreAPIDemoEntitiesIcuContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.8");
+
+            modelBuilder.Entity("Entities.Beds", b =>
+                {
+                    b.Property<Guid>("BedId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("BedStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("IcuId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("BedId");
+
+                    b.ToTable("Beds");
+                });
 
             modelBuilder.Entity("Entities.ICU", b =>
                 {
