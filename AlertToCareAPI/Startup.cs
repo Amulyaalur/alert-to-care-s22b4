@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using AlertToCareAPI.ICUDatabase;
+using AlertToCareAPI.Repositories;
 
 namespace AlertToCareAPI
 {
@@ -18,10 +14,8 @@ namespace AlertToCareAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            using (var client = new IcuContext())
-            {
-                client.Database.EnsureCreated();
-            }
+            var client = new IcuContext();
+            client.Database.EnsureCreated();
         }
 
         public IConfiguration Configuration { get; }
@@ -32,7 +26,9 @@ namespace AlertToCareAPI
             services.AddControllers();
           
             
-            services.AddScoped<Repository.IMonitoringRepository, Repository.MonitoringRepository>();
+            services.AddScoped<IMonitoringRepository, MonitoringRepository>();
+            services.AddSingleton<IIcuConfigurationRepository, IcuConfigurationRepository>();
+            services.AddSingleton<IPatientDbRepository, PatientDbRepository>();
             services.AddEntityFrameworkSqlite().AddDbContext<IcuContext>();
         }
 

@@ -1,9 +1,7 @@
 using AlertToCareAPI.Controllers;
-using AlertToCareAPI.Repository;
-using Entities;
+using AlertToCareAPI.Repositories;
+using AlertToCareAPI.ICUDatabase.Entities;
 using Moq;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace API.UnitTests

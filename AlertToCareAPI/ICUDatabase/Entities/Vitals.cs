@@ -1,8 +1,8 @@
 
-using System;
+
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities
+namespace AlertToCareAPI.ICUDatabase.Entities
 {
     public class Vitals
     {

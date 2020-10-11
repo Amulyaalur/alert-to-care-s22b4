@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Entities;
-namespace AlertToCareAPI.Repository
+﻿using System.Collections.Generic;
+using AlertToCareAPI.ICUDatabase.Entities;
+using AlertToCareAPI.ICUDatabase;
+namespace AlertToCareAPI.Repositories
 {
     public class MonitoringRepository : IMonitoringRepository
     {
 
-        IcuContext _db;
+        readonly IcuContext _db;
         public MonitoringRepository(IcuContext db)
         {
                _db = db;
@@ -24,12 +22,12 @@ namespace AlertToCareAPI.Repository
         {
             return _db.Vitals;
         }
-        public string CheckVitals(Entities.Vitals vital)
+        public string CheckVitals(Vitals vital)
            {
-            string a=CheckSpo2(vital.Spo2);
-            string b=CheckBpm(vital.Bpm);
-            string c=CheckResprate(vital.RespRate);
-           string s=a+ b+c;
+            var a=CheckSpo2(vital.Spo2);
+            var b=CheckBpm(vital.Bpm);
+            var c=CheckRespRate(vital.RespRate);
+            var s=a+ b+c;
             return s;
            }
         public string CheckSpo2(float spo2)
@@ -48,12 +46,12 @@ namespace AlertToCareAPI.Repository
             else
                 return "";
         }
-        public string CheckResprate(float resprate)
+        public string CheckRespRate(float respRate)
         {
-            if (resprate < 30)
-                return "resprate is low";
-            if (resprate > 95)
-                return "resprate is high";
+            if (respRate < 30)
+                return "respRate is low";
+            if (respRate > 95)
+                return "respRate is high";
             else
                 return "";
         }

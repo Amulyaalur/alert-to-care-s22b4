@@ -1,20 +1,34 @@
 
-using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities
+namespace AlertToCareAPI.ICUDatabase.Entities
 {
     public class Patient
     {
         [Key]
+        [Required]
         public string PatientId { get; set; }
+
+        [Required]
         public string PatientName { get; set; }
+
+        [Required]
         public int Age { get; set; }
+
+        [MaxLength(10)]
+        [Required]
         public string ContactNo { get; set; }
-        public string Email { get; set; }
+
+        [Required]
         public string BedId { get; set; }
-        public string ICUId { get; set; }
+
+        [Required]
+        public string IcuId { get; set; }
+
+        [Required]
         public Vitals Vitals { get; set; }
+
+        [Required]
         public PatientAddress Address { get; set; }
     }
 }

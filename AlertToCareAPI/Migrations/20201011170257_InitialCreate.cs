@@ -2,7 +2,7 @@
 
 namespace AlertToCareAPI.Migrations
 {
-    public partial class AlertToCareAPIICUDatabaseEntitiesIcuContext : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace AlertToCareAPI.Migrations
                 {
                     BedId = table.Column<string>(nullable: false),
                     IcuId = table.Column<string>(nullable: true),
-                    BedStatus = table.Column<bool>(nullable: false)
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -20,7 +20,7 @@ namespace AlertToCareAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ICUs",
+                name: "IcuList",
                 columns: table => new
                 {
                     IcuId = table.Column<string>(nullable: false),
@@ -30,7 +30,7 @@ namespace AlertToCareAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ICUs", x => x.IcuId);
+                    table.PrimaryKey("PK_IcuList", x => x.IcuId);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,22 +38,21 @@ namespace AlertToCareAPI.Migrations
                 columns: table => new
                 {
                     PatientId = table.Column<string>(nullable: false),
-                    PatientName = table.Column<string>(nullable: true),
+                    PatientName = table.Column<string>(nullable: false),
                     Age = table.Column<int>(nullable: false),
-                    ContactNo = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    BedId = table.Column<string>(nullable: true),
-                    ICUId = table.Column<string>(nullable: true)
+                    ContactNo = table.Column<string>(maxLength: 10, nullable: false),
+                    BedId = table.Column<string>(nullable: false),
+                    IcuId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Patients", x => x.PatientId);
                     table.ForeignKey(
-                        name: "FK_Patients_ICUs_ICUId",
-                        column: x => x.ICUId,
-                        principalTable: "ICUs",
+                        name: "FK_Patients_IcuList_IcuId",
+                        column: x => x.IcuId,
+                        principalTable: "IcuList",
                         principalColumn: "IcuId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,9 +98,9 @@ namespace AlertToCareAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_ICUId",
+                name: "IX_Patients_IcuId",
                 table: "Patients",
-                column: "ICUId");
+                column: "IcuId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -119,7 +118,7 @@ namespace AlertToCareAPI.Migrations
                 name: "Patients");
 
             migrationBuilder.DropTable(
-                name: "ICUs");
+                name: "IcuList");
         }
     }
 }

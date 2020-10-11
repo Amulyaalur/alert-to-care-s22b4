@@ -1,9 +1,8 @@
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities
+namespace AlertToCareAPI.ICUDatabase.Entities
 {
     public class ICU
     {

@@ -9,18 +9,18 @@ namespace API.IntegrationTest
 {
     public class TestClientProvider : IDisposable
     {
-        private TestServer server;
+        private readonly TestServer _server;
         public HttpClient Client { get; set; }
 
         public TestClientProvider()
         {
-            server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            Client = server.CreateClient();
+            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+            Client = _server.CreateClient();
         }
 
         public void Dispose()
         {
-            server?.Dispose();
+            _server?.Dispose();
             Client?.Dispose();
         }
     }
