@@ -8,9 +8,8 @@ namespace Entities
     public class Beds
     {  
         [Key]
-        public Guid BedId { get; set; }
-        public Guid IcuId { get; set; }
-
+        public string BedId { get; set; }
+        public string IcuId { get; set; }
         public Boolean BedStatus { get; set; }
     }
 }

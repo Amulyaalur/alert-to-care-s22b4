@@ -29,12 +29,11 @@ namespace AlertToCareAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkSqlite()
-    
-       .AddDbContext<IcuContext>();
             services.AddControllers();
-            services.AddSingleton<Repository.IMonitoringRepository, Repository.MonitoringRepository>();
+          
             
+            services.AddScoped<Repository.IMonitoringRepository, Repository.MonitoringRepository>();
+            services.AddEntityFrameworkSqlite().AddDbContext<IcuContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

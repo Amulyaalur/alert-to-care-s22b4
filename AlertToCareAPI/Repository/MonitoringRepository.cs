@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Entities;
 namespace AlertToCareAPI.Repository
 {
     public class MonitoringRepository : IMonitoringRepository
     {
-        List<Entities.Vitals> _db = new List<Entities.Vitals>();
-        public MonitoringRepository()
+
+        IcuContext _db;
+        public MonitoringRepository(IcuContext db)
         {
-            _db.Add(new Entities.Vitals
+               _db = db;
+           /* _db.Add(new Vitals
             {
                 Mrn = new Guid("69AA3BA5-D51E-465E-8447-ECAA1939739A"),
                 Spo2 = 10,
                 Bpm=12,
                 RespRate=134
-            }) ;
+            }) ; */
         }
-        public IEnumerable<Entities.Vitals> GetAllVitals()
+        public IEnumerable<Vitals> GetAllVitals()
         {
-                       return _db;
+            return _db.Vitals;
         }
         public string CheckVitals(Entities.Vitals vital)
            {

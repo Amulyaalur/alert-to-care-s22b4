@@ -8,7 +8,7 @@ namespace Entities
     public class ICU
     {
         [Key]
-        public Guid IcuId { get; set; }
+        public string IcuId { get; set; }
 
         public string Layout { get; set; }
 

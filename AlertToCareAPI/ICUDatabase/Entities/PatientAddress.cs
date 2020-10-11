@@ -6,7 +6,7 @@ namespace Entities
     public class PatientAddress
     {
         [Key]
-        public Guid Mrn { get; set; }
+        public string PatientId { get; set; }
 
         public string HouseNo { get; set; }
 
