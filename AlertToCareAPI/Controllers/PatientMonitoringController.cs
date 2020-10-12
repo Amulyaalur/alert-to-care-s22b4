@@ -18,23 +18,26 @@ namespace AlertToCareAPI.Controllers
         }
         // GET: api/<PatientMonitoringController>
         [HttpGet]
-        public IEnumerable<Vitals> GetVitals()
+        public IActionResult GetVitals()
         {
-            return _patientMonitoring.GetAllVitals();
+            var vitals = _patientMonitoring.GetAllVitals();
+                return Ok(vitals);
         }
         // GET: api/<PatientMonitoringController>/9245fe4a-d402-451c-b9ed-9c1a04247482
         [HttpGet("{patientId}")]
-        public string GetAlert(string patientId)
+        public IActionResult GetAlert(string patientId)
         {
+            
             var vitals = _patientMonitoring.GetAllVitals();
             foreach (var vital in vitals)
-            {
+            {   
                 if (vital.PatientId == patientId)
-                {
-                    return _patientMonitoring.CheckVitals(vital);
+                {  
+                    string vitalCheck= _patientMonitoring.CheckVitals(vital);
+                    return Ok(vitalCheck);
                 } 
             }
-            return null;
+            return NotFound();
         }
 
     }

@@ -27,8 +27,8 @@ namespace AlertToCareAPI
           
             
             services.AddScoped<IMonitoringRepository, MonitoringRepository>();
-            services.AddSingleton<IIcuConfigurationRepository, IcuConfigurationRepository>();
-            services.AddSingleton<IPatientDbRepository, PatientDbRepository>();
+            services.AddScoped<IIcuConfigurationRepository, IcuConfigurationRepository>();
+            services.AddScoped<IPatientDbRepository, PatientDbRepository>();
             services.AddEntityFrameworkSqlite().AddDbContext<IcuContext>();
         }
 

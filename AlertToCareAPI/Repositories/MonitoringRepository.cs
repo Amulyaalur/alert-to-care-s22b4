@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using AlertToCareAPI.ICUDatabase.Entities;
 using AlertToCareAPI.ICUDatabase;
+using System.Net.Mail;
+using System;
+
 namespace AlertToCareAPI.Repositories
 {
     public class MonitoringRepository : IMonitoringRepository
@@ -10,14 +13,7 @@ namespace AlertToCareAPI.Repositories
         public MonitoringRepository(IcuContext db)
         {
                _db = db;
-           /* _db.Add(new Vitals
-            {
-                Mrn = new Guid("69AA3BA5-D51E-465E-8447-ECAA1939739A"),
-                Spo2 = 10,
-                Bpm=12,
-                RespRate=134
-            }) ; */
-        }
+                  }
         public IEnumerable<Vitals> GetAllVitals()
         {
             return _db.Vitals;
@@ -32,8 +28,13 @@ namespace AlertToCareAPI.Repositories
            }
         public string CheckSpo2(float spo2)
         {
-                if (spo2 < 90)
-                 return "Spo2 is low";
+            if (spo2 < 90)
+            {
+                SendMail("Spo2 is low");
+                return "Spo2 is low";
+              
+            }
+            else
                 return "";
 
         }
@@ -55,5 +56,31 @@ namespace AlertToCareAPI.Repositories
             else
                 return "";
         }
+        public void SendMail(string body)
+        {
+             MailMessage mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");
+             mailMessage.Body = body;
+             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+             smtpClient.UseDefaultCredentials = true;
+             smtpClient.Credentials = new System.Net.NetworkCredential()
+             {
+                 UserName = "alerttocare@gmail.com",
+                 Password = "admin@1234"
+             };
+
+             smtpClient.EnableSsl=true;
+             try
+             {
+                 smtpClient.Send(mailMessage);
+             }
+
+             catch (Exception ex)
+             {
+                 throw ex;
+             }
+           
+        }
+        
+
     }
 }
