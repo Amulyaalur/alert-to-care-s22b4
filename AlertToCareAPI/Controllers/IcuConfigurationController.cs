@@ -19,41 +19,66 @@ namespace AlertToCareAPI.Controllers
         }
         // GET: api/<IcuConfigurationController>
         [HttpGet("IcuWards")]
-        public IEnumerable<ICU> Get()
+        public IActionResult Get()
         {
-            return _configurationRepository.GetAllIcu();
+            return Ok(_configurationRepository.GetAllIcu());
         }
 
         [HttpGet("IcuWards/{IcuId}")]
-        public ICU Get(string icuId)
+        public IActionResult Get(string icuId)
         {
             var icuStore = _configurationRepository.GetAllIcu();
             foreach (var icu in icuStore)
             {
                 if (icu.IcuId == icuId)
                 {
-                    return icu;
+                    return Ok(icu);
                 }
             }
-            return null;
+            return BadRequest();
         }
 
         [HttpPost("IcuWards")]
-        public void Post([FromBody] ICU icu)
+        public IActionResult Post([FromBody] ICU icu)
         {
-            _configurationRepository.AddIcu(icu);
+            try
+            {
+                _configurationRepository.AddIcu(icu);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("IcuWards/{IcuId}")]
-        public void Put(string icuId, [FromBody] ICU icu)
+        public IActionResult Put(string icuId, [FromBody] ICU icu)
         {
-            _configurationRepository.UpdateIcu(icuId, icu);
+            try
+            {
+                _configurationRepository.UpdateIcu(icuId, icu);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            
         }
 
         [HttpDelete("IcuWards/{IcuId}")]
-        public void Delete(string icuId)
+        public IActionResult Delete(string icuId)
         {
-            _configurationRepository.RemoveIcu(icuId);
+            try
+            {
+                _configurationRepository.RemoveIcu(icuId);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

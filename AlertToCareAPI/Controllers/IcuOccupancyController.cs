@@ -1,8 +1,10 @@
 ﻿
 using System.Collections.Generic;
+using System.Net.Http;
 using AlertToCareAPI.Repositories;
 using AlertToCareAPI.ICUDatabase.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,42 +21,68 @@ namespace AlertToCareAPI.Controllers
         }
 
         [HttpGet("Patients")]
-        public IEnumerable<Patient> Get()
+        public IActionResult Get()
         {
-            return _occupantDb.GetAllPatients();
+            return Ok(_occupantDb.GetAllPatients());
+
         }
 
 
         [HttpGet("Patients/{PatientId}")]
-        public Patient Get(string patientId)
+        public IActionResult Get(string patientId)
         {
             var patients = _occupantDb.GetAllPatients();
-            foreach (var patient in patients)
-            {
-                if (patient.PatientId == patientId)
+                foreach (var patient in patients)
                 {
-                    return patient;
+                    if (patient.PatientId == patientId)
+                    {
+                        return Ok(patient);
+                    }
                 }
-            }
-            return null;
+
+                return BadRequest();
         }
 
         [HttpPost("Patients")]
-        public void Post([FromBody] Patient patient)
+        public IActionResult Post([FromBody] Patient patient)
         {
-            _occupantDb.AddPatient(patient);
+            try
+            {
+                _occupantDb.AddPatient(patient);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("Patients/{PatientId}")]
-        public void Put(string patientId, [FromBody] Patient patient)
+        public IActionResult Put(string patientId, [FromBody] Patient patient)
         {
-            _occupantDb.UpdatePatient(patientId, patient);
+            try
+            {
+                _occupantDb.UpdatePatient(patientId, patient);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpDelete("Patients/{PatientId}")]
-        public void Delete(string patientId)
+        public IActionResult Delete(string patientId)
         {
-            _occupantDb.RemovePatient(patientId);
+            try
+            {
+                _occupantDb.RemovePatient(patientId);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

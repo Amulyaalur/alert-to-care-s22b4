@@ -38,7 +38,7 @@ namespace AlertToCareAPI.Repositories
             _validator.ValidatePatientRecord(state);
 
             var patients = _context.Patients.ToList();
-            for (int i = 0; i < patients.Count; i++)
+            for (var i = 0; i < patients.Count; i++)
             {
                 if (patients[i].PatientId == patientId)
                 {
@@ -52,14 +52,14 @@ namespace AlertToCareAPI.Repositories
             var patients = _context.Patients.ToList();
             return patients;
         }
-        public void ChangeBedStatus(String bedId, bool status)
+        public void ChangeBedStatus(string bedId, bool status)
         {
             var bedList = _context.Beds.ToList();
-            for (var i = 0; i < bedList.Count; i++)
+            foreach (var bed in bedList)
             {
-                if (bedList[i].BedId == bedId)
+                if (bed.BedId == bedId)
                 {
-                    bedList[i].Status = status;
+                    bed.Status = status;
                     return;
                 }
             }
