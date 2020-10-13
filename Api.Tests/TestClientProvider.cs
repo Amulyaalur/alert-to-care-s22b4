@@ -5,7 +5,7 @@ using System;
 using System.Net.Http;
 
 
-namespace API.IntegrationTest
+namespace API.Tests
 {
     public class TestClientProvider : IDisposable
     {
