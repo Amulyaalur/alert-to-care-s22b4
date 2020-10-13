@@ -1,0 +1,14 @@
+
+using System.Collections.Generic;
+
+namespace AlertToCareAPI.Models
+{
+    public class ICU
+    {
+     
+        public string IcuId { get; set; }
+        public string LayoutId { get; set; }
+        public int BedsCount { get; set; }
+        public List<Patient> Patients { get; set; }
+    }
+}

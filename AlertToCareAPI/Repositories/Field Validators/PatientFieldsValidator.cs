@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
-using AlertToCareAPI.ICUDatabase.Entities;
-using AlertToCareAPI.ICUDatabase;
+using System.Collections.Generic;
+using AlertToCareAPI.Models;
 
 namespace AlertToCareAPI.Repositories.Field_Validators
 {
     public class PatientFieldsValidator
     {
-        readonly IcuContext _context = new IcuContext();
         readonly CommonFieldValidator _validator = new CommonFieldValidator();
         public void ValidatePatientRecord(Patient patient)
         {
@@ -15,15 +13,15 @@ namespace AlertToCareAPI.Repositories.Field_Validators
            _validator.IsWhitespaceOrEmptyOrNull(patient.PatientName);
            _validator.IsWhitespaceOrEmptyOrNull(patient.Age.ToString());
            _validator.IsWhitespaceOrEmptyOrNull(patient.ContactNo);
+           _validator.IsWhitespaceOrEmptyOrNull(patient.Email);
            _validator.IsWhitespaceOrEmptyOrNull(patient.BedId);
            _validator.IsWhitespaceOrEmptyOrNull(patient.IcuId);
            CheckConsistencyInPatientIdFields(patient);
 
         }
 
-        public void ValidateOldPatientId(string patientId)
+        public void ValidateOldPatientId(string patientId, List<Patient> patients)
         {
-            var patients = _context.Patients.ToList();
             foreach (var patient in patients)
             {
                 if (patient.PatientId == patientId)
@@ -34,9 +32,8 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             throw new Exception("Invalid Patient Id");
         }
 
-        public void ValidateNewPatientId(string patientId, Patient patientRecord)
+        public void ValidateNewPatientId(string patientId, Patient patientRecord, List<Patient> patients)
         {
-            var patients = _context.Patients.ToList();
             foreach (var patient in patients)
             {
                 if (patient.PatientId == patientId)
@@ -52,10 +49,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
         {
             if (patient.PatientId.ToLower() == patient.Vitals.PatientId.ToLower())
             {
-                if (patient.PatientId.ToLower() == patient.Address.PatientId.ToLower())
-                {
-                    return;
-                }
+               return;
             }
             throw new Exception("Invalid data field");
         }

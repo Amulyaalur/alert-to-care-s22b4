@@ -3,13 +3,10 @@
     "",
     "\\AlertToCareAPI",
     "\\AlertToCareAPI\\Controllers",
-    "\\AlertToCareAPI\\ICUDatabase",
-    "\\AlertToCareAPI\\ICUDatabase\\Entities",
+    "\\AlertToCareAPI\\Models",
     "\\AlertToCareAPI\\Repositories",
-    "\\AlertToCareAPI\\Repositories\\Field Validators",
-    "\\AlertToCareAPI\\wwwroot",
-    "\\API.IntegrationTest",
-    "\\Api.Tests"
+    "\\AlertToCareAPI\\Repositories\\Field Validators"
   ],
+  "SelectedNode": "\\packages",
   "PreviewInSolutionExplorer": false
 }

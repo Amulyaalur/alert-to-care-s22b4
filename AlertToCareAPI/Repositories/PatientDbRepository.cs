@@ -1,70 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using AlertToCareAPI.ICUDatabase.Entities;
-using AlertToCareAPI.ICUDatabase;
-using System.Linq;
+using AlertToCareAPI.Models;
+using AlertToCareAPI.Database;
 using AlertToCareAPI.Repositories.Field_Validators;
 
 namespace AlertToCareAPI.Repositories
 {
     public class PatientDbRepository : IPatientDbRepository
     {
-        readonly IcuContext _context = new IcuContext();
-        readonly PatientFieldsValidator _validator = new PatientFieldsValidator();
+        readonly DatabaseCreator _creator = new DatabaseCreator();
+        readonly List<Patient> _patients; 
+        readonly List<Bed> _beds;
+        readonly PatientFieldsValidator _validator;
+
+
+        public PatientDbRepository()
+        {
+            
+           this._patients = _creator.GetPatientList();
+           this._beds = _creator.GetBedsList();
+           this._validator = new PatientFieldsValidator();
+        }
         public void AddPatient(Patient newState)
         {
-            _validator.ValidateNewPatientId(newState.PatientId, newState);
-            _context.Add<Patient>(newState);
-            _context.SaveChanges();
+            _validator.ValidateNewPatientId(newState.PatientId, newState, _patients);
+            _patients.Add(newState);
             ChangeBedStatus(newState.BedId, true);
         }
         public void RemovePatient(string patientId)
         {
-            _validator.ValidateOldPatientId(patientId);
-            var patients = _context.Patients.ToList();
-            for (int i = 0; i < patients.Count; i++)
+            _validator.ValidateOldPatientId(patientId, _patients);
+            for (int i = 0; i < _patients.Count; i++)
             {
-                if (patients[i].PatientId == patientId)
+                if (_patients[i].PatientId == patientId)
                 {
-                    _context.Remove(_context.Patients.Single(a => a.PatientId == patientId));
-                    _context.SaveChanges();
-                    ChangeBedStatus(patients[i].BedId, false);
+                    _patients.Remove(_patients[i]);
+                    ChangeBedStatus(_patients[i].BedId, false);
                     return;
                 }
             }
         }
         public void UpdatePatient(string patientId, Patient state)
         {
-            _validator.ValidateOldPatientId(patientId);
+            _validator.ValidateOldPatientId(patientId, _patients);
             _validator.ValidatePatientRecord(state);
 
-            var patients = _context.Patients.ToList();
-            for (var i = 0; i < patients.Count; i++)
+            for (var i = 0; i < _patients.Count; i++)
             {
-                if (patients[i].PatientId == patientId)
+                if (_patients[i].PatientId == patientId)
                 {
-                    _context.Remove(_context.Patients.Single(a => a.PatientId == patientId));
-                    _context.Add<Patient>(state);
-                    _context.SaveChanges();
+                    _patients.Insert(i, state);
                     return;
                 }
             }
         }
         public IEnumerable<Patient> GetAllPatients()
         {
-            var patients = _context.Patients.ToList();
-            return patients;
+            return _patients;
         }
         public void ChangeBedStatus(string bedId, bool status)
         {
-            var bedList = _context.Beds.ToList();
-            foreach (var bed in bedList)
+            for (var i = 0; i < _beds.Count; i++)
             {
-                if (bed.BedId == bedId)
+                if (_beds[i].BedId == bedId)
                 {
-                    var entity = _context.Beds.First(a => a.BedId == bedId);
-                    entity.Status = status;
-                    _context.SaveChanges();
+                    _beds[i].Status = status;
                     return;
                 }
             }

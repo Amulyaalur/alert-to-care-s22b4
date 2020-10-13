@@ -1,8 +1,7 @@
 ﻿
-using System.Collections.Generic;
-using AlertToCareAPI.ICUDatabase.Entities;
 using AlertToCareAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using AlertToCareAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

@@ -1,61 +1,59 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using AlertToCareAPI.ICUDatabase.Entities;
-using AlertToCareAPI.ICUDatabase;
+using AlertToCareAPI.Database;
+using AlertToCareAPI.Models;
 using AlertToCareAPI.Repositories.Field_Validators;
 
 namespace AlertToCareAPI.Repositories
 {
     public class IcuConfigurationRepository : IIcuConfigurationRepository
     {
-        readonly IcuContext _context= new IcuContext();
-        readonly IcuFieldsValidator _validator = new IcuFieldsValidator();
+        readonly DatabaseCreator _creator = new DatabaseCreator();
+        private readonly List<ICU> _icuList;
+        readonly IcuFieldsValidator _validator;
 
-       
+
+        public IcuConfigurationRepository()
+        {
+
+            this._icuList = _creator.GetIcuList();
+            this._validator = new IcuFieldsValidator();
+        }
+
         public void AddIcu(ICU newState)
         {
-            _validator.ValidateNewIcuId(newState.IcuId, newState);
-            _context.Add<ICU>(newState);
-            _context.SaveChanges();
+            _validator.ValidateNewIcuId(newState.IcuId, newState, _icuList);
+            _icuList.Add(newState);
         }
         public void RemoveIcu(string icuId)
         {
-            _validator.ValidateOldIcuId(icuId);
-            var icuStore = _context.IcuList.ToList();
-            for (var i = 0; i < icuStore.Count; i++)
+            _validator.ValidateOldIcuId(icuId, _icuList);
+            for (var i = 0; i < _icuList.Count; i++)
             {
-                if (icuStore[i].IcuId == icuId)
+                if (_icuList[i].IcuId == icuId)
                 {
-                    _context.Remove(_context.IcuList.Single(a => a.IcuId == icuId));
-                    _context.SaveChanges();
+                    _icuList.Remove(_icuList[i]);
                     return;
                 }
             }
         }
         public void UpdateIcu(string icuId, ICU state)
         {
-            _validator.ValidateOldIcuId(icuId);
+            _validator.ValidateOldIcuId(icuId, _icuList);
             _validator.ValidateIcuRecord(state);
-            var icuStore = _context.IcuList.ToList();
-            for (var i = 0; i < icuStore.Count; i++)
+            
+            for (var i = 0; i < _icuList.Count; i++)
             {
-                if (icuStore[i].IcuId == icuId)
+                if (_icuList[i].IcuId == icuId)
                 {
-                    _context.Remove(_context.IcuList.Single(a => a.IcuId == icuId));
-                    _context.Add<ICU>(state);
-                    _context.SaveChanges();
+                    _icuList.Insert(i, state);
                     return;
                 }
             }
         }
         public IEnumerable<ICU> GetAllIcu()
-        {   
-           
-            var icuStore = _context.IcuList.ToList();
-            if (icuStore != null)
-                return icuStore;
-            else
-                return null;
+        {
+
+            return _icuList;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using AlertToCareAPI.ICUDatabase.Entities;
+﻿using AlertToCareAPI.Models;
 
 namespace AlertToCareAPI.Repositories.Field_Validators
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using AlertToCareAPI.Repositories;
-using AlertToCareAPI.ICUDatabase.Entities;
+using AlertToCareAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

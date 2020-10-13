@@ -1,27 +1,24 @@
-using AlertToCareAPI;
+﻿using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using System;
-using System.Net.Http;
-
+using AlertToCareAPI;
 
 namespace API.Tests
 {
-    public class TestClientProvider : IDisposable
+    class TestClientProvider
     {
-        private readonly TestServer _server;
         public HttpClient Client { get; set; }
+        private TestServer _server;
 
         public TestClientProvider()
         {
-            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            Client = _server.CreateClient();
+            SetupClient();
         }
 
-        public void Dispose()
+        private void SetupClient()
         {
-            _server?.Dispose();
-            Client?.Dispose();
+            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+            Client = _server.CreateClient();
         }
     }
 }

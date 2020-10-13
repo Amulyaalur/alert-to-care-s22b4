@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using AlertToCareAPI.ICUDatabase.Entities;
-using AlertToCareAPI.ICUDatabase;
+using AlertToCareAPI.Models;
 using System.Net.Mail;
 using System;
 
@@ -8,12 +7,11 @@ namespace AlertToCareAPI.Repositories
 {
     public class MonitoringRepository : IMonitoringRepository
     {
-
-        readonly IcuContext _db=new IcuContext();
+        readonly List<Vitals> _vitals = new List<Vitals>();
       
         public IEnumerable<Vitals> GetAllVitals()
         {
-            return _db.Vitals;
+            return _vitals;
         }
         public string CheckVitals(Vitals vital)
            {
@@ -56,9 +54,9 @@ namespace AlertToCareAPI.Repositories
         }
         public void SendMail(string body)
         {
-             MailMessage mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");
+             var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");
              mailMessage.Body = body;
-             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+             var smtpClient = new SmtpClient("smtp.gmail.com", 587);
              smtpClient.UseDefaultCredentials = true;
              smtpClient.Credentials = new System.Net.NetworkCredential()
              {
