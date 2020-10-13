@@ -9,14 +9,20 @@ namespace AlertToCareAPI.Repositories
 {
     public class PatientDbRepository : IPatientDbRepository
     {
-        readonly IcuContext _context = new IcuContext();
+        readonly IcuContext _context;
+        public PatientDbRepository(IcuContext db)
+        {
+            _context = db;
+        }
         readonly PatientFieldsValidator _validator = new PatientFieldsValidator();
         public void AddPatient(Patient newState)
         {
             _validator.ValidateNewPatientId(newState.PatientId, newState);
-            var patients = _context.Patients.ToList();
-            patients.Add(newState);
+      
+           _context.Add<Patient>(newState);
+           
             ChangeBedStatus(newState.BedId, true);
+            _context.SaveChanges();
         }
         public void RemovePatient(string patientId)
         {
@@ -26,7 +32,7 @@ namespace AlertToCareAPI.Repositories
             {
                 if (patients[i].PatientId == patientId)
                 {
-                    patients.Remove(patients[i]);
+                    _context.Remove<Patient>(patients[i]);
                     ChangeBedStatus(patients[i].BedId, false);
                     return;
                 }

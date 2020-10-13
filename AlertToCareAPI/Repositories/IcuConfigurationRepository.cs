@@ -8,13 +8,15 @@ namespace AlertToCareAPI.Repositories
 {
     public class IcuConfigurationRepository : IIcuConfigurationRepository
     {
-        readonly IcuContext _context = new IcuContext();
+        readonly IcuContext _context= new IcuContext();
         readonly IcuFieldsValidator _validator = new IcuFieldsValidator();
+
+       
         public void AddIcu(ICU newState)
         {
             _validator.ValidateNewIcuId(newState.IcuId, newState);
-            var icuStore= _context.IcuList.ToList();
-            icuStore.Add(newState);
+            _context.Add<ICU>(newState);
+            _context.SaveChanges();
         }
         public void RemoveIcu(string icuId)
         {
@@ -44,9 +46,13 @@ namespace AlertToCareAPI.Repositories
             }
         }
         public IEnumerable<ICU> GetAllIcu()
-        {
+        {   
+           
             var icuStore = _context.IcuList.ToList();
-            return icuStore;
+            if (icuStore != null)
+                return icuStore;
+            else
+                return null;
         }
     }
 }

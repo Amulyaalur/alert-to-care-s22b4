@@ -4,7 +4,7 @@ using Xunit;
 namespace API.IntegrationTest
 {
 
-    public class VitalsTest
+    public class VitalsAlertTest
     {
         [Fact]
         public async Task TestVitals()
@@ -14,14 +14,6 @@ namespace API.IntegrationTest
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        [Fact]
-        public async Task TestAlert()
-        {
-            var client = new TestClientProvider().Client;
-            var response = await client.GetAsync("api/PatientMonitoring/WrongId");
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        }
-        
 
     }
 }

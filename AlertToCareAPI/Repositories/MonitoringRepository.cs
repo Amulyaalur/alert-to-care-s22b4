@@ -9,11 +9,8 @@ namespace AlertToCareAPI.Repositories
     public class MonitoringRepository : IMonitoringRepository
     {
 
-        readonly IcuContext _db;
-        public MonitoringRepository(IcuContext db)
-        {
-               _db = db;
-                  }
+        readonly IcuContext _db=new IcuContext();
+      
         public IEnumerable<Vitals> GetAllVitals()
         {
             return _db.Vitals;
@@ -23,15 +20,16 @@ namespace AlertToCareAPI.Repositories
             var a=CheckSpo2(vital.Spo2);
             var b=CheckBpm(vital.Bpm);
             var c=CheckRespRate(vital.RespRate);
-            var s=a+ b+c;
+            var s= a + "," +b + ","+ c;
+            SendMail(s);
             return s;
            }
         public string CheckSpo2(float spo2)
         {
             if (spo2 < 90)
             {
-                SendMail("Spo2 is low");
-                return "Spo2 is low";
+               
+                return "Spo2 is low ";
               
             }
             else
@@ -41,18 +39,18 @@ namespace AlertToCareAPI.Repositories
         public string CheckBpm(float bpm)
         {
             if (bpm < 70)
-                return "bpm is low";
+                return "bpm is low ";
             if (bpm > 150)
-                return "bpm is high";
+                return "bpm is high ";
             else
                 return "";
         }
         public string CheckRespRate(float respRate)
         {
             if (respRate < 30)
-                return "respRate is low";
+                return "respRate is low ";
             if (respRate > 95)
-                return "respRate is high";
+                return "respRate is high ";
             else
                 return "";
         }
