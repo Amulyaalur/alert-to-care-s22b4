@@ -24,7 +24,7 @@ namespace AlertToCareAPI.Migrations
                 columns: table => new
                 {
                     IcuId = table.Column<string>(nullable: false),
-                    Layout = table.Column<string>(nullable: true),
+                    LayoutId = table.Column<string>(nullable: true),
                     BedsCount = table.Column<int>(nullable: false),
                     BedIdPrefix = table.Column<string>(nullable: true)
                 },
@@ -41,6 +41,7 @@ namespace AlertToCareAPI.Migrations
                     PatientName = table.Column<string>(nullable: false),
                     Age = table.Column<int>(nullable: false),
                     ContactNo = table.Column<string>(maxLength: 10, nullable: false),
+                    Email = table.Column<string>(nullable: false),
                     BedId = table.Column<string>(nullable: false),
                     IcuId = table.Column<string>(nullable: false)
                 },
@@ -96,6 +97,11 @@ namespace AlertToCareAPI.Migrations
                         principalColumn: "PatientId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Vitals",
+                columns: new[] { "PatientId", "Bpm", "RespRate", "Spo2" },
+                values: new object[] { "PID01", 85f, 70f, 100f });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Patients_IcuId",

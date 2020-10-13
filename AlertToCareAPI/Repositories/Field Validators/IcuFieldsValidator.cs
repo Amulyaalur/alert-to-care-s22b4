@@ -15,7 +15,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
         {
             _validator.IsWhitespaceOrEmptyOrNull(icu.IcuId);
             _validator.IsWhitespaceOrEmptyOrNull(icu.BedsCount.ToString());
-            _validator.IsWhitespaceOrEmptyOrNull(icu.Layout);
+            _validator.IsWhitespaceOrEmptyOrNull(icu.LayoutId);
             _validator.IsWhitespaceOrEmptyOrNull(icu.BedIdPrefix);
             ValidatePatientsList(icu.Patients);
         }

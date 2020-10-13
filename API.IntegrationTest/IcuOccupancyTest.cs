@@ -8,7 +8,7 @@ namespace API.IntegrationTest
     public class IcuOccupancyTest
     {
         [Fact]
-        public async Task CheckStatusCodeEqualOKGetAllPatients()
+        public async Task CheckStatusCodeEqualOkGetAllPatients()
         {
             var client = new TestClientProvider().Client;
             var response = await client.GetAsync("api/IcuOccupancy/Patients");
@@ -16,7 +16,7 @@ namespace API.IntegrationTest
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
-        public async Task CheckStatusCodeEqualOKGetPatientById()
+        public async Task CheckStatusCodeEqualOkGetPatientById()
         {
             var client = new TestClientProvider().Client;
             var response = await client.GetAsync("api/IcuOccupancy/Patients/MRN001");

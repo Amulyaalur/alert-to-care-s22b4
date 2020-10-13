@@ -14,8 +14,8 @@ namespace AlertToCareAPI.Repositories
         public void AddPatient(Patient newState)
         {
             _validator.ValidateNewPatientId(newState.PatientId, newState);
-            var patients = _context.Patients.ToList();
-            patients.Add(newState);
+            _context.Add<Patient>(newState);
+            _context.SaveChanges();
             ChangeBedStatus(newState.BedId, true);
         }
         public void RemovePatient(string patientId)
@@ -26,7 +26,8 @@ namespace AlertToCareAPI.Repositories
             {
                 if (patients[i].PatientId == patientId)
                 {
-                    patients.Remove(patients[i]);
+                    _context.Remove(_context.Patients.Single(a => a.PatientId == patientId));
+                    _context.SaveChanges();
                     ChangeBedStatus(patients[i].BedId, false);
                     return;
                 }
@@ -42,7 +43,9 @@ namespace AlertToCareAPI.Repositories
             {
                 if (patients[i].PatientId == patientId)
                 {
-                    patients.Insert(i, state);
+                    _context.Remove(_context.Patients.Single(a => a.PatientId == patientId));
+                    _context.Add<Patient>(state);
+                    _context.SaveChanges();
                     return;
                 }
             }
@@ -59,7 +62,9 @@ namespace AlertToCareAPI.Repositories
             {
                 if (bed.BedId == bedId)
                 {
-                    bed.Status = status;
+                    var entity = _context.Beds.First(a => a.BedId == bedId);
+                    entity.Status = status;
+                    _context.SaveChanges();
                     return;
                 }
             }

@@ -20,6 +20,9 @@ namespace AlertToCareAPI.ICUDatabase.Entities
         public string ContactNo { get; set; }
 
         [Required]
+        public string Email { get; set; }
+
+        [Required]
         public string BedId { get; set; }
 
         [Required]

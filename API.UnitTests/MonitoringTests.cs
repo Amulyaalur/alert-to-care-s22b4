@@ -6,11 +6,11 @@ using Xunit;
 
 namespace API.UnitTests
 {
-    public class PatientMonitoringUnitTest
+    public class MonitoringTests
     {
         private readonly Mock<IMonitoringRepository> _mockRepo;
         private readonly PatientMonitoringController _controller;
-        public PatientMonitoringUnitTest()
+        public MonitoringTests()
         {
             _mockRepo = new Mock<IMonitoringRepository>();
             _controller = new PatientMonitoringController(_mockRepo.Object);

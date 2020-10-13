@@ -9,7 +9,7 @@ namespace AlertToCareAPI.ICUDatabase.Entities
         [Key]
         public string IcuId { get; set; }
 
-        public string Layout { get; set; }
+        public string LayoutId { get; set; }
 
         public int BedsCount { get; set; }
 

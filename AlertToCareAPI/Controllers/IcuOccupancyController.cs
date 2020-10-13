@@ -27,7 +27,6 @@ namespace AlertToCareAPI.Controllers
 
         }
 
-
         [HttpGet("Patients/{PatientId}")]
         public IActionResult Get(string patientId)
         {

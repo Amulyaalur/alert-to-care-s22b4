@@ -2,10 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\AlertToCareAPI",
-    "\\AlertToCareAPI\\Controllers",
     "\\AlertToCareAPI\\ICUDatabase",
-    "\\AlertToCareAPI\\ICUDatabase\\Entities"
+    "\\AlertToCareAPI\\ICUDatabase\\Entities",
+    "\\AlertToCareAPI\\Repositories",
+    "\\AlertToCareAPI\\Repositories\\Field Validators",
+    "\\AlertToCareAPI\\wwwroot",
+    "\\API.IntegrationTest",
+    "\\API.UnitTests",
+    "\\API.UnitTests\\obj"
   ],
-  "SelectedNode": "\\AlertToCareAPI\\AlertToCareAPI.csproj",
+  "SelectedNode": "\\AlertToCareAPI\\obj",
   "PreviewInSolutionExplorer": false
 }

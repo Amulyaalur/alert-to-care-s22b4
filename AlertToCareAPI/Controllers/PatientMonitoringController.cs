@@ -1,8 +1,6 @@
 ﻿
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AlertToCareAPI.Repositories;
-using AlertToCareAPI.ICUDatabase.Entities;
 
 
 namespace AlertToCareAPI.Controllers

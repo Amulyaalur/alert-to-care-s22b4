@@ -42,7 +42,7 @@ namespace AlertToCareAPI.Migrations
                     b.Property<int>("BedsCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Layout")
+                    b.Property<string>("LayoutId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("IcuId");
@@ -66,6 +66,10 @@ namespace AlertToCareAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(10);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("IcuId")
                         .IsRequired()
@@ -124,6 +128,15 @@ namespace AlertToCareAPI.Migrations
                     b.HasKey("PatientId");
 
                     b.ToTable("Vitals");
+
+                    b.HasData(
+                        new
+                        {
+                            PatientId = "PID01",
+                            Bpm = 85f,
+                            RespRate = 70f,
+                            Spo2 = 100f
+                        });
                 });
 
             modelBuilder.Entity("AlertToCareAPI.ICUDatabase.Entities.Patient", b =>

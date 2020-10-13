@@ -13,8 +13,8 @@ namespace AlertToCareAPI.Repositories
         public void AddIcu(ICU newState)
         {
             _validator.ValidateNewIcuId(newState.IcuId, newState);
-            var icuStore= _context.IcuList.ToList();
-            icuStore.Add(newState);
+            _context.Add<ICU>(newState);
+            _context.SaveChanges();
         }
         public void RemoveIcu(string icuId)
         {
@@ -24,7 +24,8 @@ namespace AlertToCareAPI.Repositories
             {
                 if (icuStore[i].IcuId == icuId)
                 {
-                    icuStore.Remove(icuStore[i]);
+                    _context.Remove(_context.IcuList.Single(a => a.IcuId == icuId));
+                    _context.SaveChanges();
                     return;
                 }
             }
@@ -38,7 +39,9 @@ namespace AlertToCareAPI.Repositories
             {
                 if (icuStore[i].IcuId == icuId)
                 {
-                    icuStore.Insert(i, state);
+                    _context.Remove(_context.IcuList.Single(a => a.IcuId == icuId));
+                    _context.Add<ICU>(state);
+                    _context.SaveChanges();
                     return;
                 }
             }

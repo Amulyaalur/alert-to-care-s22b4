@@ -9,6 +9,7 @@ namespace AlertToCareAPI.ICUDatabase
         {
             optionsBuilder.UseSqlite("Filename=PatientDatabase.db");
         }
+
         public DbSet<Patient> Patients { get; set; }
         public DbSet<PatientAddress> PatientAddress { get; set; }
         public DbSet<ICU> IcuList { get; set; }
