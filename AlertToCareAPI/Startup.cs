@@ -18,9 +18,9 @@ namespace AlertToCareAPI
             services.AddControllers();
           
             
-            services.AddScoped<IMonitoringRepository, MonitoringRepository>();
-            services.AddScoped<IIcuConfigurationRepository, IcuConfigurationRepository>();
-            services.AddScoped<IPatientDbRepository, PatientDbRepository>();
+            services.AddSingleton<IMonitoringRepository, MonitoringRepository>();
+            services.AddSingleton<IIcuConfigurationRepository, IcuConfigurationRepository>();
+            services.AddSingleton<IPatientDbRepository, PatientDbRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

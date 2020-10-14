@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using AlertToCareAPI.Models;
+using Newtonsoft.Json;
 
 namespace AlertToCareAPI.Database
 {
     public class DatabaseManager
     {
-        List<ICU> _icuList = new List<ICU>();
-        List<Patient> _patients = new List<Patient>();
-        List<Bed> _beds = new List<Bed>();
-        List<Vitals> _vitals = new List<Vitals>();
 
         public DatabaseManager()
         {
@@ -149,78 +146,78 @@ namespace AlertToCareAPI.Database
             };*/
         }
 
-        public void WriteToPatientsDatabase(List<Patient> patients, StreamWriter writer)
+        public void WriteToPatientsDatabase(List<Patient> patients)
         {
+            var writer = new StreamWriter("Patients.json");
             foreach (var patient in patients)
             {
                 writer.WriteLine(patient);
             }
+            writer.Close();
         }
 
-        public void WriteToIcuDatabase(List<ICU> icuList, StreamWriter writer)
+        public void WriteToIcuDatabase(List<ICU> icuList)
         {
+            var writer = new StreamWriter("Icu.json");
             foreach (var icu in icuList)
             {
                 writer.WriteLine(icu);
             }
+            writer.Close();
         }
-        public void WriteToBedsDatabase(List<Bed> beds, StreamWriter writer)
+        public void WriteToBedsDatabase(List<Bed> beds)
         {
+            var writer = new StreamWriter("Beds.json");
             foreach (var bed in beds)
             {
                 writer.WriteLine(bed);
             }
+            writer.Close();
         }
-        public void WriteToVitalsDatabase(List<Vitals> vitals, StreamWriter writer)
+        public void WriteToVitalsDatabase(List<Vitals> vitals)
         {
+            var writer = new StreamWriter("Vitals.json");
             foreach (var record in vitals)
             {
                 writer.WriteLine(record);
             }
+            writer.Close();
         }
 
-        public List<ICU> GetIcuList()
+        public List<ICU> ReadIcuDatabase()
         {
-            return _icuList;
+            var reader = new StreamReader("Icu.json");
+            var json = reader.ReadToEnd();
+            var icuList= JsonConvert.DeserializeObject<List<ICU>>(json);
+            reader.Close();
+            return icuList;
         }
-        public List<Patient> GetPatientList()
+        public List<Patient> ReadPatientDatabase()
         {
-            return _patients;
-        }
-
-        public List<Vitals> GetVitalsList()
-        {
-            foreach (var patient in _patients)
-            {
-                _vitals.Add(patient.Vitals);
-            }
-
-            return _vitals;
+            var reader = new StreamReader("Patients.json");
+            var json = reader.ReadToEnd();
+            var patients = JsonConvert.DeserializeObject<List<Patient>>(json);
+            reader.Close();
+            return patients;
         }
 
-        public List<Bed> GetBedsList()
+        public List<Vitals> ReadVitalsDatabase()
         {
-            return _beds;
+            var reader = new StreamReader("Vitals.json");
+            
+            var json = reader.ReadToEnd();
+            var vitals = JsonConvert.DeserializeObject<List<Vitals>>(json);
+            reader.Close(); ;
+            return vitals;
         }
 
-        public void UpdatePatient(List<Patient> patients)
+        public List<Bed> ReadBedsDatabase()
         {
-            _patients = patients;
-        }
-
-        public void UpdateIcuList(List<ICU> icuList)
-        {
-            _icuList = icuList;
-        }
-
-        public void UpdateBedsList(List<Bed> beds)
-        {
-            _beds = beds;
-        }
-
-        public void UpdateVitalsList(List<Vitals> vitals)
-        {
-            _vitals = vitals;
+            var reader = new StreamReader("Beds.json");
+            var json = reader.ReadToEnd();
+            var beds = JsonConvert.DeserializeObject<List<Bed>>(json);
+            reader.Close();
+            return beds;
         }
     }
 }

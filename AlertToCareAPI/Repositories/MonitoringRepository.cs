@@ -12,7 +12,7 @@ namespace AlertToCareAPI.Repositories
         readonly List<Vitals> _vitals;
         public MonitoringRepository()
         {
-            this._vitals = _creator.GetVitalsList();
+            this._vitals = _creator.ReadVitalsDatabase();
         }
       
         public IEnumerable<Vitals> GetAllVitals()

@@ -9,65 +9,60 @@ namespace AlertToCareAPI.Repositories
     public class PatientDbRepository : IPatientDbRepository
     {
         readonly DatabaseManager _creator=new DatabaseManager();
-        readonly List<Patient> _patients; 
-        readonly List<Bed> _beds;
-        readonly PatientFieldsValidator _validator;
+        readonly PatientFieldsValidator _validator = new PatientFieldsValidator();
 
-
-        public PatientDbRepository(DatabaseManager creator)
-        {
-           
-           this._patients = _creator.GetPatientList();
-           this._beds = _creator.GetBedsList();
-           this._validator = new PatientFieldsValidator();
-        }
         public void AddPatient(Patient newState)
         {
-            _validator.ValidateNewPatientId(newState.PatientId, newState, _patients);
-            _patients.Add(newState);
-            _creator.UpdatePatient(_patients);
+            var patients = _creator.ReadPatientDatabase();
+            _validator.ValidateNewPatientId(newState.PatientId, newState, patients);
+            patients.Add(newState);
+            _creator.WriteToPatientsDatabase(patients);
             ChangeBedStatus(newState.BedId, true);
         }
         public void RemovePatient(string patientId)
         {
-            _validator.ValidateOldPatientId(patientId, _patients);
-            for (int i = 0; i < _patients.Count; i++)
+            var patients = _creator.ReadPatientDatabase();
+            _validator.ValidateOldPatientId(patientId, patients);
+            for (int i = 0; i < patients.Count; i++)
             {
-                if (_patients[i].PatientId == patientId)
+                if (patients[i].PatientId == patientId)
                 {
-                    _patients.Remove(_patients[i]);
-                    _creator.UpdatePatient(_patients);
-                    ChangeBedStatus(_patients[i].BedId, false);
+                    patients.Remove(patients[i]);
+                    _creator.WriteToPatientsDatabase(patients);
+                    ChangeBedStatus(patients[i].BedId, false);
                     return;
                 }
             }
         }
         public void UpdatePatient(string patientId, Patient state)
         {
-            _validator.ValidateOldPatientId(patientId, _patients);
+            var patients = _creator.ReadPatientDatabase();
+            _validator.ValidateOldPatientId(patientId, patients);
             _validator.ValidatePatientRecord(state);
 
-            for (var i = 0; i < _patients.Count; i++)
+            for (var i = 0; i < patients.Count; i++)
             {
-                if (_patients[i].PatientId == patientId)
+                if (patients[i].PatientId == patientId)
                 {
-                    _patients.Insert(i, state);
-                    _creator.UpdatePatient(_patients);
+                    patients.Insert(i, state);
+                    _creator.WriteToPatientsDatabase(patients);
                     return;
                 }
             }
         }
         public IEnumerable<Patient> GetAllPatients()
         {
-            return _patients;
+            var patients = _creator.ReadPatientDatabase();
+            return patients;
         }
         public void ChangeBedStatus(string bedId, bool status)
         {
-            for (var i = 0; i < _beds.Count; i++)
+            var beds = _creator.ReadBedsDatabase();
+            for (var i = 0; i < beds.Count; i++)
             {
-                if (_beds[i].BedId == bedId)
+                if (beds[i].BedId == bedId)
                 {
-                    _beds[i].Status = status;
+                    beds[i].Status = status;
                     return;
                 }
             }
