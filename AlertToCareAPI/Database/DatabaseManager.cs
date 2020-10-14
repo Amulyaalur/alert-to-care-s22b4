@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using AlertToCareAPI.Models;
 
 namespace AlertToCareAPI.Database
 {
-    public class DatabaseCreator
+    public class DatabaseManager
     {
         List<ICU> _icuList = new List<ICU>();
         List<Patient> _patients = new List<Patient>();
         List<Bed> _beds = new List<Bed>();
         List<Vitals> _vitals = new List<Vitals>();
 
-        public DatabaseCreator()
+        public DatabaseManager()
         {
-            Patient patient1 = new Patient()
+
+            /*var patient1 = new Patient()
             {
 
                 PatientId = "PID001",
@@ -39,7 +41,7 @@ namespace AlertToCareAPI.Database
                 }
             };
             _patients.Add(patient1);
-            Patient patient2 = new Patient()
+            var patient2 = new Patient()
             {
                 PatientId = "PID002",
                 PatientName = "Varsha",
@@ -66,7 +68,7 @@ namespace AlertToCareAPI.Database
             };
             _patients.Add(patient2);
 
-            Patient patient3 = new Patient()
+            var patient3 = new Patient()
             {
                 PatientId = "PID003",
                 PatientName = "Geetha",
@@ -91,7 +93,7 @@ namespace AlertToCareAPI.Database
                     RespRate = 90
                 }
             };
-            ICU icu = new ICU()
+            var icu = new ICU()
             {
                 IcuId = "ICU01",
                 LayoutId = "LID02",
@@ -144,16 +146,42 @@ namespace AlertToCareAPI.Database
                     Status = false,
                     IcuId = "ICU01"
                 }
-            };
+            };*/
+        }
+
+        public void WriteToPatientsDatabase(List<Patient> patients, StreamWriter writer)
+        {
+            foreach (var patient in patients)
+            {
+                writer.WriteLine(patient);
+            }
+        }
+
+        public void WriteToIcuDatabase(List<ICU> icuList, StreamWriter writer)
+        {
+            foreach (var icu in icuList)
+            {
+                writer.WriteLine(icu);
+            }
+        }
+        public void WriteToBedsDatabase(List<Bed> beds, StreamWriter writer)
+        {
+            foreach (var bed in beds)
+            {
+                writer.WriteLine(bed);
+            }
+        }
+        public void WriteToVitalsDatabase(List<Vitals> vitals, StreamWriter writer)
+        {
+            foreach (var record in vitals)
+            {
+                writer.WriteLine(record);
+            }
         }
 
         public List<ICU> GetIcuList()
         {
             return _icuList;
-        }
-        public void UpdatIcuList(List<ICU> iculist)
-        {
-            _icuList = iculist;
         }
         public List<Patient> GetPatientList()
         {

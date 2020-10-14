@@ -8,13 +8,13 @@ namespace AlertToCareAPI.Repositories
 {
     public class PatientDbRepository : IPatientDbRepository
     {
-        readonly DatabaseCreator _creator=new DatabaseCreator();
+        readonly DatabaseManager _creator=new DatabaseManager();
         readonly List<Patient> _patients; 
         readonly List<Bed> _beds;
         readonly PatientFieldsValidator _validator;
 
 
-        public PatientDbRepository(DatabaseCreator creator)
+        public PatientDbRepository(DatabaseManager creator)
         {
            
            this._patients = _creator.GetPatientList();

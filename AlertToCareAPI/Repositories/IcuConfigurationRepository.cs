@@ -7,7 +7,7 @@ namespace AlertToCareAPI.Repositories
 {
     public class IcuConfigurationRepository : IIcuConfigurationRepository
     {
-        readonly DatabaseCreator _creator = new DatabaseCreator();
+        readonly DatabaseManager _creator = new DatabaseManager();
         private readonly List<ICU> _icuList;
         readonly IcuFieldsValidator _validator;
 

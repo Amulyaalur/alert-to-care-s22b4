@@ -8,7 +8,7 @@ namespace AlertToCareAPI.Repositories
 {
     public class MonitoringRepository : IMonitoringRepository
     {
-        readonly DatabaseCreator _creator = new DatabaseCreator();
+        readonly DatabaseManager _creator = new DatabaseManager();
         readonly List<Vitals> _vitals;
         public MonitoringRepository()
         {
