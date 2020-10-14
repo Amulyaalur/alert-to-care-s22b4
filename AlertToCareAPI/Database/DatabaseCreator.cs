@@ -5,10 +5,10 @@ namespace AlertToCareAPI.Database
 {
     public class DatabaseCreator
     {
-        readonly List<ICU> _icuList = new List<ICU>();
-        readonly List<Patient> _patients = new List<Patient>();
-        readonly List<Bed> _beds = new List<Bed>();
-        readonly List<Vitals> _vitals = new List<Vitals>();
+        List<ICU> _icuList = new List<ICU>();
+        List<Patient> _patients = new List<Patient>();
+        List<Bed> _beds = new List<Bed>();
+        List<Vitals> _vitals = new List<Vitals>();
 
         public DatabaseCreator()
         {
@@ -176,6 +176,26 @@ namespace AlertToCareAPI.Database
         public List<Bed> GetBedsList()
         {
             return _beds;
+        }
+
+        public void UpdatePatient(List<Patient> patients)
+        {
+            _patients = patients;
+        }
+
+        public void UpdateIcuList(List<ICU> icuList)
+        {
+            _icuList = icuList;
+        }
+
+        public void UpdateBedsList(List<Bed> beds)
+        {
+            _beds = beds;
+        }
+
+        public void UpdateVitalsList(List<Vitals> vitals)
+        {
+            _vitals = vitals;
         }
     }
 }

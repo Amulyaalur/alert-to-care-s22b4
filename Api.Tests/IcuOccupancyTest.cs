@@ -1,5 +1,7 @@
 using AlertToCareAPI.Models;
+using Microsoft.AspNetCore.Http.Connections;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -31,22 +33,32 @@ namespace API.Tests
         public async Task TestAddPatient()
         {
             var client = new TestClientProvider().Client;
-            Vitals vital = new Vitals()
-                { PatientId = "PID004", Bpm = 100, Spo2 = 120, RespRate = 90 };
-            PatientAddress address = new PatientAddress()
-                { HouseNo = "20", Street = "main", City = "Dehradun", State = "UK", Pincode = "249001" };
-            Patient patient = new Patient()
-            {
-                PatientId = "PID004",
-                PatientName = "Anita",
-                Age = 50,
-                ContactNo = "9123456789",
-                BedId = "B11.2",
-                IcuId = "I2",
-                Vitals = vital,
-                Address = address
-            };
 
+            Patient patient = new Patient()
+                       {
+                        PatientId = "PID004",
+                        PatientName = "Anita",
+                        Age = 25,
+                        ContactNo = "7348899805",
+                        BedId = "BID2",
+                        IcuId = "ICU03",
+                        Email = "anita@gmail.com",
+                        Address = new PatientAddress() {
+                            HouseNo = "97",
+                            Street = "joshiyara",
+                            City = "Uttarkashi",
+                            State = "Uttarakand",
+                            Pincode = "249193"
+                        },
+                        Vitals = new Vitals()
+                        {
+                            PatientId = "PID004",
+                            Spo2 = 100,
+                            Bpm = 70,
+                            RespRate = 120
+                        }
+                    };
+            
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("api/IcuOccupancy/Patients", content);
             response.EnsureSuccessStatusCode();
