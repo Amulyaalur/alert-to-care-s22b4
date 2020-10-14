@@ -35,40 +35,47 @@ namespace API.Tests
         public async Task ReturnsOkWhenIcuWardIsAdded()
         {
             var client = new TestClientProvider().Client;
-            List<Patient> patients = new List<Patient>();
-           
-               var patient1=new Patient()
-               { 
-                   PatientId = "PID005",
-                PatientName = "Anirudh",
-                Age = 45,
-                ContactNo = "9806458790",
-                BedId = "BID8",
-                IcuId = "ICU02",
-                Email = "anirudh@gmail.com",
-                Address = new PatientAddress()
+            var patients = new List<Patient>();
+            var beds = new List<Bed>()
+            {
+                new Bed
                 {
-                    HouseNo = "A1",
-                    Street = "rajpur",
-                    City = "Dehradun",
-                    State = "Uttarakand",
-                    Pincode = "249001"
+                    BedId = "BID8",
+                    Status = false,
+                    IcuId = "ICU02"
                 },
-                Vitals = new Vitals()
+                new Bed
                 {
-                    PatientId = "PID005",
-                    Spo2 = 102,
-                    Bpm = 17,
-                    RespRate = 120
+                    BedId = "BID9",
+                    Status = false,
+                    IcuId = "ICU02"
+                },
+                new Bed
+                {
+                    BedId = "BID10",
+                    Status = false,
+                    IcuId = "ICU02"
+                },
+                new Bed
+                {
+                    BedId = "BID11",
+                    Status = false,
+                    IcuId = "ICU02"
+                },
+                new Bed
+                {
+                    BedId = "BID12",
+                    Status = false,
+                    IcuId = "ICU02"
                 }
             };
-            patients.Add(patient1);
+
             var icu = new Icu()
             {
                 IcuId = "ICU02",
                 LayoutId = "LID01",
-                BedsCount = 8,
-                Patients = patients
+                BedsCount = 5,
+                Beds = beds
             };
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
             var response = await client.PostAsync(url, content);
@@ -79,49 +86,68 @@ namespace API.Tests
         public async Task ReturnsOkWhenUpdatingIcuDetails()
         {
             var client = new TestClientProvider().Client;
-            List<Patient> patients = new List<Patient>();
-            var patient1=new Patient()
-            { 
-            PatientId = "PID005",
-                PatientName = "Anirudh",
-                Age = 45,
-                ContactNo = "9806458790",
-                BedId = "BID8",
-                IcuId = "ICU02",
-                Email = "anirudh@gmail.com",
-                Address = new PatientAddress()
+            var beds = new List<Bed>()
+            {
+                new Bed
                 {
-                    HouseNo = "A1",
-                    Street = "rajpur",
-                    City = "Dehradun",
-                    State = "Uttarakand",
-                    Pincode = "249001"
+                    BedId = "BID1",
+                    Status = true,
+                    IcuId = "ICU01"
                 },
-                Vitals = new Vitals()
+                new Bed
                 {
-                    PatientId = "PID005",
-                    Spo2 = 102,
-                    Bpm = 17,
-                    RespRate = 90
+                    BedId = "BID2",
+                    Status = true,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID3",
+                    Status = true,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID4",
+                    Status = false,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID5",
+                    Status = false,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID6",
+                    Status = false,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID7",
+                    Status = false,
+                    IcuId = "ICU01"
                 }
             };
-            
+
             var icu = new Icu()
             {
-                IcuId = "ICU02",
+                IcuId = "ICU01",
                 LayoutId = "LID01",
-                BedsCount = 9,
-                Patients = patients
+                BedsCount = 7,
+                Beds = beds
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await client.PutAsync(url +"/ICU02", content);
+            var response = await client.PutAsync(url +"/ICU01", content);
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task CheckDeleteICU()
+        public async Task CheckDeleteIcu()
         {
             var client = new TestClientProvider().Client;
             var response = await client.DeleteAsync(url + "/ICU01");

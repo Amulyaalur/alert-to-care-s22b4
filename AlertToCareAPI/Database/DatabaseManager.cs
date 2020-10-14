@@ -93,16 +93,7 @@ namespace AlertToCareAPI.Database
                 }
             };
             _patients.Add(patient3);
-            var icu = new Icu()
-            {
-                IcuId = "ICU01",
-                LayoutId = "LID02",
-                BedsCount = 7,
-                Patients = _patients
-            };
 
-            _icuList.Add(icu);
-            
             _beds.Add(new Bed()
             {
                 BedId = "BID1",
@@ -145,10 +136,20 @@ namespace AlertToCareAPI.Database
                 Status = false,
                 IcuId = "ICU01"
             });
+            var icu = new Icu()
+            {
+                IcuId = "ICU01",
+                LayoutId = "LID02",
+                BedsCount = 7,
+                Beds = _beds
+            };
+
+            _icuList.Add(icu);
+            
+           
             
             WriteToPatientsDatabase(_patients);
             WriteToIcuDatabase(_icuList);
-            WriteToBedsDatabase(_beds);
         }
 
         public void WriteToPatientsDatabase(List<Patient> patients)
@@ -170,16 +171,7 @@ namespace AlertToCareAPI.Database
             }
             writer.Close();
         }
-        public void WriteToBedsDatabase(List<Bed> beds)
-        {
-            var writer = new StreamWriter("Beds.json");
-            foreach (var bed in beds)
-            {
-                writer.WriteLine(JsonConvert.SerializeObject(bed));
-            }
-            writer.Close();
-        }
-        
+
 
         public List<Icu> ReadIcuDatabase()
         {
@@ -231,15 +223,22 @@ namespace AlertToCareAPI.Database
 
         public List<Bed> ReadBedsDatabase()
         {
-            var beds = new List<Bed>();
-            var reader = new StreamReader("Beds.json");
+            var reader = new StreamReader("Icu.json");
+            var icuList = new List<Icu>();
             while (reader.EndOfStream != true)
             {
                 var line = reader.ReadLine();
-                var bed = JsonConvert.DeserializeObject<Bed>(line);
-                beds.Add(bed);
+                var icu = JsonConvert.DeserializeObject<Icu>(line);
+                icuList.Add(icu);
             }
-
+            var beds = new List<Bed>();
+            foreach (var icu in icuList)
+            {
+                foreach (var bed in icu.Beds)
+                {
+                    beds.Add(bed);
+                }
+            }
             reader.Close();
             return beds;
         }

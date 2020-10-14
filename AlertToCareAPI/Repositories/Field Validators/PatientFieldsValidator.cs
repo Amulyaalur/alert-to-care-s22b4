@@ -98,16 +98,18 @@ namespace AlertToCareAPI.Repositories.Field_Validators
         {
             var database = new DatabaseManager();
             var beds = database.ReadBedsDatabase();
-            foreach (var bed in beds)
-            {
-                if (bed.BedId == bedId)
+            
+                foreach (var bed in beds)
                 {
-                    if (bed.Status == false)
+                    if (bed.BedId == bedId)
                     {
-                        return;
+                        if (bed.Status == false)
+                        {
+                            return;
+                        }
                     }
                 }
-            }
+            
             throw new Exception("Invalid data field");
         }
     }

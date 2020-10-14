@@ -57,14 +57,17 @@ namespace AlertToCareAPI.Repositories
         }
         public void ChangeBedStatus(string bedId, bool status)
         {
-            var beds = _creator.ReadBedsDatabase();
-            foreach (var bed in beds)
+            var icuList = _creator.ReadIcuDatabase();
+            foreach (var icu in icuList)
             {
-                if (bed.BedId == bedId)
+                foreach (var bed in icu.Beds)
                 {
-                    bed.Status = status;
-                    _creator.WriteToBedsDatabase(beds);
-                    return;
+                    if (bed.BedId == bedId)
+                    {
+                        bed.Status = status;
+                        _creator.WriteToIcuDatabase(icuList);
+                        return;
+                    }
                 }
             }
             throw new Exception("Invalid data field");
