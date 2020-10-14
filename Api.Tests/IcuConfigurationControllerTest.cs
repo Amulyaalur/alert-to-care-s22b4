@@ -63,7 +63,7 @@ namespace API.Tests
                 }
             };
             patients.Add(patient1);
-            var icu = new ICU()
+            var icu = new Icu()
             {
                 IcuId = "ICU02",
                 LayoutId = "LID01",
@@ -106,7 +106,7 @@ namespace API.Tests
                 }
             };
             
-            var icu = new ICU()
+            var icu = new Icu()
             {
                 IcuId = "ICU02",
                 LayoutId = "LID01",
