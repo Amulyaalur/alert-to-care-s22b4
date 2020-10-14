@@ -7,11 +7,13 @@ namespace AlertToCareAPI.Database
 {
     public class DatabaseManager
     {
-
+        List<Patient> _patients=new List<Patient>();
+        List<ICU> _icuList= new List<ICU>();
+        List<Bed> _beds;
         public DatabaseManager()
         {
 
-            /*var patient1 = new Patient()
+            var patient1 = new Patient()
             {
 
                 PatientId = "PID001",
@@ -90,6 +92,7 @@ namespace AlertToCareAPI.Database
                     RespRate = 90
                 }
             };
+            _patients.Add(patient3);
             var icu = new ICU()
             {
                 IcuId = "ICU01",
@@ -143,7 +146,10 @@ namespace AlertToCareAPI.Database
                     Status = false,
                     IcuId = "ICU01"
                 }
-            };*/
+            };
+            WriteToPatientsDatabase(_patients);
+            WriteToIcuDatabase(_icuList);
+            WriteToBedsDatabase(_beds);
         }
 
         public void WriteToPatientsDatabase(List<Patient> patients)
@@ -151,7 +157,7 @@ namespace AlertToCareAPI.Database
             var writer = new StreamWriter("Patients.json");
             foreach (var patient in patients)
             {
-                writer.WriteLine(patient);
+                writer.WriteLine(JsonConvert.SerializeObject(patient));
             }
             writer.Close();
         }
@@ -174,15 +180,7 @@ namespace AlertToCareAPI.Database
             }
             writer.Close();
         }
-        public void WriteToVitalsDatabase(List<Vitals> vitals)
-        {
-            var writer = new StreamWriter("Vitals.json");
-            foreach (var record in vitals)
-            {
-                writer.WriteLine(record);
-            }
-            writer.Close();
-        }
+        
 
         public List<ICU> ReadIcuDatabase()
         {
@@ -194,19 +192,30 @@ namespace AlertToCareAPI.Database
         }
         public List<Patient> ReadPatientDatabase()
         {
+            List<Patient> patients = new List<Patient>();
             var reader = new StreamReader("Patients.json");
-            var json = reader.ReadToEnd();
-            var patients = JsonConvert.DeserializeObject<List<Patient>>(json);
+            while (reader.EndOfStream != true)
+            {
+                var line = reader.ReadLine();
+                Patient patient = JsonConvert.DeserializeObject<Patient>(line);
+                patients.Add(patient);
+            }
+            
             reader.Close();
             return patients;
         }
 
         public List<Vitals> ReadVitalsDatabase()
         {
-            var reader = new StreamReader("Vitals.json");
+            var reader = new StreamReader("Patients.json");
             
             var json = reader.ReadToEnd();
-            var vitals = JsonConvert.DeserializeObject<List<Vitals>>(json);
+            var patients = JsonConvert.DeserializeObject<List<Patient>>(json);
+            var vitals = new List<Vitals>();
+            foreach(var patient in patients)
+            {
+                vitals.Add(patient.Vitals);
+            }
             reader.Close(); ;
             return vitals;
         }
