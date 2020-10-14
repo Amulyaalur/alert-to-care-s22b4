@@ -38,11 +38,12 @@ namespace AlertToCareAPI.Controllers
         }
 
         [HttpPost("IcuWards")]
-        public IActionResult Post([FromBody] Icu icu)
+        public IActionResult Post([FromBody] ICU icu)
         {
             try
             {
                 _configurationRepository.AddIcu(icu);
+                
                 return Ok();
             }
             catch
@@ -52,7 +53,7 @@ namespace AlertToCareAPI.Controllers
         }
 
         [HttpPut("IcuWards/{IcuId}")]
-        public IActionResult Put(string icuId, [FromBody] Icu icu)
+        public IActionResult Put(string icuId, [FromBody] ICU icu)
         {
             try
             {

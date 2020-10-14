@@ -23,59 +23,54 @@ namespace AlertToCareAPI.Repositories
             var a=CheckSpo2(vital.Spo2);
             var b=CheckBpm(vital.Bpm);
             var c=CheckRespRate(vital.RespRate);
-            var s= a + "," +b + ","+ c;
-            SendMail(s);
+            var s= a + b + c;
+            // SendMail(s);
             return s;
            }
-        private string CheckSpo2(float spo2)
+        public string CheckSpo2(float spo2)
         {
             if (spo2 < 90)
             {
                
-                return "Spo2 is low ";
+                return "Spo2 is low, ";
               
             }
             else
                 return "";
 
         }
-        private string CheckBpm(float bpm)
+        public string CheckBpm(float bpm)
         {
             if (bpm < 70)
-                return "bpm is low ";
+                return "bpm is low, ";
             if (bpm > 150)
-                return "bpm is high ";
+                return "bpm is high, ";
             else
                 return "";
         }
-        private string CheckRespRate(float respRate)
+        public string CheckRespRate(float respRate)
         {
             if (respRate < 30)
-                return "respRate is low ";
+                return "respRate is low. ";
             if (respRate > 95)
-                return "respRate is high ";
+                return "respRate is high. ";
             else
                 return "";
         }
         public void SendMail(string body)
         {
-            var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com")
-            {
-                Body = body
-            };
+             var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");
+             mailMessage.Body = body;
+             var smtpClient = new SmtpClient("smtp.gmail.com", 587);
+             smtpClient.UseDefaultCredentials = true;
+             smtpClient.Credentials = new System.Net.NetworkCredential()
+             {
+                 UserName = "alerttocare@gmail.com",
+                 Password = "admin@1234"
+             };
 
-            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
-            {
-                UseDefaultCredentials = true,
-                Credentials = new System.Net.NetworkCredential()
-                {
-                    UserName = "alerttocare@gmail.com",
-                    Password = "admin@1234"
-                },
-                EnableSsl = true
-
-            };
-            smtpClient.Send(mailMessage);
+             smtpClient.EnableSsl=true;
+             smtpClient.Send(mailMessage);
         }
     }
 }
