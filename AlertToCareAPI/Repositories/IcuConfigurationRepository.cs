@@ -23,6 +23,7 @@ namespace AlertToCareAPI.Repositories
         {
             _validator.ValidateNewIcuId(newState.IcuId, newState, _icuList);
             _icuList.Add(newState);
+            _creator.UpdateIcuList(_icuList);
         }
         public void RemoveIcu(string icuId)
         {
@@ -32,6 +33,7 @@ namespace AlertToCareAPI.Repositories
                 if (_icuList[i].IcuId == icuId)
                 {
                     _icuList.Remove(_icuList[i]);
+                    _creator.UpdateIcuList(_icuList);
                     return;
                 }
             }
@@ -46,6 +48,7 @@ namespace AlertToCareAPI.Repositories
                 if (_icuList[i].IcuId == icuId)
                 {
                     _icuList.Insert(i, state);
+                    _creator.UpdateIcuList(_icuList);
                     return;
                 }
             }

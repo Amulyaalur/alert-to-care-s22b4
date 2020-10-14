@@ -12,89 +12,91 @@ namespace AlertToCareAPI.Database
 
         public DatabaseCreator()
         {
+            Patient patient1 = new Patient()
+            {
+
+                PatientId = "PID001",
+                PatientName = "Anjali",
+                Age = 25,
+                ContactNo = "7348379805",
+                BedId = "BID1",
+                IcuId = "ICU01",
+                Email = "anjali123@gmail.com",
+                Address = new PatientAddress()
+                {
+                    HouseNo = "7",
+                    Street = "Gyansu",
+                    City = "Uttarkashi",
+                    State = "Uttarakand",
+                    Pincode = "249193"
+                },
+                Vitals = new Vitals()
+                {
+                    PatientId = "PID001",
+                    Spo2 = 100,
+                    Bpm = 70,
+                    RespRate = 120
+                }
+            };
+            _patients.Add(patient1);
+            Patient patient2 = new Patient()
+            {
+                PatientId = "PID002",
+                PatientName = "Varsha",
+                Age = 23,
+                ContactNo = "7493200389",
+                BedId = "BID2",
+                IcuId = "ICU01",
+                Email = "varsha1234@gmail.com",
+                Address = new PatientAddress()
+                {
+                    HouseNo = "8",
+                    Street = "Gyansu",
+                    City = "Uttarkashi",
+                    State = "Uttarakand",
+                    Pincode = "249193"
+                },
+                Vitals = new Vitals()
+                {
+                    PatientId = "PID002",
+                    Spo2 = 56,
+                    Bpm = 78,
+                    RespRate = 10
+                }
+            };
+            _patients.Add(patient2);
+
+            Patient patient3 = new Patient()
+            {
+                PatientId = "PID003",
+                PatientName = "Geetha",
+                Age = 50,
+                ContactNo = "9348938475",
+                BedId = "BID3",
+                IcuId = "ICU01",
+                Email = "geetha@gmail.com",
+                Address = new PatientAddress()
+                {
+                    HouseNo = "7",
+                    Street = "Gyansu",
+                    City = "Uttarkashi",
+                    State = "Uttarakand",
+                    Pincode = "249193"
+                },
+                Vitals = new Vitals()
+                {
+                    PatientId = "PID003",
+                    Spo2 = 120,
+                    Bpm = 100,
+                    RespRate = 90
+                }
+            };
             ICU icu = new ICU()
             {
                 IcuId = "ICU01",
                 LayoutId = "LID02",
                 BedsCount = 7,
-                Patients = new List<Patient>()
-                {
-                    new Patient()
-                    {
-                        PatientId = "PID001",
-                        PatientName = "Anjali",
-                        Age = 25,
-                        ContactNo = "7348379805",
-                        BedId = "BID1",
-                        IcuId = "ICU01",
-                        Email = "anjali123@gmail.com",
-                        Address = new PatientAddress()
-                        {
-                            HouseNo = "7",
-                            Street = "Gyansu",
-                            City = "Uttarkashi",
-                            State = "Uttarakand",
-                            Pincode = "249193"
-                        },
-                        Vitals = new Vitals()
-                        {
-                            PatientId = "PID001",
-                            Spo2 = 100,
-                            Bpm = 70,
-                            RespRate = 120
-                        }
-                    },
-                    new Patient()
-                    {
-                        PatientId = "PID002",
-                        PatientName = "Varsha",
-                        Age = 23,
-                        ContactNo = "7493200389",
-                        BedId = "BID2",
-                        IcuId = "ICU01",
-                        Email = "varsha1234@gmail.com",
-                        Address = new PatientAddress()
-                        {
-                            HouseNo = "8",
-                            Street = "Gyansu",
-                            City = "Uttarkashi",
-                            State = "Uttarakand",
-                            Pincode = "249193"
-                        },
-                        Vitals = new Vitals()
-                        {
-                            PatientId = "PID002",
-                            Spo2 = 56,
-                            Bpm = 78,
-                            RespRate = 10
-                        }
-                    },
-                    new Patient()
-                    {
-                        PatientId = "PID003",
-                        PatientName = "Geetha",
-                        Age = 50,
-                        ContactNo = "9348938475",
-                        BedId = "BID3",
-                        IcuId = "ICU01",
-                        Email = "geetha@gmail.com",
-                        Address = new PatientAddress()
-                        {
-                            HouseNo = "7",
-                            Street = "Gyansu",
-                            City = "Uttarkashi",
-                            State = "Uttarakand",
-                            Pincode = "249193"
-                        },
-                        Vitals = new Vitals()
-                        {
-                            PatientId = "PID003",
-                            Spo2 = 120,
-                            Bpm = 100,
-                            RespRate = 90
-                        }
-                    }
-                }
+                Patients = _patients
             };
 
             _icuList.Add(icu);
@@ -149,17 +151,12 @@ namespace AlertToCareAPI.Database
         {
             return _icuList;
         }
-
+        public void UpdatIcuList(List<ICU> iculist)
+        {
+            _icuList = iculist;
+        }
         public List<Patient> GetPatientList()
         {
-            foreach (var icu in _icuList)
-            {
-                foreach (var patient in icu.Patients)
-                {
-                    _patients.Add(patient);
-                }
-            }
-
             return _patients;
         }
 

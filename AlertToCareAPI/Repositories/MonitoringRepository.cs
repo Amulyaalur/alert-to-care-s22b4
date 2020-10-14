@@ -2,12 +2,18 @@
 using AlertToCareAPI.Models;
 using System.Net.Mail;
 using System;
+using AlertToCareAPI.Database;
 
 namespace AlertToCareAPI.Repositories
 {
     public class MonitoringRepository : IMonitoringRepository
     {
-        readonly List<Vitals> _vitals = new List<Vitals>();
+        readonly DatabaseCreator _creator = new DatabaseCreator();
+        readonly List<Vitals> _vitals;
+        public MonitoringRepository()
+        {
+            this._vitals = _creator.GetVitalsList();
+        }
       
         public IEnumerable<Vitals> GetAllVitals()
         {
