@@ -27,7 +27,7 @@ namespace AlertToCareAPI.Repositories
             SendMail(s);
             return s;
            }
-        public string CheckSpo2(float spo2)
+        private string CheckSpo2(float spo2)
         {
             if (spo2 < 90)
             {
@@ -39,7 +39,7 @@ namespace AlertToCareAPI.Repositories
                 return "";
 
         }
-        public string CheckBpm(float bpm)
+        private string CheckBpm(float bpm)
         {
             if (bpm < 70)
                 return "bpm is low ";
@@ -48,7 +48,7 @@ namespace AlertToCareAPI.Repositories
             else
                 return "";
         }
-        public string CheckRespRate(float respRate)
+        private string CheckRespRate(float respRate)
         {
             if (respRate < 30)
                 return "respRate is low ";
@@ -59,18 +59,23 @@ namespace AlertToCareAPI.Repositories
         }
         public void SendMail(string body)
         {
-             var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");
-             mailMessage.Body = body;
-             var smtpClient = new SmtpClient("smtp.gmail.com", 587);
-             smtpClient.UseDefaultCredentials = true;
-             smtpClient.Credentials = new System.Net.NetworkCredential()
-             {
-                 UserName = "alerttocare@gmail.com",
-                 Password = "admin@1234"
-             };
+            var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com")
+            {
+                Body = body
+            };
 
-             smtpClient.EnableSsl=true;
-             smtpClient.Send(mailMessage);
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            {
+                UseDefaultCredentials = true,
+                Credentials = new System.Net.NetworkCredential()
+                {
+                    UserName = "alerttocare@gmail.com",
+                    Password = "admin@1234"
+                },
+                EnableSsl = true
+
+            };
+            smtpClient.Send(mailMessage);
         }
     }
 }

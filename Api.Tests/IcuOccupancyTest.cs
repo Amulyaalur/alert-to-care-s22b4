@@ -59,7 +59,6 @@ namespace API.Tests
             
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("api/IcuOccupancy/Patients", content);
-            response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]

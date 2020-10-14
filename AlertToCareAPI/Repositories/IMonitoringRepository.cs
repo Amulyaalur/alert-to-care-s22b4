@@ -8,8 +8,6 @@ namespace AlertToCareAPI.Repositories
         public string CheckVitals(Vitals vital);
     
         public IEnumerable<Vitals> GetAllVitals();
-
-        public void SendMail(string body);
     }
 
 }

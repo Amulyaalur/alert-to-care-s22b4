@@ -63,6 +63,7 @@ namespace AlertToCareAPI.Repositories
                 if (bed.BedId == bedId)
                 {
                     bed.Status = status;
+                    _creator.WriteToBedsDatabase(beds);
                     return;
                 }
             }

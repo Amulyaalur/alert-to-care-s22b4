@@ -38,7 +38,7 @@ namespace AlertToCareAPI.Controllers
         }
 
         [HttpPost("IcuWards")]
-        public IActionResult Post([FromBody] ICU icu)
+        public IActionResult Post([FromBody] Icu icu)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace AlertToCareAPI.Controllers
         }
 
         [HttpPut("IcuWards/{IcuId}")]
-        public IActionResult Put(string icuId, [FromBody] ICU icu)
+        public IActionResult Put(string icuId, [FromBody] Icu icu)
         {
             try
             {

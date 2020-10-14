@@ -6,9 +6,9 @@ namespace AlertToCareAPI.Repositories
 {
     public interface IIcuConfigurationRepository
     {
-        void AddIcu(ICU newState);
-        void RemoveIcu(String icuId);
-        void UpdateIcu(String icuId, ICU state);
-        IEnumerable<ICU> GetAllIcu();
+        void AddIcu(Icu newState);
+        void RemoveIcu(string icuId);
+        void UpdateIcu(string icuId, Icu state);
+        IEnumerable<Icu> GetAllIcu();
     }
 }

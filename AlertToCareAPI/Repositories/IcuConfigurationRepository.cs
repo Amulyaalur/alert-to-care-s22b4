@@ -11,7 +11,7 @@ namespace AlertToCareAPI.Repositories
         private readonly IcuFieldsValidator _validator = new IcuFieldsValidator();
 
 
-        public void AddIcu(ICU newState)
+        public void AddIcu(Icu newState)
         {
             var icuList = _creator.ReadIcuDatabase();
             _validator.ValidateNewIcuId(newState.IcuId, newState, icuList);
@@ -32,7 +32,7 @@ namespace AlertToCareAPI.Repositories
                 }
             }
         }
-        public void UpdateIcu(string icuId, ICU state)
+        public void UpdateIcu(string icuId, Icu state)
         {
             var icuList = _creator.ReadIcuDatabase();
             _validator.ValidateOldIcuId(icuId, icuList);
@@ -48,7 +48,7 @@ namespace AlertToCareAPI.Repositories
                 }
             }
         }
-        public IEnumerable<ICU> GetAllIcu()
+        public IEnumerable<Icu> GetAllIcu()
         {
             var icuList = _creator.ReadIcuDatabase();
             return icuList;

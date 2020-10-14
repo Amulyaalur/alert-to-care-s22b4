@@ -8,7 +8,7 @@ namespace AlertToCareAPI.Database
     public class DatabaseManager
     {
         private readonly List<Patient> _patients=new List<Patient>();
-        private readonly List<ICU> _icuList= new List<ICU>();
+        private readonly List<Icu> _icuList= new List<Icu>();
         private readonly List<Bed> _beds = new List<Bed>();
         public DatabaseManager()
         {
@@ -93,7 +93,7 @@ namespace AlertToCareAPI.Database
                 }
             };
             _patients.Add(patient3);
-            var icu = new ICU()
+            var icu = new Icu()
             {
                 IcuId = "ICU01",
                 LayoutId = "LID02",
@@ -161,7 +161,7 @@ namespace AlertToCareAPI.Database
             writer.Close();
         }
 
-        public void WriteToIcuDatabase(List<ICU> icuList)
+        public void WriteToIcuDatabase(List<Icu> icuList)
         {
             var writer = new StreamWriter("Icu.json");
             foreach (var icu in icuList)
@@ -181,14 +181,14 @@ namespace AlertToCareAPI.Database
         }
         
 
-        public List<ICU> ReadIcuDatabase()
+        public List<Icu> ReadIcuDatabase()
         {
-            var icuList = new List<ICU>();
+            var icuList = new List<Icu>();
             var reader = new StreamReader("Icu.json");
             while (reader.EndOfStream != true)
             {
                 var line = reader.ReadLine();
-                var icu = JsonConvert.DeserializeObject<ICU>(line);
+                var icu = JsonConvert.DeserializeObject<Icu>(line);
                 icuList.Add(icu);
             }
 

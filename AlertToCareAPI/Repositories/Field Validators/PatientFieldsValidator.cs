@@ -22,6 +22,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
            CheckConsistencyInPatientIdFields(patient);
            _vitalsValidator.ValidateVitalsList(patient.Vitals);
            _addressValidator.ValidateAddressFields(patient.Address);
+           CheckConsistencyInIcuIdFields(patient.IcuId, patient.BedId);
 
         }
 
@@ -40,6 +41,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
         public void ValidateNewPatientId(string patientId, Patient patientRecord, List<Patient> patients)
         {
             CheckIcuPresence(patientRecord.IcuId);
+            CheckBedStatus(patientRecord.BedId);
             foreach (var patient in patients)
             {
                 if (patient.PatientId == patientId)
@@ -60,6 +62,23 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             throw new Exception("Invalid data field");
         }
 
+        private static void CheckConsistencyInIcuIdFields(string icuId, string bedId)
+        {
+            var database = new DatabaseManager();
+            var beds = database.ReadBedsDatabase();
+            foreach (var bed in beds)
+            {
+                if (bed.BedId == bedId)
+                {
+                    if (bed.IcuId == icuId)
+                    {
+                        return;
+                    }
+                }
+            }
+            throw new Exception("Invalid data field");
+        }
+
         private static void CheckIcuPresence(string icuId)
         {
             var database = new DatabaseManager();
@@ -72,6 +91,23 @@ namespace AlertToCareAPI.Repositories.Field_Validators
                 }
             }
 
+            throw new Exception("Invalid data field");
+        }
+
+        private static void CheckBedStatus(string bedId)
+        {
+            var database = new DatabaseManager();
+            var beds = database.ReadBedsDatabase();
+            foreach (var bed in beds)
+            {
+                if (bed.BedId == bedId)
+                {
+                    if (bed.Status == false)
+                    {
+                        return;
+                    }
+                }
+            }
             throw new Exception("Invalid data field");
         }
     }

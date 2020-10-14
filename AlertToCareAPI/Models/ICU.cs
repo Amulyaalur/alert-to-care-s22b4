@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AlertToCareAPI.Models
 {
-    public class ICU
+    public class Icu
     {
      
         public string IcuId { get; set; }

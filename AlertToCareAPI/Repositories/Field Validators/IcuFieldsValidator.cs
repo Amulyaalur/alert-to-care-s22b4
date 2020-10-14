@@ -8,7 +8,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
     {
         private readonly CommonFieldValidator _validator = new CommonFieldValidator();
         private readonly PatientFieldsValidator _patientRecordValidator = new PatientFieldsValidator();
-        public void ValidateIcuRecord(ICU icu)
+        public void ValidateIcuRecord(Icu icu)
         {
             _validator.IsWhitespaceOrEmptyOrNull(icu.IcuId);
             _validator.IsWhitespaceOrEmptyOrNull(icu.BedsCount.ToString());
@@ -16,7 +16,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             ValidatePatientsList(icu.Patients);
         }
 
-        public void ValidateOldIcuId(string icuId, List<ICU> icuStore)
+        public void ValidateOldIcuId(string icuId, List<Icu> icuStore)
         {
             foreach (var icu in icuStore)
             {
@@ -28,7 +28,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             throw new Exception("Invalid Patient Id");
         }
 
-        public void ValidateNewIcuId(string icuId, ICU icuRecord, List<ICU> icuStore)
+        public void ValidateNewIcuId(string icuId, Icu icuRecord, List<Icu> icuStore)
         {
             
             foreach (var icu in icuStore)

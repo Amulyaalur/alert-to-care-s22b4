@@ -9,6 +9,5 @@ namespace AlertToCareAPI.Repositories
         void RemovePatient(string patientId);
         void UpdatePatient(string patientId, Patient state);
         IEnumerable<Patient> GetAllPatients();
-        void ChangeBedStatus(string bedId, bool status);
     }
 }
