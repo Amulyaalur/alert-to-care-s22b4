@@ -4,8 +4,8 @@ namespace AlertToCareAPI.Repositories.Field_Validators
 {
     public class AddressFieldsValidator
     {
-        readonly CommonFieldValidator _validator = new CommonFieldValidator();
-        public void ValidateVitalsList(PatientAddress address)
+        private readonly CommonFieldValidator _validator = new CommonFieldValidator();
+        public void ValidateAddressFields(PatientAddress address)
         {
             _validator.IsWhitespaceOrEmptyOrNull(address.HouseNo);
             _validator.IsWhitespaceOrEmptyOrNull(address.Street);

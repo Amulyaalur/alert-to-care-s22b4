@@ -1,7 +1,5 @@
 using AlertToCareAPI.Models;
-using Microsoft.AspNetCore.Http.Connections;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -30,11 +28,11 @@ namespace API.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
-        public async Task TestAddPatient()
+        public async Task ReturnsBadRequestWhenPatientIsAddedToNonExistingIcu()
         {
             var client = new TestClientProvider().Client;
 
-            Patient patient = new Patient()
+            var patient = new Patient()
                        {
                         PatientId = "PID004",
                         PatientName = "Anita",
@@ -62,7 +60,7 @@ namespace API.Tests
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
             var response = await client.PostAsync("api/IcuOccupancy/Patients", content);
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task CheckDeletePatient()

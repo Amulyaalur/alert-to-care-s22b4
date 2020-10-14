@@ -4,5 +4,6 @@
     &lt;TestId&gt;MSTest::9D28E630-B120-4F3F-A836-8482B8F9E537::.NETFramework,Version=v4.7.2::Api.Test.UnitTest1.TestMethod1&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyTest.CheckStatusCodeEqualOkGetAllPatients&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyTest.CheckStatusCodeEqualOkGetPatientById&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyTest.CheckDeletePatient&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

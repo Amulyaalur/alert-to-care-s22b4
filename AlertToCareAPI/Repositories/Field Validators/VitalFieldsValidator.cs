@@ -5,7 +5,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
 {
     public class VitalFieldsValidator
     {
-        readonly CommonFieldValidator _validator = new CommonFieldValidator();
+        private readonly CommonFieldValidator _validator = new CommonFieldValidator();
         public void ValidateVitalsList(Vitals vitals)
         {
             _validator.IsWhitespaceOrEmptyOrNull(vitals.Bpm.ToString());

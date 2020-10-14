@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using AlertToCareAPI.Models;
 using System.Net.Mail;
-using System;
 using AlertToCareAPI.Database;
 
 namespace AlertToCareAPI.Repositories
 {
     public class MonitoringRepository : IMonitoringRepository
     {
-        readonly DatabaseManager _creator = new DatabaseManager();
-        readonly List<Vitals> _vitals;
+        private readonly DatabaseManager _creator = new DatabaseManager();
+        private readonly List<Vitals> _vitals;
         public MonitoringRepository()
         {
             this._vitals = _creator.ReadVitalsDatabase();
@@ -71,18 +70,7 @@ namespace AlertToCareAPI.Repositories
              };
 
              smtpClient.EnableSsl=true;
-             try
-             {
-                 smtpClient.Send(mailMessage);
-             }
-
-             catch (Exception ex)
-             {
-                 throw ex;
-             }
-           
+             smtpClient.Send(mailMessage);
         }
-        
-
     }
 }

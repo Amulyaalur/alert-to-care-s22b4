@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using AlertToCareAPI.Database;
 using AlertToCareAPI.Models;
 
 namespace AlertToCareAPI.Repositories.Field_Validators
 {
     public class PatientFieldsValidator
     {
-        readonly CommonFieldValidator _validator = new CommonFieldValidator();
+        private readonly CommonFieldValidator _validator = new CommonFieldValidator();
+        private readonly VitalFieldsValidator _vitalsValidator = new VitalFieldsValidator();
+        private readonly AddressFieldsValidator _addressValidator = new AddressFieldsValidator();
         public void ValidatePatientRecord(Patient patient)
         {
            _validator.IsWhitespaceOrEmptyOrNull(patient.PatientId);
@@ -17,6 +20,8 @@ namespace AlertToCareAPI.Repositories.Field_Validators
            _validator.IsWhitespaceOrEmptyOrNull(patient.BedId);
            _validator.IsWhitespaceOrEmptyOrNull(patient.IcuId);
            CheckConsistencyInPatientIdFields(patient);
+           _vitalsValidator.ValidateVitalsList(patient.Vitals);
+           _addressValidator.ValidateAddressFields(patient.Address);
 
         }
 
@@ -34,6 +39,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
 
         public void ValidateNewPatientId(string patientId, Patient patientRecord, List<Patient> patients)
         {
+            CheckIcuPresence(patientRecord.IcuId);
             foreach (var patient in patients)
             {
                 if (patient.PatientId == patientId)
@@ -45,7 +51,7 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             ValidatePatientRecord(patientRecord);
         }
 
-        public void CheckConsistencyInPatientIdFields(Patient patient)
+        private static void CheckConsistencyInPatientIdFields(Patient patient)
         {
             if (patient.PatientId.ToLower() == patient.Vitals.PatientId.ToLower())
             {
@@ -54,5 +60,19 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             throw new Exception("Invalid data field");
         }
 
+        private static void CheckIcuPresence(string icuId)
+        {
+            var database = new DatabaseManager();
+            var icuList = database.ReadIcuDatabase();
+            foreach (var icu in icuList)
+            {
+                if (icu.IcuId == icuId)
+                {
+                    return;
+                }
+            }
+
+            throw new Exception("Invalid data field");
+        }
     }
 }

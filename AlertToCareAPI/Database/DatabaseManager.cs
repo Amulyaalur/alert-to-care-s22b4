@@ -7,9 +7,9 @@ namespace AlertToCareAPI.Database
 {
     public class DatabaseManager
     {
-        List<Patient> _patients=new List<Patient>();
-        List<ICU> _icuList= new List<ICU>();
-        List<Bed> _beds;
+        private readonly List<Patient> _patients=new List<Patient>();
+        private readonly List<ICU> _icuList= new List<ICU>();
+        private readonly List<Bed> _beds = new List<Bed>();
         public DatabaseManager()
         {
 
@@ -102,51 +102,50 @@ namespace AlertToCareAPI.Database
             };
 
             _icuList.Add(icu);
-            _beds = new List<Bed>()
+            
+            _beds.Add(new Bed()
             {
-                new Bed()
-                {
-                    BedId = "BID1",
-                    Status = true,
-                    IcuId = "ICU01"
-                },
-                new Bed()
-                {
-                    BedId = "BID2",
-                    Status = true,
-                    IcuId = "ICU01"
-                },
-                new Bed()
-                {
-                    BedId = "BID3",
-                    Status = true,
-                    IcuId = "ICU01"
-                },
-                new Bed()
-                {
-                    BedId = "BID4",
-                    Status = false,
-                    IcuId = "ICU01"
-                },
-                new Bed()
-                {
-                    BedId = "BID5",
-                    Status = false,
-                    IcuId = "ICU01"
-                },
-                new Bed()
-                {
-                    BedId = "BID6",
-                    Status = false,
-                    IcuId = "ICU01"
-                },
-                new Bed()
-                {
-                    BedId = "BID7",
-                    Status = false,
-                    IcuId = "ICU01"
-                }
-            };
+                BedId = "BID1",
+                Status = true,
+                IcuId = "ICU01"
+            });
+            _beds.Add(new Bed()
+            {
+                BedId = "BID2",
+                Status = true,
+                IcuId = "ICU01"
+            });
+            _beds.Add(new Bed()
+            {
+                BedId = "BID3",
+                Status = true,
+                IcuId = "ICU01"
+            });
+            _beds.Add(new Bed()
+            {
+                BedId = "BID4",
+                Status = false,
+                IcuId = "ICU01"
+            });
+            _beds.Add(new Bed()
+            {
+                BedId = "BID5",
+                Status = false,
+                IcuId = "ICU01"
+            });
+            _beds.Add(new Bed()
+            {
+                BedId = "BID6",
+                Status = false,
+                IcuId = "ICU01"
+            });
+            _beds.Add(new Bed()
+            {
+                BedId = "BID7",
+                Status = false,
+                IcuId = "ICU01"
+            });
+            
             WriteToPatientsDatabase(_patients);
             WriteToIcuDatabase(_icuList);
             WriteToBedsDatabase(_beds);
@@ -167,7 +166,7 @@ namespace AlertToCareAPI.Database
             var writer = new StreamWriter("Icu.json");
             foreach (var icu in icuList)
             {
-                writer.WriteLine(icu);
+                writer.WriteLine(JsonConvert.SerializeObject(icu));
             }
             writer.Close();
         }
@@ -176,7 +175,7 @@ namespace AlertToCareAPI.Database
             var writer = new StreamWriter("Beds.json");
             foreach (var bed in beds)
             {
-                writer.WriteLine(bed);
+                writer.WriteLine(JsonConvert.SerializeObject(bed));
             }
             writer.Close();
         }
@@ -184,20 +183,26 @@ namespace AlertToCareAPI.Database
 
         public List<ICU> ReadIcuDatabase()
         {
+            var icuList = new List<ICU>();
             var reader = new StreamReader("Icu.json");
-            var json = reader.ReadToEnd();
-            var icuList= JsonConvert.DeserializeObject<List<ICU>>(json);
+            while (reader.EndOfStream != true)
+            {
+                var line = reader.ReadLine();
+                var icu = JsonConvert.DeserializeObject<ICU>(line);
+                icuList.Add(icu);
+            }
+
             reader.Close();
             return icuList;
         }
         public List<Patient> ReadPatientDatabase()
         {
-            List<Patient> patients = new List<Patient>();
+            var patients = new List<Patient>();
             var reader = new StreamReader("Patients.json");
             while (reader.EndOfStream != true)
             {
                 var line = reader.ReadLine();
-                Patient patient = JsonConvert.DeserializeObject<Patient>(line);
+                var patient = JsonConvert.DeserializeObject<Patient>(line);
                 patients.Add(patient);
             }
             
@@ -208,23 +213,33 @@ namespace AlertToCareAPI.Database
         public List<Vitals> ReadVitalsDatabase()
         {
             var reader = new StreamReader("Patients.json");
-            
-            var json = reader.ReadToEnd();
-            var patients = JsonConvert.DeserializeObject<List<Patient>>(json);
+            var patients = new List<Patient>();
+            while (reader.EndOfStream != true)
+            {
+                var line = reader.ReadLine();
+                var patient = JsonConvert.DeserializeObject<Patient>(line);
+                patients.Add(patient);
+            }
             var vitals = new List<Vitals>();
             foreach(var patient in patients)
             {
                 vitals.Add(patient.Vitals);
             }
-            reader.Close(); ;
+            reader.Close(); 
             return vitals;
         }
 
         public List<Bed> ReadBedsDatabase()
         {
+            var beds = new List<Bed>();
             var reader = new StreamReader("Beds.json");
-            var json = reader.ReadToEnd();
-            var beds = JsonConvert.DeserializeObject<List<Bed>>(json);
+            while (reader.EndOfStream != true)
+            {
+                var line = reader.ReadLine();
+                var bed = JsonConvert.DeserializeObject<Bed>(line);
+                beds.Add(bed);
+            }
+
             reader.Close();
             return beds;
         }

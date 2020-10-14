@@ -8,8 +8,8 @@ namespace AlertToCareAPI.Repositories
 {
     public class PatientDbRepository : IPatientDbRepository
     {
-        readonly DatabaseManager _creator=new DatabaseManager();
-        readonly PatientFieldsValidator _validator = new PatientFieldsValidator();
+        private readonly DatabaseManager _creator=new DatabaseManager();
+        private readonly PatientFieldsValidator _validator = new PatientFieldsValidator();
 
         public void AddPatient(Patient newState)
         {
@@ -23,7 +23,7 @@ namespace AlertToCareAPI.Repositories
         {
             var patients = _creator.ReadPatientDatabase();
             _validator.ValidateOldPatientId(patientId, patients);
-            for (int i = 0; i < patients.Count; i++)
+            for (var i = 0; i < patients.Count; i++)
             {
                 if (patients[i].PatientId == patientId)
                 {
@@ -58,11 +58,11 @@ namespace AlertToCareAPI.Repositories
         public void ChangeBedStatus(string bedId, bool status)
         {
             var beds = _creator.ReadBedsDatabase();
-            for (var i = 0; i < beds.Count; i++)
+            foreach (var bed in beds)
             {
-                if (beds[i].BedId == bedId)
+                if (bed.BedId == bedId)
                 {
-                    beds[i].Status = status;
+                    bed.Status = status;
                     return;
                 }
             }

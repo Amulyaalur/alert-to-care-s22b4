@@ -5,7 +5,7 @@ using AlertToCareAPI;
 
 namespace API.Tests
 {
-    class TestClientProvider
+    internal class  TestClientProvider
     {
         public HttpClient Client { get; set; }
         private TestServer _server;
