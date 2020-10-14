@@ -154,29 +154,32 @@ namespace AlertToCareAPI.Database
 
         public void WriteToPatientsDatabase(List<Patient> patients)
         {
-            var writer = new StreamWriter("Patients.json");
+            var fs = new FileStream("Patients.json", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            var writer = new StreamWriter(fs);
             foreach (var patient in patients)
             {
                 writer.WriteLine(JsonConvert.SerializeObject(patient));
             }
-            writer.Close();
+            writer.Dispose();
         }
 
         public void WriteToIcuDatabase(List<Icu> icuList)
         {
-            var writer = new StreamWriter("Icu.json");
+            var fs = new FileStream("Icu.json", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            var writer = new StreamWriter(fs);
             foreach (var icu in icuList)
             {
                 writer.WriteLine(JsonConvert.SerializeObject(icu));
             }
-            writer.Close();
+            writer.Dispose();
         }
 
 
         public List<Icu> ReadIcuDatabase()
         {
             var icuList = new List<Icu>();
-            var reader = new StreamReader("Icu.json");
+            var fs = new FileStream("Icu.json", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var reader = new StreamReader(fs);
             while (reader.EndOfStream != true)
             {
                 var line = reader.ReadLine();
@@ -184,13 +187,14 @@ namespace AlertToCareAPI.Database
                 icuList.Add(icu);
             }
 
-            reader.Close();
+            reader.Dispose();
             return icuList;
         }
         public List<Patient> ReadPatientDatabase()
         {
             var patients = new List<Patient>();
-            var reader = new StreamReader("Patients.json");
+            var fs = new FileStream("Patients.json", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var reader = new StreamReader(fs);
             while (reader.EndOfStream != true)
             {
                 var line = reader.ReadLine();
@@ -198,13 +202,14 @@ namespace AlertToCareAPI.Database
                 patients.Add(patient);
             }
             
-            reader.Close();
+            reader.Dispose();
             return patients;
         }
 
         public List<Vitals> ReadVitalsDatabase()
         {
-            var reader = new StreamReader("Patients.json");
+            var fs = new FileStream("Patients.json", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var reader = new StreamReader(fs);
             var patients = new List<Patient>();
             while (reader.EndOfStream != true)
             {
@@ -217,13 +222,14 @@ namespace AlertToCareAPI.Database
             {
                 vitals.Add(patient.Vitals);
             }
-            reader.Close(); 
+            reader.Dispose(); 
             return vitals;
         }
 
         public List<Bed> ReadBedsDatabase()
         {
-            var reader = new StreamReader("Icu.json");
+            var fs = new FileStream("Icu.json", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var reader = new StreamReader(fs);
             var icuList = new List<Icu>();
             while (reader.EndOfStream != true)
             {
@@ -239,7 +245,7 @@ namespace AlertToCareAPI.Database
                     beds.Add(bed);
                 }
             }
-            reader.Close();
+            reader.Dispose();
             return beds;
         }
     }
