@@ -22,6 +22,7 @@ namespace AlertToCareAPI.Repositories
         public void RemovePatient(string patientId)
         {
             var patients = _creator.ReadPatientDatabase();
+            var icuList = _creator.ReadIcuDatabase();
             for (var i = 0; i < patients.Count; i++)
             {
                 if (patients[i].PatientId == patientId)
@@ -87,11 +88,11 @@ namespace AlertToCareAPI.Repositories
                     {
                         bed.Status = false;
                         _creator.WriteToIcuDatabase(icuList);
-                        return;
+                        
                     }
                 }
             }
-            throw new Exception("Invalid data field");
+            return;
         }
     }
 }
