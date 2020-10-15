@@ -30,10 +30,10 @@ namespace AlertToCareAPI.Repositories
                     patients.Remove(patients[i]);
                     _creator.WriteToPatientsDatabase(patients);
                     ChangeBedStatus(patients[i].BedId, false);
-                    
+                    return;
                 }
             }
-            return;
+            
         }
         public void UpdatePatient(string patientId, Patient state)
         {
@@ -47,10 +47,10 @@ namespace AlertToCareAPI.Repositories
                 {
                     patients.Insert(i, state);
                     _creator.WriteToPatientsDatabase(patients);
-                    
+                    return;
                 }
             }
-            return;
+           
         }
         public IEnumerable<Patient> GetAllPatients()
         {

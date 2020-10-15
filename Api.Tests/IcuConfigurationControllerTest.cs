@@ -43,7 +43,7 @@ namespace API.Tests
         public async Task CheckStatusCodeEqualBadRequestIfIcuWardDoNotExists()
         {
             var client = new TestClientProvider().Client;
-            var response = await client.GetAsync(url + "/ICU01");
+            var response = await client.GetAsync(url + "/ICU04");
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -51,7 +51,6 @@ namespace API.Tests
         public async Task ReturnsOkWhenIcuWardIsAdded()
         {
             var client = new TestClientProvider().Client;
-            var patients = new List<Patient>();
             var beds = new List<Bed>()
             {
                 new Bed
