@@ -408,7 +408,7 @@ namespace API.Tests
                 },
                 Vitals = new Vitals()
                 {
-                    PatientId = "PID001",
+                    PatientId = "PID02",
                     Spo2 = 100,
                     Bpm = 70,
                     RespRate = 120
@@ -455,6 +455,7 @@ namespace API.Tests
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
     }
 }
    

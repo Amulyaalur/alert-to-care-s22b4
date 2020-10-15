@@ -17,7 +17,7 @@ namespace AlertToCareAPI.Repositories
             _validator.ValidateNewPatientId(newState.PatientId, newState, patients);
             patients.Add(newState);
             _creator.WriteToPatientsDatabase(patients);
-            ChangeBedStatus(newState.BedId, true);
+            ChangeBedStatusToTrue(newState.BedId);
         }
         public void RemovePatient(string patientId)
         {
@@ -28,7 +28,7 @@ namespace AlertToCareAPI.Repositories
                 {
                     patients.Remove(patients[i]);
                     _creator.WriteToPatientsDatabase(patients);
-                    ChangeBedStatus(patients[i].BedId, false);
+                    ChangeBedStatusToFalse(patients[i].BedId);
                     return;
                 }
             }
@@ -55,7 +55,7 @@ namespace AlertToCareAPI.Repositories
             var patients = _creator.ReadPatientDatabase();
             return patients;
         }
-        public void ChangeBedStatus(string bedId, bool status)
+        public void ChangeBedStatusToTrue(string bedId)
         {
             var icuList = _creator.ReadIcuDatabase();
             foreach (var icu in icuList)
@@ -64,7 +64,28 @@ namespace AlertToCareAPI.Repositories
                 {
                     if (bed.BedId == bedId)
                     {
-                        bed.Status = status;
+                        if (bed.Status == false)
+                        {
+                            bed.Status = true;
+                            _creator.WriteToIcuDatabase(icuList);
+                            return;
+                        }
+                    }
+                }
+            }
+            throw new Exception("Invalid data field");
+        }
+
+        public void ChangeBedStatusToFalse(string bedId)
+        {
+            var icuList = _creator.ReadIcuDatabase();
+            foreach (var icu in icuList)
+            {
+                foreach (var bed in icu.Beds)
+                {
+                    if (bed.BedId == bedId)
+                    {
+                        bed.Status = false;
                         _creator.WriteToIcuDatabase(icuList);
                         return;
                     }
