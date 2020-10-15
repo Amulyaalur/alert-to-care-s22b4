@@ -1,6 +1,6 @@
 using AlertToCareAPI.Models;
 using Newtonsoft.Json;
-using System;
+
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -9,14 +9,25 @@ using Xunit;
 
 namespace API.Tests
 {
-    public class IcuOccupancyControllerTest
+    public class ClientSetUp
     {
-        readonly string url = "api/IcuOccupancy/Patients";
+        public HttpClient client;
+        public ClientSetUp()
+        { 
+            this.client= new TestClientProvider().Client;
+        }
+
+    }
+    public class IcuOccupancyControllerTest
+    {   
+
+  
         [Fact]
         public async Task CheckStatusCodeEqualOkGetAllPatients()
         {
-            var client = new TestClientProvider().Client;
-            var response = await client.GetAsync(url);
+            ClientSetUp setter = new ClientSetUp();
+
+            var response = await setter.client.GetAsync("api/IcuOccupancy/Patients");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -24,16 +35,15 @@ namespace API.Tests
         [Fact]
         public async Task CheckStatusCodeEqualOkGetPatientById()
         {
-            var client = new TestClientProvider().Client;
-            var response = await client.GetAsync(url+"/PID001");
+            ClientSetUp setter = new ClientSetUp();
+            var response = await setter.client.GetAsync("api/IcuOccupancy/Patients/PID001");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsOkWhenPatientIsAddedIcu()
         {
-            var client = new TestClientProvider().Client;
-
+            ClientSetUp setter = new ClientSetUp();
             var patient = new Patient()
                        {
                         PatientId = "PID004",
@@ -60,14 +70,14 @@ namespace API.Tests
                     };
             
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestWhenPatientWithOldIdIsAddedIcu()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -96,7 +106,7 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
           
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -104,7 +114,7 @@ namespace API.Tests
         [Fact]
         public async Task ReturnsOkWhenUpdatingPatientDetails()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -133,7 +143,7 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PutAsync(url +"/PID001", content);
+            var response = await setter.client.PutAsync("api/IcuOccupancy/Patients/PID001", content);
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -141,15 +151,15 @@ namespace API.Tests
         [Fact]
         public async Task CheckDeletePatient()
         {
-            var client = new TestClientProvider().Client;
-            var response = await client.DeleteAsync(url +"/PID001");
+            ClientSetUp setter = new ClientSetUp();
+            var response = await setter.client.DeleteAsync("api/IcuOccupancy/Patients/PID001");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestWhenPatientIsAddedToNonExistentIcu()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -178,14 +188,14 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task ThrowsExeptionWhenPatientBedIdDoesNotMatchWithIcuBedId()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -214,13 +224,13 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestWhenPatientWithNullValuesIsAddedIcu()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -249,23 +259,22 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
           
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestForGettingPatientWithNonExistingId()
         {
-            var client = new TestClientProvider().Client;
-            var response = await client.GetAsync(url + "/PID090");
+            ClientSetUp setter = new ClientSetUp();
+            var response = await setter.client.GetAsync("api/IcuOccupancy/Patients/PID090");
            
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestWhenPatientIdIsDifferentInVitalsObject()
         {
-            var client = new TestClientProvider().Client;
-
+            ClientSetUp setter = new ClientSetUp();
             var patient = new Patient()
             {
                 PatientId = "PID004",
@@ -293,14 +302,14 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
         public async Task ReturnsBadRequestWhenIcuIdDoesNotMatchWithBedIcuId()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -329,14 +338,14 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
         public async Task ReturnsBadRequestWhenBedIsAlreadyOccupied()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -365,29 +374,29 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
             
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestWhenDeletingInvalidPatientId()
         {
-            var client = new TestClientProvider().Client;
-            var response = await client.DeleteAsync(url + "/PID02");
+            ClientSetUp setter = new ClientSetUp();
+            var response = await setter.client.DeleteAsync("api/IcuOccupancy/Patients/PID02");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestWhenGettingInvalidPatientId()
         {
-            var client = new TestClientProvider().Client;
-            var response = await client.GetAsync(url + "/PID02");
+            ClientSetUp setter = new ClientSetUp();
+            var response = await setter.client.GetAsync("api/IcuOccupancy/Patients/PID02");
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
         public async Task ReturnsBadRequestWhenUpdatingInvalidPatientId()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -416,13 +425,13 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PutAsync(url + "/PID02", content);
+            var response = await setter.client.PutAsync("api/IcuOccupancy/Patients/PID02", content);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Fact]
         public async Task ReturnsBadRequestWhenBedIdDoesNotExist()
         {
-            var client = new TestClientProvider().Client;
+            ClientSetUp setter = new ClientSetUp();
 
             var patient = new Patient()
             {
@@ -451,7 +460,7 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync(url, content);
+            var response = await setter.client.PostAsync("api/IcuOccupancy/Patients", content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
