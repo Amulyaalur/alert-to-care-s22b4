@@ -225,13 +225,20 @@ namespace API.Tests
             var patient = new Patient()
             {
                 PatientId = "PID004",
-                PatientName = "Anita",
+                PatientName = null,
                 Age = 25,
                 ContactNo = "7348899805",
                 BedId = "BID4",
                 IcuId = "ICU01",
                 Email = "anita@gmail.com",
-                Address = null,
+                Address = new PatientAddress()
+                {
+                    HouseNo = "97",
+                    Street = "joshiyara",
+                    City = "Uttarkashi",
+                    State = "Uttarakand",
+                    Pincode = "249193"
+                },
                 Vitals = new Vitals()
                 {
                     PatientId = "PID004",

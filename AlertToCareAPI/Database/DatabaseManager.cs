@@ -36,7 +36,7 @@ namespace AlertToCareAPI.Database
                 {
                     PatientId = "PID001",
                     Spo2 = 100,
-                    Bpm = 70,
+                    Bpm = 60,
                     RespRate = 120
                 }
             };
