@@ -234,35 +234,18 @@ namespace AlertToCareAPI.Database
 
         public List<Vitals> ReadVitalsDatabase()
         {
-            var fs = new FileStream("Patients.json", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            var reader = new StreamReader(fs);
-            var patients = new List<Patient>();
-            while (reader.EndOfStream != true)
-            {
-                var line = reader.ReadLine();
-                var patient = JsonConvert.DeserializeObject<Patient>(line);
-                patients.Add(patient);
-            }
+            var patients = ReadPatientDatabase();
             var vitals = new List<Vitals>();
             foreach(var patient in patients)
             {
                 vitals.Add(patient.Vitals);
             }
-            reader.Dispose(); 
             return vitals;
         }
 
         public List<Bed> ReadBedsDatabase()
         {
-            var fs = new FileStream("Icu.json", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            var reader = new StreamReader(fs);
-            var icuList = new List<Icu>();
-            while (reader.EndOfStream != true)
-            {
-                var line = reader.ReadLine();
-                var icu = JsonConvert.DeserializeObject<Icu>(line);
-                icuList.Add(icu);
-            }
+            var icuList = ReadIcuDatabase();
             var beds = new List<Bed>();
             foreach (var icu in icuList)
             {
@@ -271,7 +254,6 @@ namespace AlertToCareAPI.Database
                     beds.Add(bed);
                 }
             }
-            reader.Dispose();
             return beds;
         }
     }

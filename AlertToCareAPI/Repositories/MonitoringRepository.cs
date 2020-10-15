@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using AlertToCareAPI.Models;
-using System.Net.Mail;
 using AlertToCareAPI.Database;
 
 namespace AlertToCareAPI.Repositories
@@ -27,7 +26,7 @@ namespace AlertToCareAPI.Repositories
             // SendMail(s);
             return s;
            }
-        public string CheckSpo2(float spo2)
+        private static string CheckSpo2(float spo2)
         {
             if (spo2 < 90)
             {
@@ -39,7 +38,7 @@ namespace AlertToCareAPI.Repositories
                 return "";
 
         }
-        public string CheckBpm(float bpm)
+        private static string CheckBpm(float bpm)
         {
             if (bpm < 70)
                 return "bpm is low, ";
@@ -48,7 +47,7 @@ namespace AlertToCareAPI.Repositories
             else
                 return "";
         }
-        public string CheckRespRate(float respRate)
+        private static string CheckRespRate(float respRate)
         {
             if (respRate < 30)
                 return "respRate is low. ";

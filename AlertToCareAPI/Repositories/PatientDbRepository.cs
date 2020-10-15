@@ -22,7 +22,6 @@ namespace AlertToCareAPI.Repositories
         public void RemovePatient(string patientId)
         {
             var patients = _creator.ReadPatientDatabase();
-            var icuList = _creator.ReadIcuDatabase();
             for (var i = 0; i < patients.Count; i++)
             {
                 if (patients[i].PatientId == patientId)
@@ -56,7 +55,7 @@ namespace AlertToCareAPI.Repositories
             var patients = _creator.ReadPatientDatabase();
             return patients;
         }
-        public void ChangeBedStatusToTrue(string bedId)
+        private void ChangeBedStatusToTrue(string bedId)
         {
             var icuList = _creator.ReadIcuDatabase();
             foreach (var icu in icuList)
@@ -77,7 +76,7 @@ namespace AlertToCareAPI.Repositories
             throw new Exception("Invalid data field");
         }
 
-        public void ChangeBedStatusToFalse(string bedId)
+        private void ChangeBedStatusToFalse(string bedId)
         {
             var icuList = _creator.ReadIcuDatabase();
             foreach (var icu in icuList)
@@ -92,7 +91,6 @@ namespace AlertToCareAPI.Repositories
                     }
                 }
             }
-            return;
         }
     }
 }
