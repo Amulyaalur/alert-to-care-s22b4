@@ -240,5 +240,56 @@ namespace API.Tests
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
+        [Fact]
+        public async Task ReturnsBadRequestWhenIcuWardWithOldIdIsAdded()
+        {
+            var client = new TestClientProvider().Client;
+            var beds = new List<Bed>()
+            {
+                new Bed
+                {
+                    BedId = "BID8",
+                    Status = false,
+                    IcuId = "ICU02"
+                },
+                new Bed
+                {
+                    BedId = "BID9",
+                    Status = false,
+                    IcuId = "ICU02"
+                },
+                new Bed
+                {
+                    BedId = "BID10",
+                    Status = false,
+                    IcuId = "ICU02"
+                },
+                new Bed
+                {
+                    BedId = "BID11",
+                    Status = false,
+                    IcuId = "ICU02"
+                },
+                new Bed
+                {
+                    BedId = "BID12",
+                    Status = false,
+                    IcuId = "ICU02"
+                }
+            };
+
+            var icu = new Icu()
+            {
+                IcuId = "ICU01",
+                LayoutId = "LID01",
+                BedsCount = 5,
+                Beds = beds
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(url, content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
+
 }
