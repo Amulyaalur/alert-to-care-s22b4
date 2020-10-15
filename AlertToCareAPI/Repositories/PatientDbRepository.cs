@@ -22,7 +22,6 @@ namespace AlertToCareAPI.Repositories
         public void RemovePatient(string patientId)
         {
             var patients = _creator.ReadPatientDatabase();
-            _validator.ValidateOldPatientId(patientId, patients);
             for (var i = 0; i < patients.Count; i++)
             {
                 if (patients[i].PatientId == patientId)
@@ -33,11 +32,11 @@ namespace AlertToCareAPI.Repositories
                     return;
                 }
             }
+            throw new Exception("Invalid data field");
         }
         public void UpdatePatient(string patientId, Patient state)
         {
             var patients = _creator.ReadPatientDatabase();
-            _validator.ValidateOldPatientId(patientId, patients);
             _validator.ValidatePatientRecord(state);
 
             for (var i = 0; i < patients.Count; i++)
@@ -49,7 +48,7 @@ namespace AlertToCareAPI.Repositories
                     return;
                 }
             }
-           
+            throw new Exception("Invalid data field");
         }
         public IEnumerable<Patient> GetAllPatients()
         {

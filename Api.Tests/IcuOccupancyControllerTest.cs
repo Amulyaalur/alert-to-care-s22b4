@@ -419,6 +419,42 @@ namespace API.Tests
             var response = await client.PutAsync(url + "/PID02", content);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+        [Fact]
+        public async Task ReturnsBadRequestWhenBedIdDoesNotExist()
+        {
+            var client = new TestClientProvider().Client;
+
+            var patient = new Patient()
+            {
+                PatientId = "PID004",
+                PatientName = "Anita",
+                Age = 25,
+                ContactNo = "7348899805",
+                BedId = "BID67",
+                IcuId = "ICU01",
+                Email = "anita@gmail.com",
+                Address = new PatientAddress()
+                {
+                    HouseNo = "97",
+                    Street = "joshiyara",
+                    City = "Uttarkashi",
+                    State = "Uttarakand",
+                    Pincode = "249193"
+                },
+                Vitals = new Vitals()
+                {
+                    PatientId = "PID004",
+                    Spo2 = 100,
+                    Bpm = 70,
+                    RespRate = 120
+                }
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(url, content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
     }
 }
    
