@@ -9,7 +9,8 @@ namespace AlertToCareAPI.Database
     {
         private readonly List<Patient> _patients=new List<Patient>();
         private readonly List<Icu> _icuList= new List<Icu>();
-        private readonly List<Bed> _beds = new List<Bed>();
+        private readonly List<Bed> _beds1 = new List<Bed>();
+        private readonly List<Bed> _beds2 = new List<Bed>();
         public DatabaseManager()
         {
 
@@ -94,43 +95,43 @@ namespace AlertToCareAPI.Database
             };
             _patients.Add(patient3);
 
-            _beds.Add(new Bed()
+            _beds1.Add(new Bed()
             {
                 BedId = "BID1",
                 Status = true,
                 IcuId = "ICU01"
             });
-            _beds.Add(new Bed()
+            _beds1.Add(new Bed()
             {
                 BedId = "BID2",
                 Status = true,
                 IcuId = "ICU01"
             });
-            _beds.Add(new Bed()
+            _beds1.Add(new Bed()
             {
                 BedId = "BID3",
                 Status = true,
                 IcuId = "ICU01"
             });
-            _beds.Add(new Bed()
+            _beds1.Add(new Bed()
             {
                 BedId = "BID4",
                 Status = false,
                 IcuId = "ICU01"
             });
-            _beds.Add(new Bed()
+            _beds1.Add(new Bed()
             {
                 BedId = "BID5",
                 Status = false,
                 IcuId = "ICU01"
             });
-            _beds.Add(new Bed()
+            _beds1.Add(new Bed()
             {
                 BedId = "BID6",
                 Status = false,
                 IcuId = "ICU01"
             });
-            _beds.Add(new Bed()
+            _beds1.Add(new Bed()
             {
                 BedId = "BID7",
                 Status = false,
@@ -141,12 +142,37 @@ namespace AlertToCareAPI.Database
                 IcuId = "ICU01",
                 LayoutId = "LID02",
                 BedsCount = 7,
-                Beds = _beds
+                Beds = _beds1
             };
 
             _icuList.Add(icu);
-            
-           
+
+            _beds2.Add(new Bed()
+            {
+                BedId = "BID50",
+                Status = false,
+                IcuId = "ICU03"
+            });
+            _beds2.Add(new Bed()
+            {
+                BedId = "BID51",
+                Status = false,
+                IcuId = "ICU03"
+            });
+            _beds2.Add(new Bed()
+            {
+                BedId = "BID52",
+                Status = false,
+                IcuId = "ICU03"
+            });
+
+            _icuList.Add(new Icu()
+            {
+                IcuId =  "ICU03",
+                LayoutId = "LID03",
+                BedsCount = 3,
+                Beds = _beds2
+            });
             
             WriteToPatientsDatabase(_patients);
             WriteToIcuDatabase(_icuList);

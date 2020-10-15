@@ -43,12 +43,5 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             ValidateIcuRecord(icuRecord);
         }
 
-        private void ValidatePatientsList(List<Patient> patients)
-        {
-            foreach (var patient in patients)
-            {
-                _patientRecordValidator.ValidatePatientRecord(patient);
-            }
-        }
     }
 }

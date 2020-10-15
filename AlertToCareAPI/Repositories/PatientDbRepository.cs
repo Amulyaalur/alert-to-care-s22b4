@@ -33,7 +33,6 @@ namespace AlertToCareAPI.Repositories
                     return;
                 }
             }
-            
         }
         public void UpdatePatient(string patientId, Patient state)
         {

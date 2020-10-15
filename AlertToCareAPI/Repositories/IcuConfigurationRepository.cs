@@ -31,7 +31,6 @@ namespace AlertToCareAPI.Repositories
                     return;
                 }
             }
-            
         }
         public void UpdateIcu(string icuId, Icu state)
         {
@@ -48,7 +47,6 @@ namespace AlertToCareAPI.Repositories
                     return;
                 }
             }
-            
         }
         public IEnumerable<Icu> GetAllIcu()
         {

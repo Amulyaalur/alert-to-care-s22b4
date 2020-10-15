@@ -57,7 +57,7 @@ namespace AlertToCareAPI.Repositories
             else
                 return "";
         }
-        public void SendMail(string body)
+        /*public void SendMail(string body)
         {
              var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");
              mailMessage.Body = body;
@@ -71,6 +71,6 @@ namespace AlertToCareAPI.Repositories
 
              smtpClient.EnableSsl=true;
              smtpClient.Send(mailMessage);
-        }
+        }*/
     }
 }
