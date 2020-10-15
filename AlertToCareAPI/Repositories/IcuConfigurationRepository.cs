@@ -28,9 +28,10 @@ namespace AlertToCareAPI.Repositories
                 {
                     icuList.Remove(icuList[i]);
                     _creator.WriteToIcuDatabase(icuList);
-                    return;
+                   
                 }
             }
+            return;
         }
         public void UpdateIcu(string icuId, Icu state)
         {
@@ -44,9 +45,10 @@ namespace AlertToCareAPI.Repositories
                 {
                     icuList.Insert(i, state);
                     _creator.WriteToIcuDatabase(icuList);
-                    return;
+                    
                 }
             }
+            return;
         }
         public IEnumerable<Icu> GetAllIcu()
         {

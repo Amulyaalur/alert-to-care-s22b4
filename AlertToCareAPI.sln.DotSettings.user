@@ -13,5 +13,6 @@
     &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.ReturnsOkWhenUpdatingIcuDetails&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.CheckDeleteICU&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.ReturnsOkWhenUpdatingPatientDetails&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.CheckDeletePatient&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

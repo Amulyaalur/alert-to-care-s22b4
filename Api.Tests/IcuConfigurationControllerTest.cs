@@ -1,5 +1,4 @@
-﻿
-using AlertToCareAPI.Models;
+﻿using AlertToCareAPI.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
@@ -21,6 +20,16 @@ namespace API.Tests
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        [Fact]
+        public async Task WhenWrongUrlIsGivenReturnsBadRequest()
+        {
+            {
+                var client = new TestClientProvider().Client;
+                var response = await client.GetAsync(url + "/important");
+
+                Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            }
+        }
 
         [Fact]
         public async Task CheckStatusCodeEqualOkIfIcuWardExists()
@@ -30,7 +39,14 @@ namespace API.Tests
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        
+        [Fact]
+        public async Task CheckStatusCodeEqualBadRequestIfIcuWardDoNotExists()
+        {
+            var client = new TestClientProvider().Client;
+            var response = await client.GetAsync(url + "/ICU01");
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
         [Fact]
         public async Task ReturnsOkWhenIcuWardIsAdded()
         {
@@ -83,7 +99,7 @@ namespace API.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
-        public async Task ReturnsOkWhenUpdatingIcuDetails()
+        public async Task ReturnsBadRequestWhenUpdatingIcuDetailsIfIcuDoNotExists()
         {
             var client = new TestClientProvider().Client;
             var beds = new List<Bed>()
@@ -141,19 +157,89 @@ namespace API.Tests
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await client.PutAsync(url +"/ICU01", content);
+            var response = await client.PutAsync(url + "/I", content);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        [Fact]
+        public async Task ReturnsOkWhenUpdatingIcuDetailsIfExists()
+        {
+            var client = new TestClientProvider().Client;
+            var beds = new List<Bed>()
+            {
+                new Bed
+                {
+                    BedId = "BID1",
+                    Status = true,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID2",
+                    Status = true,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID3",
+                    Status = true,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID4",
+                    Status = false,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID5",
+                    Status = false,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID6",
+                    Status = false,
+                    IcuId = "ICU01"
+                },
+                new Bed
+                {
+                    BedId = "BID7",
+                    Status = false,
+                    IcuId = "ICU01"
+                }
+            };
+
+            var icu = new Icu()
+            {
+                IcuId = "ICU01",
+                LayoutId = "LID01",
+                BedsCount = 7,
+                Beds = beds
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(url + "/ICU01", content);
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task CheckDeleteIcu()
+        public async Task CheckDeleteIcuReturnsOkIfIcuExists()
         {
             var client = new TestClientProvider().Client;
             var response = await client.DeleteAsync(url + "/ICU01");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        
+        [Fact]
+        public async Task CheckDeleteIcuReturnsOkIfIcuDoNotExists()
+        {
+            var client = new TestClientProvider().Client;
+            var response = await client.DeleteAsync(url + "/ICU02");
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
     }
 }
