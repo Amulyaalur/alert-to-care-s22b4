@@ -7,11 +7,11 @@ namespace AlertToCareAPI.Database
 {
     public class DatabaseManager
     {
-        private readonly List<Patient> _patients=new List<Patient>();
+        /*private readonly List<Patient> _patients=new List<Patient>();
         private readonly List<Icu> _icuList= new List<Icu>();
         private readonly List<Bed> _beds1 = new List<Bed>();
-        private readonly List<Bed> _beds2 = new List<Bed>();
-        public DatabaseManager()
+        private readonly List<Bed> _beds2 = new List<Bed>();*/
+        /*public DatabaseManager()
         {
 
             var patient1 = new Patient()
@@ -176,7 +176,7 @@ namespace AlertToCareAPI.Database
             
             WriteToPatientsDatabase(_patients);
             WriteToIcuDatabase(_icuList);
-        }
+        }*/
 
         public void WriteToPatientsDatabase(List<Patient> patients)
         {

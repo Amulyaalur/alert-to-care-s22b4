@@ -43,6 +43,7 @@ namespace AlertToCareAPI.Repositories
             {
                 if (patients[i].PatientId == patientId)
                 {
+                    patients.RemoveAt(i);
                     patients.Insert(i, state);
                     _creator.WriteToPatientsDatabase(patients);
                     return;

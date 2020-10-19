@@ -6,19 +6,21 @@ namespace AlertToCareAPI.Repositories
 {
     public class MonitoringRepository : IMonitoringRepository
     {
-        private readonly DatabaseManager _creator = new DatabaseManager();
-        private readonly List<Vitals> _vitals;
-        public MonitoringRepository()
+        
+        private static List<Vitals> _vitals;
+        /*public MonitoringRepository()
         {
-            this._vitals = _creator.ReadVitalsDatabase();
-        }
+           
+        }*/
       
         public IEnumerable<Vitals> GetAllVitals()
         {
+            DatabaseConnection();
             return _vitals;
         }
         public string CheckVitals(Vitals vital)
-           {
+        {
+            DatabaseConnection();
             var a=CheckSpo2(vital.Spo2);
             var b=CheckBpm(vital.Bpm);
             var c=CheckRespRate(vital.RespRate);
@@ -26,8 +28,10 @@ namespace AlertToCareAPI.Repositories
             // SendMail(s);
             return s;
            }
-        private static string CheckSpo2(float spo2)
+        public  string CheckSpo2(float spo2)
         {
+            DatabaseConnection();
+           // DatabaseConnection();
             if (spo2 < 90)
             {
                
@@ -38,8 +42,10 @@ namespace AlertToCareAPI.Repositories
                 return "";
 
         }
-        private static string CheckBpm(float bpm)
+        public  string CheckBpm(float bpm)
         {
+            DatabaseConnection();
+            //  DatabaseConnection();
             if (bpm < 70)
                 return "bpm is low, ";
             if (bpm > 150)
@@ -47,8 +53,9 @@ namespace AlertToCareAPI.Repositories
             else
                 return "";
         }
-        private static string CheckRespRate(float respRate)
+        public  string CheckRespRate(float respRate)
         {
+            DatabaseConnection();
             if (respRate < 30)
                 return "respRate is low. ";
             if (respRate > 95)
@@ -56,6 +63,12 @@ namespace AlertToCareAPI.Repositories
             else
                 return "";
         }
+
+        private static void DatabaseConnection()
+        {
+            var creator = new DatabaseManager();
+            _vitals = creator.ReadVitalsDatabase();
+    }
         /*public void SendMail(string body)
         {
              var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");

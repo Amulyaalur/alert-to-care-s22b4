@@ -30,7 +30,9 @@ namespace AlertToCareAPI.Controllers
             string vitalCheck="";
             foreach (var patient in patientVitals)
             {   
-              vitalCheck= vitalCheck + patient.PatientId + " " + _patientMonitoring.CheckVitals(patient) + "\n";
+                // Write an if statemt if status is normal then skip/continue or print vitals
+                // For normal status code, 0 for normal >0 for abnormal
+              vitalCheck= vitalCheck+ " " + "BPM: "+_patientMonitoring.CheckBpm(patient.Bpm)+ "\tRespRate:"+ _patientMonitoring.CheckRespRate(patient.RespRate) + "\tSPO2:" + _patientMonitoring.CheckSpo2(patient.Spo2) + "\n";
                   
             }
             return Ok(vitalCheck);
