@@ -7,8 +7,9 @@ namespace AlertToCareAPI.Repositories.Field_Validators
     {
         public void IsWhitespaceOrEmptyOrNull(string field)
         {
-            var condition1 = string.IsNullOrEmpty(field);
-            var condition2 = string.IsNullOrWhiteSpace(field) && condition1;
+            //ISSUE
+           // var condition1 = string.IsNullOrEmpty(field);
+            var condition2 = string.IsNullOrWhiteSpace(field) /*&& condition1*/;
 
             if (!condition2)
             {

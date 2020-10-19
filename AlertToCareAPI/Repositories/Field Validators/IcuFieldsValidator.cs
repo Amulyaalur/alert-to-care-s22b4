@@ -16,14 +16,15 @@ namespace AlertToCareAPI.Repositories.Field_Validators
             
         }
 
-        public void ValidateNewIcuId(string icuId, Icu icuRecord, List<Icu> icuStore)
+        public void ValidateNewIcuId(string icuId, Icu icuRecord, IEnumerable<Icu> icuStore)
         {
             
             foreach (var icu in icuStore)
             {
                 if (icu.IcuId == icuId)
                 {
-                    throw new Exception("Invalid Patient Id");
+                    //ISSUE
+                    throw new Exception("Invalid ICU Id");
                 }
             }
 

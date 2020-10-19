@@ -1,23 +1,4 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f8160486_002Dcd95_002D44aa_002Daf28_002D805de2dfb258/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestMethod1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;MSTest::9D28E630-B120-4F3F-A836-8482B8F9E537::.NETFramework,Version=v4.7.2::Api.Test.UnitTest1.TestMethod1&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyTest.CheckStatusCodeEqualOkGetAllPatients&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyTest.CheckStatusCodeEqualOkGetPatientById&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyTest.CheckDeletePatient&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyTest.ReturnsBadRequestWhenPatientIsAddedToNonExistingIcu&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.CheckStatusCodeEqualOkGetAllIcuWards&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.CheckStatusCodeEqualOkIfIcuWardExists&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.ReturnsOkWhenIcuWardIsAdded&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.PatientMonitoringControllerTest.TestVitals&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.ReturnsOkWhenUpdatingIcuDetails&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.CheckDeleteICU&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.ReturnsOkWhenUpdatingPatientDetails&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.CheckDeletePatient&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.ReturnsBadRequestWhenBedIsAlreadyOccupied&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.ReturnsBadRequestWhenBedIdDoesNotExist&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.ReturnsBadRequestWhenUpdatingInvalidPatientId&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuOccupancyControllerTest.CheckStatusCodeEqualOkGetPatientById&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::4A6CBAEE-2C1B-4949-B859-AE603114AF99::.NETCoreApp,Version=v3.1::API.Tests.IcuConfigurationControllerTest.WhenWrongUrlIsGivenReturnsBadRequest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
