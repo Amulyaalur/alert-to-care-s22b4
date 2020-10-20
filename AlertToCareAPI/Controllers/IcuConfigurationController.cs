@@ -1,9 +1,8 @@
-﻿
-using AlertToCareAPI.Repositories;
+﻿using System.Data.SQLite;
 using Microsoft.AspNetCore.Mvc;
-using AlertToCareAPI.Models;
+using DataAccessLayer;
+using DataModels;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AlertToCareAPI.Controllers
 {
@@ -11,40 +10,46 @@ namespace AlertToCareAPI.Controllers
     [ApiController]
     public class IcuConfigurationController : ControllerBase
     {
-        readonly IIcuConfigurationRepository _configurationRepository;
-        public IcuConfigurationController(IIcuConfigurationRepository repo)
+        private readonly IIcuManagement _icu;
+        public IcuConfigurationController(IIcuManagement icu)
         {
-            this._configurationRepository = repo;
+            _icu = icu;
         }
-        // GET: api/<IcuConfigurationController>
-        [HttpGet("IcuWards")]
+
+        [HttpGet("Icu")]
         public IActionResult Get()
         {
-            return Ok(_configurationRepository.GetAllIcu());
+            return Ok(_icu.GetAllIcu());
         }
 
-        [HttpGet("IcuWards/{IcuId}")]
+        [HttpGet("Icu/{IcuId}")]
         public IActionResult Get(string icuId)
         {
-            var icuStore = _configurationRepository.GetAllIcu();
-            foreach (var icu in icuStore)
+            try
             {
-                if (icu.IcuId == icuId)
-                {
-                    return Ok(icu);
-                }
+                return Ok(_icu.GetIcuById(icuId));
             }
-            return BadRequest();
+            catch (SQLiteException exception)
+            {
+                return StatusCode(500, exception);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
-        [HttpPost("IcuWards")]
+        [HttpPost("Icu")]
         public IActionResult Post([FromBody] Icu icu)
         {
             try
             {
-                _configurationRepository.AddIcu(icu);
-                
+                _icu.AddIcu(icu);
                 return Ok();
+            }
+            catch (SQLiteException exception)
+            {
+                return StatusCode(500, exception);
             }
             catch
             {
@@ -52,28 +57,26 @@ namespace AlertToCareAPI.Controllers
             }
         }
 
-        [HttpPut("IcuWards/{IcuId}")]
+        [HttpPut("Icu/{IcuId}")]
         public IActionResult Put(string icuId, [FromBody] Icu icu)
         {
             try
             {
-                _configurationRepository.UpdateIcu(icuId, icu);
-                return Ok();
+                
+                return Ok(_icu.UpdateIcuById(icuId, icu));
             }
             catch
             {
                 return BadRequest();
             }
-            
         }
 
-        [HttpDelete("IcuWards/{IcuId}")]
+        [HttpDelete("Icu/{IcuId}")]
         public IActionResult Delete(string icuId)
         {
             try
             {
-                _configurationRepository.RemoveIcu(icuId);
-                return Ok();
+                return Ok(_icu.DeleteIcuById(icuId));
             }
             catch
             {

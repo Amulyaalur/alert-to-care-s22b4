@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using AlertToCareAPI.Repositories;
+using DataAccessLayer;
 
 namespace AlertToCareAPI
 {
@@ -14,17 +15,19 @@ namespace AlertToCareAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-          
             
             services.AddSingleton<IMonitoringRepository, MonitoringRepository>();
             services.AddSingleton<IIcuConfigurationRepository, IcuConfigurationRepository>();
             services.AddSingleton<IPatientDbRepository, PatientDbRepository>();
+            services.AddSingleton<IIcuManagement, IcuManagementSqLite>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -33,6 +36,7 @@ namespace AlertToCareAPI
             {
                 endpoints.MapControllers();
             });
+            app.UseCors();
         }
     }
 }

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DataModels\DataModels.csproj" />
   </ItemGroup>
 
