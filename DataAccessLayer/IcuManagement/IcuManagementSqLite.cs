@@ -53,8 +53,8 @@ namespace DataAccessLayer.IcuManagement
                 BedsCount = reader.GetInt32(1),
                 LayoutId = reader.GetString(2)
             };
-
-            con.Close();
+            reader.Dispose();
+            con.Dispose();
             return icu;
         }
         public void AddIcu(Icu icu)
@@ -99,17 +99,37 @@ namespace DataAccessLayer.IcuManagement
         }
         public bool DeleteIcuById(string icuId)
         {
-            var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);
+            /*var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);*/
+
+
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"DELETE FROM Beds
+                                    WHERE IcuId = @icuId AND 
+                                    (SELECT count(*) 
+                                        FROM Beds
+                                            WHERE IcuId = @icuId AND
+                                            Status = @status) = 0"
+            };
+            cmd.Parameters.AddWithValue("@icuId", icuId);
+            cmd.Parameters.AddWithValue("@status", true);
+            cmd.Prepare();
+            var rowsAffected = cmd.ExecuteNonQuery();
+            con.Close();
+
 
             if (rowsAffected == 0)
             {
                 throw new Exception();
             }
 
-            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
-            var cmd = new SQLiteCommand(con)
+             cmd = new SQLiteCommand(con)
             {
                 CommandText = @"DELETE FROM Icu WHERE IcuId = @icuId"
             };
