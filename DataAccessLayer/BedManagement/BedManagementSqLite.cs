@@ -26,7 +26,7 @@ namespace DataAccessLayer.BedManagement
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
             }
-            con.Close();
+            con.Dispose();
         }
         public static int DeleteBedsByIcuId(string icuId)
         {
@@ -46,7 +46,7 @@ namespace DataAccessLayer.BedManagement
             cmd.Parameters.AddWithValue("@status", true);
             cmd.Prepare();
             var rowsAffected = cmd.ExecuteNonQuery();
-            con.Close();
+            con.Dispose();
 
             return rowsAffected;
         }
@@ -65,7 +65,7 @@ namespace DataAccessLayer.BedManagement
             cmd.Prepare();
             cmd.ExecuteNonQuery();
             
-            con.Close();
+            con.Dispose();
         }
         public static void ChangeBedStatusToFalseByPatientId(string patientId)
         {
@@ -81,7 +81,7 @@ namespace DataAccessLayer.BedManagement
             cmd.Prepare();
             cmd.ExecuteNonQuery();
 
-            con.Close();
+            con.Dispose();
         }
     }
 }

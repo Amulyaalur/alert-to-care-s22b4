@@ -45,7 +45,8 @@ namespace DataAccessLayer.PatientManagement
                     Address = reader.GetString(7)
                 });
             }
-            con.Close();
+            reader.Dispose();
+            con.Dispose();
 
             return listOfPatients;
         }
@@ -81,8 +82,8 @@ namespace DataAccessLayer.PatientManagement
                 IcuId = reader.GetString(6),
                 Address = reader.GetString(7)
             };
-
-            con.Close();
+            reader.Dispose();
+            con.Dispose();
 
             return patient;
         }
@@ -129,7 +130,7 @@ namespace DataAccessLayer.PatientManagement
             
             cmd.Prepare();
             cmd.ExecuteNonQuery();
-            con.Close();
+            con.Dispose();
 
             VitalManagementSqLite.AddPatientIntoVitalsTable(patient.PatientId);
             BedManagementSqLite.ChangeBedStatusToTrueByBedId(patient.BedId);
@@ -159,7 +160,7 @@ namespace DataAccessLayer.PatientManagement
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             cmd.Prepare();
             var rowsAffected = cmd.ExecuteNonQuery();
-            con.Close();
+            con.Dispose();
             return rowsAffected;
         }
         public void UpdatePatient(string patientId, Patient patient)

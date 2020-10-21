@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AlertToCareAPI.Repositories;
 using DataAccessLayer.VitalManagement;
+using DataModels;
 
 
 namespace AlertToCareAPI.Controllers
@@ -21,7 +22,6 @@ namespace AlertToCareAPI.Controllers
         {
             return Ok(_vitalDb.GetAllPatientsVitals());
         }
-
         [HttpGet(template:"Alerts")]
         public IActionResult GetAlerts()
         {
@@ -37,6 +37,21 @@ namespace AlertToCareAPI.Controllers
             }
             return Ok(vitalCheck);
         }
+
+        [HttpPut(template: "Vital/{patientId}")]
+        public IActionResult UpdateVitalsByPatientId(string patientId, [FromBody] Vital vital)
+        {
+            try
+            {
+                _vitalDb.UpdateVitalByPatientId(patientId, vital);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        
 
     }
 }

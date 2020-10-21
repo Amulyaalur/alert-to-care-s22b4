@@ -31,7 +31,8 @@ namespace DataAccessLayer.IcuManagement
                     LayoutId = reader.GetString(2)
                 });
             }
-            con.Close();
+            reader.Dispose();
+            con.Dispose();
 
             return listOfIcu;
         }
@@ -85,7 +86,7 @@ namespace DataAccessLayer.IcuManagement
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();
-            con.Close();
+            con.Dispose();
             
             BedManagementSqLite.AddBeds(icu.IcuId, icu.BedsCount);
         }
@@ -99,37 +100,17 @@ namespace DataAccessLayer.IcuManagement
         }
         public bool DeleteIcuById(string icuId)
         {
-            /*var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);*/
-
-
-            var con = SqLiteDbConnector.GetSqLiteDbConnection();
-            con.Open();
-
-            var cmd = new SQLiteCommand(con)
-            {
-                CommandText = @"DELETE FROM Beds
-                                    WHERE IcuId = @icuId AND 
-                                    (SELECT count(*) 
-                                        FROM Beds
-                                            WHERE IcuId = @icuId AND
-                                            Status = @status) = 0"
-            };
-            cmd.Parameters.AddWithValue("@icuId", icuId);
-            cmd.Parameters.AddWithValue("@status", true);
-            cmd.Prepare();
-            var rowsAffected = cmd.ExecuteNonQuery();
-            con.Close();
-
+            var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);
 
             if (rowsAffected == 0)
             {
                 throw new Exception();
             }
 
-            con = SqLiteDbConnector.GetSqLiteDbConnection();
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
-             cmd = new SQLiteCommand(con)
+            var cmd = new SQLiteCommand(con)
             {
                 CommandText = @"DELETE FROM Icu WHERE IcuId = @icuId"
             };
@@ -137,7 +118,8 @@ namespace DataAccessLayer.IcuManagement
             cmd.Parameters.AddWithValue("@icuId", icuId);
             cmd.Prepare();
             rowsAffected = cmd.ExecuteNonQuery();
-            con.Close();
+            con.Dispose();
+
             if (rowsAffected == 0)
             {
                 throw new Exception();
