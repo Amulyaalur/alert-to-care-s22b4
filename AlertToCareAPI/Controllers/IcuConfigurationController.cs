@@ -1,6 +1,6 @@
 ﻿using System.Data.SQLite;
 using Microsoft.AspNetCore.Mvc;
-using DataAccessLayer;
+using DataAccessLayer.IcuManagement;
 using DataModels;
 
 
@@ -10,16 +10,16 @@ namespace AlertToCareAPI.Controllers
     [ApiController]
     public class IcuConfigurationController : ControllerBase
     {
-        private readonly IIcuManagement _icu;
+        private readonly IIcuManagement _icuDb;
         public IcuConfigurationController(IIcuManagement icu)
         {
-            _icu = icu;
+            _icuDb = icu;
         }
 
         [HttpGet("Icu")]
         public IActionResult Get()
         {
-            return Ok(_icu.GetAllIcu());
+            return Ok(_icuDb.GetAllIcu());
         }
 
         [HttpGet("Icu/{IcuId}")]
@@ -27,7 +27,7 @@ namespace AlertToCareAPI.Controllers
         {
             try
             {
-                return Ok(_icu.GetIcuById(icuId));
+                return Ok(_icuDb.GetIcuById(icuId));
             }
             catch (SQLiteException exception)
             {
@@ -44,7 +44,7 @@ namespace AlertToCareAPI.Controllers
         {
             try
             {
-                _icu.AddIcu(icu);
+                _icuDb.AddIcu(icu);
                 return Ok();
             }
             catch (SQLiteException exception)
@@ -62,8 +62,7 @@ namespace AlertToCareAPI.Controllers
         {
             try
             {
-                
-                return Ok(_icu.UpdateIcuById(icuId, icu));
+                return Ok(_icuDb.UpdateIcuById(icuId, icu));
             }
             catch
             {
@@ -76,7 +75,7 @@ namespace AlertToCareAPI.Controllers
         {
             try
             {
-                return Ok(_icu.DeleteIcuById(icuId));
+                return Ok(_icuDb.DeleteIcuById(icuId));
             }
             catch
             {

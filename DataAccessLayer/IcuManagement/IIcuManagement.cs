@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DataModels;
 
-namespace DataAccessLayer
+namespace DataAccessLayer.IcuManagement
 {
     public interface IIcuManagement
     {

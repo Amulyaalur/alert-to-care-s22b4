@@ -4,6 +4,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using AlertToCareAPI.Repositories;
 using DataAccessLayer;
+using DataAccessLayer.AlertManagement;
+using DataAccessLayer.BedManagement;
+using DataAccessLayer.IcuManagement;
+using DataAccessLayer.LayoutManagement;
+using DataAccessLayer.PatientManagement;
+using DataAccessLayer.VitalManagement;
 
 namespace AlertToCareAPI
 {
@@ -19,7 +25,13 @@ namespace AlertToCareAPI
             services.AddSingleton<IMonitoringRepository, MonitoringRepository>();
             services.AddSingleton<IIcuConfigurationRepository, IcuConfigurationRepository>();
             services.AddSingleton<IPatientDbRepository, PatientDbRepository>();
+
+            services.AddSingleton<IAlertManagement, AlertManagementSqLite>();
+            services.AddSingleton<IBedManagement, BedManagementSqLite>();
             services.AddSingleton<IIcuManagement, IcuManagementSqLite>();
+            services.AddSingleton<ILayoutManagement,LayoutManagementSqLite>();
+            services.AddSingleton<IPatientManagement, PatientManagementSqLite>();
+            services.AddSingleton<IVitalManagement, VitalManagementSqLite>();
 
         }
 

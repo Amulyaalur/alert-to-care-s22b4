@@ -1,6 +1,4 @@
-
-
-namespace AlertToCareAPI.Models
+namespace DataModels
 {
     public class Vital
     {

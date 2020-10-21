@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using DataAccessLayer.BedManagement;
 using DataAccessLayer.Utils;
 using DataAccessLayer.Utils.Validators;
 using DataModels;
 
-namespace DataAccessLayer
+namespace DataAccessLayer.IcuManagement
 {
     public class IcuManagementSqLite:IIcuManagement
     {
@@ -54,7 +55,6 @@ namespace DataAccessLayer
             };
 
             con.Close();
-
             return icu;
         }
         public void AddIcu(Icu icu)
@@ -84,34 +84,10 @@ namespace DataAccessLayer
             cmd.Parameters.AddWithValue("@LayoutId", icu.LayoutId);
 
             cmd.Prepare();
-
             cmd.ExecuteNonQuery();
             con.Close();
             
-            AddBeds(icu.IcuId, icu.BedsCount);
-        }
-        private void AddBeds(string icuId, int bedsCount)
-        {
-            var con = SqLiteDbConnector.GetSqLiteDbConnection();
-            var cmd = new SQLiteCommand(con);
-            con.Open();
-
-            for (var i = 1; i <= bedsCount; i++)
-            {
-                cmd.CommandText = @"INSERT INTO Beds (
-                                         BedId,
-                                         IcuId
-                                     )
-                                     VALUES (
-                                         @BedId,
-                                         @IcuId
-                                     )";
-                cmd.Parameters.AddWithValue("@BedId", icuId + "BED" + i);
-                cmd.Parameters.AddWithValue("@IcuId", icuId);
-                cmd.Prepare();
-                cmd.ExecuteNonQuery();
-            }
-            con.Close();
+            BedManagementSqLite.AddBeds(icu.IcuId, icu.BedsCount);
         }
         public bool UpdateIcuById(string icuId, Icu icu)
         {
@@ -123,41 +99,30 @@ namespace DataAccessLayer
         }
         public bool DeleteIcuById(string icuId)
         {
+            var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);
+
+            if (rowsAffected == 0)
+            {
+                throw new Exception();
+            }
+
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
             var cmd = new SQLiteCommand(con)
             {
-                CommandText = @"DELETE FROM Beds
-                                    WHERE IcuId = @icuId AND 
-                                    (SELECT count(*) 
-                                        FROM Beds
-                                            WHERE IcuId = @icuId AND
-                                            Status = @status) = 0"
+                CommandText = @"DELETE FROM Icu WHERE IcuId = @icuId"
             };
-            cmd.Parameters.AddWithValue("@icuId", icuId);
-            cmd.Parameters.AddWithValue("@status", true);
-            cmd.Prepare();
-            var rowsAffected = cmd.ExecuteNonQuery();
 
-            if (rowsAffected == 0)
-            {
-                con.Close();
-                throw new Exception();
-            }
-            cmd.CommandText = @"DELETE FROM Icu WHERE IcuId = @icuId";
             cmd.Parameters.AddWithValue("@icuId", icuId);
             cmd.Prepare();
             rowsAffected = cmd.ExecuteNonQuery();
+            con.Close();
             if (rowsAffected == 0)
             {
-                con.Close();
                 throw new Exception();
             }
-            con.Close();
             return true;
         }
-
-
     }
 }

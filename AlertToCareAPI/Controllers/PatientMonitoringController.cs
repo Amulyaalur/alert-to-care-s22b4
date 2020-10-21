@@ -1,6 +1,6 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AlertToCareAPI.Repositories;
+using DataAccessLayer.VitalManagement;
 
 
 namespace AlertToCareAPI.Controllers
@@ -10,19 +10,19 @@ namespace AlertToCareAPI.Controllers
     public class PatientMonitoringController : ControllerBase
     {
         readonly IMonitoringRepository _patientMonitoring;
-        public PatientMonitoringController(IMonitoringRepository patientMonitoring)
+        private readonly IVitalManagement _vitalDb;
+        public PatientMonitoringController(IMonitoringRepository patientMonitoring, IVitalManagement vitalDb)
         {
+            _vitalDb = vitalDb;
             this._patientMonitoring = patientMonitoring;
         }
-        // GET: api/<PatientMonitoringController>
-       /* [HttpGet]
-        public IActionResult GetVitals()
+        [HttpGet(template:"Vitals")]
+        public IActionResult GetAllPatientsVitals()
         {
-            var vitals = _patientMonitoring.GetAllVitals();
-                return Ok(vitals);
-        }*/
-        // GET: api/<PatientMonitoringController>/9245fe4a-d402-451c-b9ed-9c1a04247482
-        [HttpGet]
+            return Ok(_vitalDb.GetAllPatientsVitals());
+        }
+
+        [HttpGet(template:"Alerts")]
         public IActionResult GetAlerts()
         {
             

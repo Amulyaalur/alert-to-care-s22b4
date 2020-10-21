@@ -1,9 +1,7 @@
-﻿
-using AlertToCareAPI.Repositories;
-using AlertToCareAPI.Models;
+﻿using System.Data.SQLite;
+using DataAccessLayer.PatientManagement;
+using DataModels;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AlertToCareAPI.Controllers
 {
@@ -11,40 +9,41 @@ namespace AlertToCareAPI.Controllers
     [ApiController]
     public class IcuOccupancyController : ControllerBase
     {
-        readonly IPatientDbRepository _occupantDb;
-        public IcuOccupancyController(IPatientDbRepository repo)
+        private readonly IPatientManagement _patientDb;
+        public IcuOccupancyController(IPatientManagement patientDb)
         {
-            this._occupantDb = repo;
+            _patientDb = patientDb;
         }
 
         [HttpGet("Patients")]
         public IActionResult Get()
         {
-            return Ok(_occupantDb.GetAllPatients());
-
+            return Ok(_patientDb.GetAllPatients());
         }
 
-        [HttpGet("Patients/{PatientId}")]
+        [HttpGet("Patient/{PatientId}")]
         public IActionResult Get(string patientId)
         {
-            var patients = _occupantDb.GetAllPatients();
-                foreach (var patient in patients)
-                {
-                    if (patient.PatientId == patientId)
-                    {
-                        return Ok(patient);
-                    }
-                }
-
+            try
+            {
+                return Ok(_patientDb.GetPatientById(patientId));
+            }
+            catch (SQLiteException exception)
+            {
+                return StatusCode(500, exception);
+            }
+            catch
+            {
                 return BadRequest();
+            }
         }
 
-        [HttpPost("Patients")]
+        [HttpPost("Patient")]
         public IActionResult Post([FromBody] Patient patient)
         {
             try
             {
-                _occupantDb.AddPatient(patient);
+                _patientDb.AddPatient(patient);
                 return Ok();
             }
             catch
@@ -53,12 +52,12 @@ namespace AlertToCareAPI.Controllers
             }
         }
 
-        [HttpPut("Patients/{PatientId}")]
+        [HttpPut("Patient/{PatientId}")]
         public IActionResult Put(string patientId, [FromBody] Patient patient)
         {
             try
             {
-                _occupantDb.UpdatePatient(patientId, patient);
+                _patientDb.UpdatePatient(patientId, patient);
                 return Ok();
             }
             catch
@@ -67,12 +66,12 @@ namespace AlertToCareAPI.Controllers
             }
         }
 
-        [HttpDelete("Patients/{PatientId}")]
+        [HttpDelete("Patient/{PatientId}")]
         public IActionResult Delete(string patientId)
         {
             try
             {
-                _occupantDb.RemovePatient(patientId);
+                _patientDb.RemovePatient(patientId);
                 return Ok();
             }
             catch

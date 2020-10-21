@@ -2,7 +2,6 @@ namespace DataModels
 {
     public class Patient
     {
-        
         public string PatientId { get; set; }
         public string PatientName { get; set; }
         public int Age { get; set; }
