@@ -53,14 +53,14 @@ namespace DataAccessLayer.BedManagement
         public static void ChangeBedStatusToTrueByBedId(string bedId)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
-            var cmd = new SQLiteCommand(con);
             con.Open();
-
-            
-            cmd.CommandText = @"UPDATE Beds
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"UPDATE Beds
                                     SET 
                                         Status = true
-                                        WHERE BedId = @BedId";
+                                        WHERE BedId = @BedId"
+            };
             cmd.Parameters.AddWithValue("@BedId", bedId);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
@@ -70,13 +70,14 @@ namespace DataAccessLayer.BedManagement
         public static void ChangeBedStatusToFalseByPatientId(string patientId)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
-            var cmd = new SQLiteCommand(con);
             con.Open();
-
-            cmd.CommandText = @"UPDATE Beds
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"UPDATE Beds
                                     SET 
                                         Status = false
-                                        WHERE BedId = (Select BedId from Patients where PatientId=@PatientId)";
+                                        WHERE BedId = (Select BedId from Patients where PatientId=@PatientId)"
+            };
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             cmd.Prepare();
             cmd.ExecuteNonQuery();

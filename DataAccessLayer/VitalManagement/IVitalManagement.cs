@@ -6,6 +6,6 @@ namespace DataAccessLayer.VitalManagement
     public interface IVitalManagement
     {
         IEnumerable<object> GetAllPatientsVitals();
-        public void UpdateVitalByPatientId(string patientId, Vital vital);
+        public bool UpdateVitalByPatientId(string patientId, Vital vital);
     }
 }

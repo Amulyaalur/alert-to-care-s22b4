@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using DataAccessLayer.AlertManagement;
 using DataAccessLayer.Utils;
 using DataModels;
 
@@ -38,7 +39,7 @@ namespace DataAccessLayer.VitalManagement
             con.Dispose();
             return listOfAllPatientsVitals;
         }
-        public void UpdateVitalByPatientId(string patientId, Vital vital)
+        public bool UpdateVitalByPatientId(string patientId, Vital vital)
         {
             ////add vital data model check
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
@@ -65,13 +66,14 @@ namespace DataAccessLayer.VitalManagement
                 throw new Exception();
             }
 
-            //CheckVitalsAndAddToAlertsTable(vital);
+            
+            return CheckVitalsAndAddToAlertsTable(vital);
         }
-        private void CheckVitalsAndAddToAlertsTable(Vital vital)
+        private bool CheckVitalsAndAddToAlertsTable(Vital vital)
         {
-            CheckIfVitalsAreOutOfRange(vital);
+            return CheckIfVitalsAreOutOfRange(vital);
         }
-        private void CheckIfVitalsAreOutOfRange(Vital vital)
+        private bool CheckIfVitalsAreOutOfRange(Vital vital)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
@@ -92,6 +94,7 @@ namespace DataAccessLayer.VitalManagement
             cmd.Prepare();
             var reader = cmd.ExecuteReader();
             reader.Read();
+            
 
             var minBpm = reader.GetFloat(0);
             var maxBpm = reader.GetFloat(1);
@@ -100,58 +103,13 @@ namespace DataAccessLayer.VitalManagement
             var minRespRate = reader.GetFloat(4);
             var maxRespRate = reader.GetFloat(5);
 
+            reader.Dispose();
+            con.Dispose();
             var generateAlert = (vital.Bpm < minBpm || vital.Bpm > maxBpm) || (vital.Spo2 < minSpo2 || vital.Spo2 > maxSpo2) || (vital.RespRate < minRespRate || vital.RespRate > maxRespRate);
 
-            if (generateAlert) AddToAlertsTable(vital.PatientId);
-            
+            if (generateAlert) AlertManagementSqLite.AddToAlertsTable(vital.PatientId);
+            return generateAlert;
 
-        }
-        private void AddToAlertsTable(string patientId)
-        {
-            var con = SqLiteDbConnector.GetSqLiteDbConnection();
-            con.Open();
-
-            var cmd = new SQLiteCommand(con)
-            {
-                CommandText = @"SELECT PatientName,
-                                       BedId,
-                                       IcuId
-                                  FROM Patients
-                                  WHERE PatientId = @PatientId"
-            };
-            cmd.Parameters.AddWithValue("@PatientId", patientId);
-            cmd.Prepare();
-            var reader1 = cmd.ExecuteReader();
-            reader1.Read();
-            cmd.CommandText = @"SELECT LayoutId
-                                  FROM Icu
-                                  Where IcuId = @IcuId";
-            cmd.Parameters.AddWithValue("@PatientId", reader1.GetString(2));
-            cmd.Prepare();
-            var reader2 = cmd.ExecuteReader();
-            reader2.Read();
-
-            cmd.CommandText = @"INSERT INTO Alerts (
-                                           LayoutId,
-                                           IcuId,
-                                           BedId,
-                                           PatientId
-                                           )
-                                           VALUES (
-                                           @LayoutId,
-                                           @IcuId,
-                                           @BedId,
-                                           @PatientId
-                                           )";
-            cmd.Parameters.AddWithValue("@LayoutId", reader2.GetString(0));
-            cmd.Parameters.AddWithValue("@IcuId", reader1.GetString(2));
-            cmd.Parameters.AddWithValue("@BedId", reader1.GetString(1));
-            cmd.Parameters.AddWithValue("@PatientId", patientId);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-            reader1.Dispose();
-            reader2.Dispose();
-            con.Dispose();
         }
         public static void AddPatientIntoVitalsTable(string patientId)
         {
