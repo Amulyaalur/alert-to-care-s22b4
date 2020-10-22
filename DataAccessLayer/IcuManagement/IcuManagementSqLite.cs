@@ -62,7 +62,7 @@ namespace DataAccessLayer.IcuManagement
         public void AddIcu(Icu icu)
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
-            CheckIfIcuIdExists(icu.IcuId);
+            var count = CheckIfIcuIdExists(icu.IcuId);
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -91,15 +91,15 @@ namespace DataAccessLayer.IcuManagement
             
             BedManagementSqLite.AddBeds(icu.IcuId, icu.BedsCount);
         }
-        public bool UpdateIcuById(string icuId, Icu icu)
+        public void UpdateIcuById(string icuId, Icu icu)
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
+            CommonFieldValidator.StringValidator(icuId);
 
             DeleteIcuById(icuId);
             AddIcu(icu);
-            return true;
         }
-        public bool DeleteIcuById(string icuId)
+        public void DeleteIcuById(string icuId)
         {
             var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);
 
@@ -123,12 +123,11 @@ namespace DataAccessLayer.IcuManagement
 
             if (rowsAffected == 0)
             {
-                throw new Exception();
+                throw new SQLiteException(SQLiteErrorCode.NotFound, message: "IcuId does not exists");
             }
-            return true;
         }
 
-        public static void CheckIfIcuIdExists(string icuId)
+        public static long CheckIfIcuIdExists(string icuId)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
@@ -142,11 +141,10 @@ namespace DataAccessLayer.IcuManagement
             cmd.Prepare();
             var count = (long)cmd.ExecuteScalar();
             con.Dispose();
-
-            if (count != 0)
-            {
+            return count;
+            
                 throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message:"IcuId exists");
-            }
+            
         }
     }
 }

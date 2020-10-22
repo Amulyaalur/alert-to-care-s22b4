@@ -79,7 +79,8 @@ namespace AlertToCareAPI.Controllers
         {
             try
             {
-                return Ok(_icuDb.UpdateIcuById(icuId, icu));
+                _icuDb.UpdateIcuById(icuId, icu);
+                return Ok();
             }
             catch
             {
@@ -92,7 +93,8 @@ namespace AlertToCareAPI.Controllers
         {
             try
             {
-                return Ok(_icuDb.DeleteIcuById(icuId));
+                _icuDb.DeleteIcuById(icuId);
+                return Ok();
             }
             catch
             {
