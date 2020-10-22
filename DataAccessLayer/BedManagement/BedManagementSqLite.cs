@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SQLite;
+using DataAccessLayer.IcuManagement;
 using DataAccessLayer.Utils;
 using DataModels;
 
@@ -9,6 +10,8 @@ namespace DataAccessLayer.BedManagement
     {
         public IEnumerable<Bed> GetAllAvailableBedsByIcuId(string icuId)
         {
+            if (IcuManagementSqLite.CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
+            
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
             var cmd = new SQLiteCommand(con)
@@ -41,6 +44,7 @@ namespace DataAccessLayer.BedManagement
         }
         public static void AddBeds(string icuId, int bedsCount)
         {
+            if (IcuManagementSqLite.CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             var cmd = new SQLiteCommand(con);
             con.Open();
@@ -64,6 +68,7 @@ namespace DataAccessLayer.BedManagement
         }
         public static int DeleteBedsByIcuId(string icuId)
         {
+            if (IcuManagementSqLite.CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -86,6 +91,7 @@ namespace DataAccessLayer.BedManagement
         }
         public static void ChangeBedStatusToTrueByBedId(string bedId)
         {
+            if (CheckIfBedIdExists(bedId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "BedId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
             var cmd = new SQLiteCommand(con)
@@ -117,6 +123,42 @@ namespace DataAccessLayer.BedManagement
             cmd.ExecuteNonQuery();
 
             con.Dispose();
+        }
+        public static long CheckIfBedIdExists(string bedId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT COUNT(*) from Beds WHERE BedId = @BedId"
+            };
+
+            cmd.Parameters.AddWithValue("@BedId", bedId);
+            cmd.Prepare();
+            var count = (long)cmd.ExecuteScalar();
+            con.Dispose();
+            return count;
+        }
+        public static bool CheckIfBedIsAvailableByBedIdAndIcuId(string icuId, string bedId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT Status from Beds WHERE BedId = @BedId AND IcuId = @IcuId"
+            };
+
+            cmd.Parameters.AddWithValue("@BedId", bedId);
+            cmd.Parameters.AddWithValue("@IcuId", icuId);
+            cmd.Prepare();
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            var status = reader.GetBoolean(0);
+            reader.Dispose();
+            con.Dispose();
+            return status;
         }
     }
 }

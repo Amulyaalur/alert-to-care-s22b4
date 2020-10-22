@@ -24,5 +24,14 @@ namespace DataAccessLayer.Utils.Validators
             }
             throw new ArgumentException(message:"Integer Field(s) is less than or equal to zero");
         }
+
+        public static void FloatValidator(float field)
+        {
+            if (field >= 0)
+            {
+                return;
+            }
+            throw new ArgumentException(message: "Float Field(s) is less than to zero");
+        }
     }
 }

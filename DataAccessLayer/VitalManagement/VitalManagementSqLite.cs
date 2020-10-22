@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using DataAccessLayer.AlertManagement;
+using DataAccessLayer.PatientManagement;
 using DataAccessLayer.Utils;
+using DataAccessLayer.Utils.Validators;
 using DataModels;
 
 namespace DataAccessLayer.VitalManagement
@@ -39,9 +41,10 @@ namespace DataAccessLayer.VitalManagement
             con.Dispose();
             return listOfAllPatientsVitals;
         }
-        public bool UpdateVitalByPatientId(string patientId, Vital vital)
+        public void UpdateVitalByPatientId(string patientId, Vital vital)
         {
-            ////add vital data model check
+            if (PatientManagementSqLite.CheckIfPatientIdExists(patientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
+            VitalDataModelValidator.ValidateVitalDataModel(vital);
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -59,57 +62,15 @@ namespace DataAccessLayer.VitalManagement
             cmd.Parameters.AddWithValue("@RespRate", vital.RespRate);
             cmd.Parameters.AddWithValue("@PatientId", patientId);
             cmd.Prepare();
-            var rowsAffected = cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
             con.Dispose();
-            if (rowsAffected == 0)
-            {
-                throw new Exception();
-            }
 
-            
-            return CheckVitalsAndAddToAlertsTable(vital);
+            CheckVitalsAndAddToAlertsTable(vital);
         }
-        private bool CheckVitalsAndAddToAlertsTable(Vital vital)
+        private void CheckVitalsAndAddToAlertsTable(Vital vital)
         {
-            return CheckIfVitalsAreOutOfRange(vital);
-        }
-        private bool CheckIfVitalsAreOutOfRange(Vital vital)
-        {
-            var con = SqLiteDbConnector.GetSqLiteDbConnection();
-            con.Open();
-
-            var cmd = new SQLiteCommand(con)
-            {
-                CommandText = @"SELECT 
-                                       MinBpm,
-                                       MaxBpm,
-                                       MinSpo2,
-                                       MaxSpo2,
-                                       MinRespRate,
-                                       MaxRespRate
-                                  FROM Vitals
-                                  WHERE PatientId = @PatientId"
-            };
-            cmd.Parameters.AddWithValue("@PatientId", vital.PatientId);
-            cmd.Prepare();
-            var reader = cmd.ExecuteReader();
-            reader.Read();
-            
-
-            var minBpm = reader.GetFloat(0);
-            var maxBpm = reader.GetFloat(1);
-            var minSpo2 = reader.GetFloat(2);
-            var maxSpo2 = reader.GetFloat(3);
-            var minRespRate = reader.GetFloat(4);
-            var maxRespRate = reader.GetFloat(5);
-
-            reader.Dispose();
-            con.Dispose();
-            var generateAlert = (vital.Bpm < minBpm || vital.Bpm > maxBpm) || (vital.Spo2 < minSpo2 || vital.Spo2 > maxSpo2) || (vital.RespRate < minRespRate || vital.RespRate > maxRespRate);
-
+            var generateAlert = VitalsChecker.CheckAllVitals(vital);
             if (generateAlert) AlertManagementSqLite.AddToAlertsTable(vital.PatientId);
-            return generateAlert;
-
         }
         public static void AddPatientIntoVitalsTable(string patientId)
         {

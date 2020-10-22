@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using DataAccessLayer.BedManagement;
 using DataAccessLayer.PatientManagement;
 using DataModels;
@@ -33,11 +34,11 @@ namespace AlertToCareAPI.Controllers
             }
             catch (SQLiteException exception)
             {
-                return StatusCode(500, exception);
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
-            catch
+            catch (Exception exception)
             {
-                return BadRequest();
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -48,9 +49,13 @@ namespace AlertToCareAPI.Controllers
             {
                 return Ok(_bedDb.GetAllAvailableBedsByIcuId(icuId));
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -62,9 +67,13 @@ namespace AlertToCareAPI.Controllers
                 _patientDb.AddPatient(patient);
                 return Ok();
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -76,9 +85,13 @@ namespace AlertToCareAPI.Controllers
                 _patientDb.UpdatePatient(patientId, patient);
                 return Ok();
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -90,9 +103,13 @@ namespace AlertToCareAPI.Controllers
                 _patientDb.RemovePatient(patientId);
                 return Ok();
             }
-            catch(SQLiteException )
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
     }

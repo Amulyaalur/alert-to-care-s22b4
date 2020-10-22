@@ -1,4 +1,6 @@
-﻿using DataAccessLayer.AlertManagement;
+﻿using System;
+using System.Data.SQLite;
+using DataAccessLayer.AlertManagement;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLayer.VitalManagement;
 using DataModels;
@@ -20,13 +22,29 @@ namespace AlertToCareAPI.Controllers
         [HttpGet(template:"Vitals")]
         public IActionResult GetAllPatientsVitals()
         {
-            return Ok(_vitalDb.GetAllPatientsVitals());
+            
+            try
+            {
+                return Ok(_vitalDb.GetAllPatientsVitals());
+            }
+
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
+            }
         }
 
         [HttpGet(template:"Alerts")]
         public IActionResult GetAlerts()
         {
-            return Ok(_alertDb.GetAllAlerts());
+            try
+            {
+                return Ok(_alertDb.GetAllAlerts());
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
+            }
         }
 
         [HttpPut(template: "Vital/{patientId}")]
@@ -34,12 +52,16 @@ namespace AlertToCareAPI.Controllers
         {
             try
             {
-
-                return Ok(_vitalDb.UpdateVitalByPatientId(patientId, vital));
+                _vitalDb.UpdateVitalByPatientId(patientId, vital);
+                return Ok();
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -51,9 +73,13 @@ namespace AlertToCareAPI.Controllers
                 _alertDb.ToggleAlertStatusByAlertId(alertId);
                 return Ok();
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -65,9 +91,13 @@ namespace AlertToCareAPI.Controllers
                 _alertDb.DeleteAlertByAlertId(alertId);
                 return Ok();
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 

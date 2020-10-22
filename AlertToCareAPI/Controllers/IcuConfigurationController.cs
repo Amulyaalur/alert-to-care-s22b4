@@ -22,7 +22,15 @@ namespace AlertToCareAPI.Controllers
         [HttpGet("Icu")]
         public IActionResult Get()
         {
-            return Ok(_icuDb.GetAllIcu());
+            try
+            {
+                return Ok(_icuDb.GetAllIcu());
+            }
+            
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
+            }
         }
 
         [HttpGet("Icu/{IcuId}")]
@@ -34,11 +42,11 @@ namespace AlertToCareAPI.Controllers
             }
             catch (SQLiteException exception)
             {
-                return StatusCode(500, exception);
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
-            catch
+            catch(Exception exception)
             {
-                return BadRequest();
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -49,9 +57,9 @@ namespace AlertToCareAPI.Controllers
             {
                 return Ok(_layoutDb.GetAllLayouts());
             }
-            catch
+            catch(Exception exception)
             {
-                return BadRequest();
+                return StatusCode(400, exception.Message);
             }
         }
 
@@ -66,7 +74,7 @@ namespace AlertToCareAPI.Controllers
             }
             catch (SQLiteException exception)
             {
-                return new ObjectResult(exception.Message) {StatusCode = 500};
+                return new ObjectResult(exception.Message) {StatusCode = 400};
             }
             catch (Exception exception)
             {
@@ -82,9 +90,13 @@ namespace AlertToCareAPI.Controllers
                 _icuDb.UpdateIcuById(icuId, icu);
                 return Ok();
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 
@@ -96,9 +108,13 @@ namespace AlertToCareAPI.Controllers
                 _icuDb.DeleteIcuById(icuId);
                 return Ok();
             }
-            catch
+            catch (SQLiteException exception)
             {
-                return BadRequest();
+                return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
     }

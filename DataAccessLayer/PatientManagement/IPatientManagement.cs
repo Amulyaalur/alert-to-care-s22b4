@@ -5,11 +5,11 @@ namespace DataAccessLayer.PatientManagement
 {
     public interface IPatientManagement
     {
-        IEnumerable<Patient> GetAllPatients();
-        Patient GetPatientById(string patientId);
-        void AddPatient(Patient patient);
-        bool RemovePatient(string patientId);
-        void UpdatePatient(string patientId, Patient patient);
+        public IEnumerable<Patient> GetAllPatients();
+        public Patient GetPatientById(string patientId);
+        public void AddPatient(Patient patient);
+        public void RemovePatient(string patientId);
+        public void UpdatePatient(string patientId, Patient patient);
         
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data.SQLite;
 using DataAccessLayer.BedManagement;
 using DataAccessLayer.Utils;
@@ -39,6 +38,7 @@ namespace DataAccessLayer.IcuManagement
         }
         public Icu GetIcuById(string icuId)
         {
+            if (CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey,"IcuId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
             var cmd = new SQLiteCommand(con)
@@ -62,7 +62,7 @@ namespace DataAccessLayer.IcuManagement
         public void AddIcu(Icu icu)
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
-            var count = CheckIfIcuIdExists(icu.IcuId);
+            if (CheckIfIcuIdExists(icu.IcuId) > 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -95,12 +95,13 @@ namespace DataAccessLayer.IcuManagement
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
             CommonFieldValidator.StringValidator(icuId);
-
+            if (CheckIfIcuIdExists(icu.IcuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId already exists");
             DeleteIcuById(icuId);
             AddIcu(icu);
         }
         public void DeleteIcuById(string icuId)
         {
+            if (CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
             var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);
 
             if (rowsAffected == 0)
@@ -126,7 +127,6 @@ namespace DataAccessLayer.IcuManagement
                 throw new SQLiteException(SQLiteErrorCode.NotFound, message: "IcuId does not exists");
             }
         }
-
         public static long CheckIfIcuIdExists(string icuId)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
@@ -142,9 +142,6 @@ namespace DataAccessLayer.IcuManagement
             var count = (long)cmd.ExecuteScalar();
             con.Dispose();
             return count;
-            
-                throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message:"IcuId exists");
-            
         }
     }
 }
