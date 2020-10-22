@@ -1,4 +1,5 @@
 ﻿using System.Data.SQLite;
+using DataAccessLayer.BedManagement;
 using DataAccessLayer.PatientManagement;
 using DataModels;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,11 @@ namespace AlertToCareAPI.Controllers
     public class IcuOccupancyController : ControllerBase
     {
         private readonly IPatientManagement _patientDb;
-        public IcuOccupancyController(IPatientManagement patientDb)
+        private readonly IBedManagement _bedDb;
+        public IcuOccupancyController(IPatientManagement patientDb, IBedManagement bedDb)
         {
             _patientDb = patientDb;
+            _bedDb = bedDb;
         }
 
         [HttpGet("Patients")]
@@ -31,6 +34,19 @@ namespace AlertToCareAPI.Controllers
             catch (SQLiteException exception)
             {
                 return StatusCode(500, exception);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet(template: "Beds/{icuId}")]
+        public IActionResult GetAllAvailableBedsByIcuId(string icuId)
+        {
+            try
+            {
+                return Ok(_bedDb.GetAllAvailableBedsByIcuId(icuId));
             }
             catch
             {
@@ -74,7 +90,7 @@ namespace AlertToCareAPI.Controllers
                 _patientDb.RemovePatient(patientId);
                 return Ok();
             }
-            catch
+            catch(SQLiteException )
             {
                 return BadRequest();
             }

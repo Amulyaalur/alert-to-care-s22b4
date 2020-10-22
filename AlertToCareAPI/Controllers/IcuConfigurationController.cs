@@ -1,8 +1,9 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLayer.IcuManagement;
+using DataAccessLayer.LayoutManagement;
 using DataModels;
-
 
 namespace AlertToCareAPI.Controllers
 {
@@ -11,9 +12,11 @@ namespace AlertToCareAPI.Controllers
     public class IcuConfigurationController : ControllerBase
     {
         private readonly IIcuManagement _icuDb;
-        public IcuConfigurationController(IIcuManagement icu)
+        private readonly ILayoutManagement _layoutDb;
+        public IcuConfigurationController(IIcuManagement icu, ILayoutManagement layoutDb)
         {
             _icuDb = icu;
+            _layoutDb = layoutDb;
         }
 
         [HttpGet("Icu")]
@@ -39,9 +42,23 @@ namespace AlertToCareAPI.Controllers
             }
         }
 
+        [HttpGet(template: "Layouts")]
+        public IActionResult GetAllLayouts()
+        {
+            try
+            {
+                return Ok(_layoutDb.GetAllLayouts());
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPost("Icu")]
         public IActionResult Post([FromBody] Icu icu)
         {
+
             try
             {
                 _icuDb.AddIcu(icu);
@@ -49,11 +66,11 @@ namespace AlertToCareAPI.Controllers
             }
             catch (SQLiteException exception)
             {
-                return StatusCode(500, exception);
+                return new ObjectResult(exception.Message) {StatusCode = 500};
             }
-            catch
+            catch (Exception exception)
             {
-                return BadRequest();
+                return StatusCode(500, exception.Message);
             }
         }
 

@@ -8,8 +8,8 @@ namespace DataAccessLayer.IcuManagement
         public IEnumerable<Icu> GetAllIcu();
         public Icu GetIcuById(string icuId);
         public void AddIcu(Icu icu);
-        public bool UpdateIcuById(string icuId, Icu icu);
-        public bool DeleteIcuById(string icuId);
+        public void UpdateIcuById(string icuId, Icu icu);
+        public void DeleteIcuById(string icuId);
 
     }
 }

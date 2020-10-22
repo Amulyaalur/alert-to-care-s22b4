@@ -1,10 +1,44 @@
-﻿using System.Data.SQLite;
+﻿using System.Collections.Generic;
+using System.Data.SQLite;
 using DataAccessLayer.Utils;
+using DataModels;
 
 namespace DataAccessLayer.BedManagement
 {
     public class BedManagementSqLite:IBedManagement
     {
+        public IEnumerable<Bed> GetAllAvailableBedsByIcuId(string icuId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT BedId,
+                                       IcuId,
+                                       Status
+                                  FROM Beds
+                                  WHERE IcuId = @IcuId AND
+                                  Status = false"
+            };
+            cmd.Parameters.AddWithValue("@IcuId", icuId);
+            cmd.Prepare();
+            var reader = cmd.ExecuteReader();
+            var listOfAvailableBeds = new List<Bed>();
+
+            while (reader.Read())
+            {
+                listOfAvailableBeds.Add(new Bed()
+                {
+                    BedId = reader.GetString(0),
+                    IcuId = reader.GetString(1),
+                    Status = reader.GetBoolean(2)
+                });
+            }
+            reader.Dispose();
+            con.Dispose();
+
+            return listOfAvailableBeds;
+        }
         public static void AddBeds(string icuId, int bedsCount)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();

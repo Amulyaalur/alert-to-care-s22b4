@@ -13,7 +13,7 @@ namespace DataAccessLayer.Utils.Validators
             {
                 return;
             }
-            throw new ArgumentNullException();
+            throw new ArgumentException("Data Field(s) cannot be null");
         }
 
         public static void IntegerValidator(int field)
@@ -22,7 +22,7 @@ namespace DataAccessLayer.Utils.Validators
             {
                 return;
             }
-            throw new ArgumentException(message:"Field less than or equal to zero");
+            throw new ArgumentException(message:"Integer Field(s) is less than or equal to zero");
         }
     }
 }

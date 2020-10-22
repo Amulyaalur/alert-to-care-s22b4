@@ -47,7 +47,6 @@ namespace DataAccessLayer.PatientManagement
             }
             reader.Dispose();
             con.Dispose();
-
             return listOfPatients;
         }
         public Patient GetPatientById(string patientId)
@@ -90,7 +89,7 @@ namespace DataAccessLayer.PatientManagement
         public void AddPatient(Patient patient)
         {
             PatientDataModelValidator.ValidatePatientDataModel(patient);
-
+            
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 

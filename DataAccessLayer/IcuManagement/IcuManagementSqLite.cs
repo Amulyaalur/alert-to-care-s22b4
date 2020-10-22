@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using DataAccessLayer.BedManagement;
 using DataAccessLayer.Utils;
@@ -61,7 +62,7 @@ namespace DataAccessLayer.IcuManagement
         public void AddIcu(Icu icu)
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
-            
+            CheckIfIcuIdExists(icu.IcuId);
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -125,6 +126,27 @@ namespace DataAccessLayer.IcuManagement
                 throw new Exception();
             }
             return true;
+        }
+
+        public static void CheckIfIcuIdExists(string icuId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT COUNT(*) from Icu WHERE IcuId = @IcuId"
+            };
+
+            cmd.Parameters.AddWithValue("@IcuId", icuId);
+            cmd.Prepare();
+            var count = (long)cmd.ExecuteScalar();
+            con.Dispose();
+
+            if (count != 0)
+            {
+                throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message:"IcuId exists");
+            }
         }
     }
 }
