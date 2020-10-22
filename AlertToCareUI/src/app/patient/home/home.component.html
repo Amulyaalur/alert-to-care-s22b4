@@ -1,0 +1,38 @@
+<nav-comp></nav-comp>
+<div *ngIf="show">
+    <div>
+        <a (click)='toggle()' href="#" routerLink='./admit'>Admit Patient</a>
+    </div>
+    <div class='table-div'>
+        <table>
+            <tr>
+                <th>Patient Id</th>
+                <th>Patient Name</th>
+                <th>ICU Id</th>
+                <th>Bed Id</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Contact Number</th>
+                <th>Discharge</th>
+                <th>Update</th>
+            </tr>
+
+            <tr *ngFor='let patient of patientsArr'>
+                <td >{{patient.patientId}}</td>
+                <td>{{patient.patientName}}</td>
+                <td>{{patient.icuId}}</td>
+                <td>{{patient.bedId}}</td>
+                <td>{{patient.email}}</td>
+                <td>{{patient.age}}</td>
+                <td>{{patient.address}}</td>
+                <td>{{patient.contactNumber}}</td>
+                <!-- <td><a (click)='toggle()' href="#" routerLink='./admit'>Discharge</a></td>
+                <td><a (click)='toggle()' href="#" routerLink='./admit'>Update</a></td> -->
+                <td ><button  (click)="discharge(patient.patientId)">Discharge</button></td>
+                <td><button  (click)="update(patient.patientId)">Update</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<router-outlet></router-outlet>

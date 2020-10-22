@@ -1,0 +1,17 @@
+mat-table{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    border: 2px solid black;
+}
+mat-header-cell{
+    font-size: 24px;
+    font-weight: bold;
+}
+/* tr{
+
+}
+th{
+
+} */

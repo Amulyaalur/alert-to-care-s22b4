@@ -1,0 +1,49 @@
+<div class ='page'>
+    <div>
+        <a  href="patients" >All Patient</a>
+    </div>
+    <div class="login-page">
+        <div class="form">
+            <label>Patient Admission</label>
+            <div class="login-form">
+                <input type="text" [(ngModel)]='patientObj.patientId'  placeholder="Patient Id"/>
+                <input type="text" [(ngModel)]='patientObj.patientName'  placeholder="Patient Name"/>
+                <input type="number" [(ngModel)]='patientObj.age'  placeholder="Age"/>
+                <input type="text" [(ngModel)]='patientObj.contactNumber'  placeholder="Contact Number"/>
+                <input type="text" [(ngModel)]='patientObj.address'  placeholder="Address"/>
+                <input type="email" [(ngModel)]='patientObj.email'  placeholder="Email"/>
+                
+                <select (change)='getAvailableBeds()' name="icu_list" [(ngModel)]="icu" #icu_id="ngModel" required>
+                    <option value="" disabled selected>Select ICU ID</option>
+                    <option  *ngFor="let icu1 of icuList" [value]="icu1"  >{{icu1}}</option>
+                </select>
+                <!-- <input type="text" [(ngModel)]='patientObj.bedId' placeholder="Bed ID"/> -->
+                <select name="bed_list" [(ngModel)]="patientObj.bedId" #bed_id="ngModel" required>
+                    <option value="" disabled selected>Select ICU Bed</option>
+                    <option  *ngFor="let bed of bedList" [value]="bed.bedId">{{bed.bedId}}</option>
+                </select>
+                <h3>{{errorMessage}}</h3>
+                <!-- <button class="layoutBtn" (click)='getLayout()'>Get Layout</button> -->
+                <button (click)='admitPatient()'>Add</button>
+                <button (click)='onReset()'>Reset</button>
+                <p >{{message}}</p>
+            </div>
+        </div>
+    </div>
+  <!-- <div>
+      <div *ngIf=isSubmitted>
+          <img src={{imageSrc}} width="250px" height="250px">
+      </div>
+  </div> -->
+</div>
+  
+  <!-- patientObj={
+    address: "",
+    age: undefined,
+    bedId: "",
+    contactNumber: "",
+    email: "",
+    icuId: "",
+    patientId: "",
+    patientName: ""
+  }; -->

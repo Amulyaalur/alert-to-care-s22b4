@@ -1,0 +1,22 @@
+<div class="login-page">
+    <div class="form">
+        <label>Add ICU</label>
+        <div class="login-form">
+            <input type="text" [(ngModel)]='icuId'  placeholder="ICU ID (eg. ICU01)"/>
+            <input type="number" [(ngModel)]='bedCount' placeholder="Bed Count"/>
+            <select (change)='getLayout()' name="layout_id" [(ngModel)]="layouts" #name_id="ngModel" required>
+                <option value="" disabled selected>Select Layout ID</option>
+                <option (change)='getLayout()' *ngFor="let layout of layoutId" [value]="layout.name"  >{{layout.name}}</option>
+            </select>
+            <!-- <button class="layoutBtn" (click)='getLayout()'>Get Layout</button> -->
+            <button (click)='addFunction()'>Add</button>
+            <button (click)='onReset()'>Reset</button>
+            <p >{{message}}</p>
+        </div>
+    </div>
+  </div>
+  <div>
+      <div *ngIf=isSubmitted>
+          <img src={{imageSrc}} width="250px" height="250px">
+      </div>
+  </div>

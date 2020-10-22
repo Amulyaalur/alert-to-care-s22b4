@@ -1,0 +1,15 @@
+<div class="login-page">
+    <div class="form">
+        <label>Remove ICU</label>
+        <div class="login-form">
+            <select name="icu_list" [(ngModel)]="icu" #name_id="ngModel" required>
+                <option value="" disabled selected>Select ICU ID</option>
+                <option (click)='dropdown()' *ngFor="let icu1 of icuId" [value]="icu1"  >{{icu1}}</option>
+            </select>
+            <!-- <button class="layoutBtn" (click)='getLayout()'>Get Layout</button> -->
+            <button (click)='delete()'>Delete</button>
+            <!-- <button (click)='onReset()'>Reset</button> -->
+            <p >{{message}}</p>
+        </div>
+    </div>
+  </div>

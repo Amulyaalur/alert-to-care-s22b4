@@ -1,0 +1,14 @@
+<div>
+    <div class="login-page">
+        <div class="form">
+            <label>Login</label>
+            <div class="login-form">
+                <input type="text" [(ngModel)]='username'  placeholder="username"/>
+                <input type="password" [(ngModel)]='password' placeholder="password"/>
+                <button (click)='loginFunction()'>login</button>
+                <button (click)='onReset()'>Reset</button>
+                <p >{{message}}</p>
+            </div>
+        </div>
+    </div>
+</div>

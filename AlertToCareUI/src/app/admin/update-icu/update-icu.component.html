@@ -1,0 +1,29 @@
+<div class="login-page">
+    <div class="form">
+        <label>Update ICU</label>
+        <div class="login-form">
+            <select (change)='getIcuDetails()' name="icu_list" [(ngModel)]="icu" #name_id="ngModel" required>
+                <option value="" disabled selected>Select ICU ID</option>
+                <option (click)='dropdown()' *ngFor="let icu1 of icuList" [value]="icu1"  >{{icu1}}</option>
+            </select>
+            <input type="number" [(ngModel)]='bedCount' placeholder="Bed Count"/>
+            <select (change)='getLayoutImage()' name="layout_id" [(ngModel)]="layouts" #name_id="ngModel" required>
+                <option value="" disabled selected>Select Layout</option>
+                <option (click)='dropdown()' *ngFor="let layout of layoutId" [value]="layout.name"  >{{layout.name}}</option>
+            </select>
+            
+            <div *ngIf=isChanged>
+                <h3>Layout : {{layoutName}}  </h3>
+            </div>
+
+            <button (click)='onUpdate()'>Update</button>
+            <button (click)='onReset()'>Reset</button>
+            <p >{{message}}</p>
+        </div>
+    </div>
+  </div>
+  <div>
+      <div *ngIf=isSubmitted>
+          <img src={{imageSrc}} width="250px" height="250px">
+      </div>
+  </div>

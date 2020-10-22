@@ -1,0 +1,23 @@
+<div>  
+    <ul>
+        <li>
+            <a (click)='logout()' href="#">Logout</a>
+        </li>
+
+        <li >
+        <a *ngIf=isAdmin href='/admin'>Admin</a> 
+        </li>
+        
+        <div *ngIf=!isAdmin>
+            <li>
+                <a href='#'>Nurse</a>
+            </li>
+            <li>
+                <a href="/patients">Patients</a>
+            </li>
+            <li>
+                <a href="/home">Home</a>
+            </li>
+        </div>
+    </ul>
+</div>

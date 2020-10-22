@@ -1,0 +1,38 @@
+<h1>ICU List</h1>
+<div>
+    <!-- <table>
+        <tr>
+            <th>
+                ICU ID
+            </th>
+            <th>
+                Layout ID
+            </th>
+            <th>
+                Bed Count
+            </th>
+        </tr>
+        <tr>
+
+        </tr>
+    </table> -->
+    <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" >
+        <ng-container matColumnDef="icuId">
+            <mat-header-cell *matHeaderCellDef>ICU Id</mat-header-cell>
+            <mat-cell *matCellDef="let data">{{data.icuId}}</mat-cell> 
+        </ng-container>
+
+        <ng-container matColumnDef="layoutId">
+            <mat-header-cell *matHeaderCellDef>Layout Id</mat-header-cell>
+            <mat-cell *matCellDef="let data">{{data.layoutId}}</mat-cell> 
+        </ng-container>
+
+        <ng-container matColumnDef="bedsCount">
+            <mat-header-cell *matHeaderCellDef>Bed Count</mat-header-cell>
+            <mat-cell *matCellDef="let data">{{data.bedsCount}}</mat-cell> 
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>
