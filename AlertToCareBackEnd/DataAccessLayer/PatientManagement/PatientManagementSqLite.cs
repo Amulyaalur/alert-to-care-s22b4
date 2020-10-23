@@ -173,7 +173,7 @@ namespace DataAccessLayer.PatientManagement
             
             ExecuteRemovePatientQuery(patientId);
 
-            if (CheckIfPatientIdExists(patient.PatientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
+            if (CheckIfPatientIdExists(patient.PatientId) != 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
             AddPatient(patient);
         }
         public static long CheckIfPatientIdExists(string patientId)
