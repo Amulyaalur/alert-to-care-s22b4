@@ -23,13 +23,14 @@ export class AdmitPatientComponent implements OnInit {
   icuList=[];
   icu:string;
   errorMessage='';
+  message='';
   bedList=[];
-  @Output('show') show=new EventEmitter<boolean>();
+  // @Output('show') show=new EventEmitter<boolean>();
   constructor(private adminService:AdminService,private patientService:PatientService) { }
  
   ngOnInit()
    {
-     this.show.emit(false);
+    //  this.show.emit(false);
     this.icuList=this.adminService.getIcuList();
   }
  
@@ -59,6 +60,7 @@ export class AdmitPatientComponent implements OnInit {
     let observable=this.patientService.admitPatient(this.patientObj);
     observable.subscribe((data:any)=>{
       console.log(data);
+      this.message="Patient Added Successfully";
     },
     (error:any)=>{
       console.log(error);
@@ -66,5 +68,10 @@ export class AdmitPatientComponent implements OnInit {
     ()=>{
       console.log("Addition completed");
     });
+  }
+  onReset(){
+    this.message='';
+    this.errorMessage='';
+    
   }
 }

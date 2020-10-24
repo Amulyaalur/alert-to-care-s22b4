@@ -15,7 +15,7 @@ import { UpdatePatientComponent } from './update-patient/update-patient.componen
 @NgModule({
   declarations: [AdmitPatientComponent, PatientHomeComponent, DischargeComponent, UpdatePatientComponent],
   imports: [
-    CommonModule,RouterModule,LayoutModule,FormsModule,MatTableModule,
+    CommonModule,RouterModule,LayoutModule,FormsModule,MatTableModule
   ],
   exports:[AdmitPatientComponent,PatientHomeComponent,DischargeComponent,UpdatePatientComponent],
   providers:[{provide:PatientService,useClass:PatientService}]

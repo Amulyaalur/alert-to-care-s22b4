@@ -1,2 +1,56 @@
 <nav-comp></nav-comp>
-<p>home works!</p>
+<h2>Continuous Patient Monitoring</h2>
+<div>
+    <div *ngIf="!isEmptyList">
+        <table>
+            <tr>
+                <th>Alert ID</th>
+                <th>LayoutId</th>
+                <th>IcuId</th>
+                <th>BedId</th>
+                <th>PatientId</th>
+                <th>PatientName</th>
+                <th>Bpm</th>
+                <th>Spo2</th>
+                <th>RespRate</th>
+                <th>Active Alert</th>
+                <th>Handle Alert</th>
+                <th>Delete Alert</th>
+            </tr>
+            <tr *ngFor='let alert of alertInfo' >
+                <td>{{alert.alertId}}</td>
+                <td>{{alert.layoutId}}</td>
+                <td>{{alert.icuId}}</td>
+                <td>{{alert.bedId}}</td>
+                <td>{{alert.patientId}}</td>
+                <td>{{alert.patientName}}</td>
+                <td>{{alert.bpm}}</td>
+                <td>{{alert.spo2}}</td>
+                <td>{{alert.respRate}}</td>
+                <td>{{alert.alertStatus}}</td>
+                <td><button (click)='stopAlert(alert.alertId)' *ngIf='alert.alertStatus'>Stop Alert</button>
+                    <button (click)='restartAlert(alert.alertId)' *ngIf='!alert.alertStatus'>Undo Alert</button>
+                </td>
+                <td><button (click)='removeAlert(alert.alertId)' *ngIf='!alert.alertStatus'>Remove Alert</button></td>
+                
+            </tr>
+        </table>
+    </div> 
+    <div  *ngIf="isEmptyList">
+        <h3>No Active Alerts Currently</h3>
+    </div>
+</div>
+
+
+
+<!-- AlertId:string;
+LayoutId :string;
+IcuId :string;
+BedId :string;
+PatientId :string;
+ :string;
+Bpm :number;
+Spo2 :number;
+RespRate :number;
+AlertStatus:boolean;
+} -->

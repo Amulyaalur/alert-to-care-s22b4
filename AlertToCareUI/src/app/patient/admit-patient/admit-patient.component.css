@@ -87,3 +87,6 @@ label{
   h3{
     color: red;
   }
+  .successMessage{
+    color: green;
+  }

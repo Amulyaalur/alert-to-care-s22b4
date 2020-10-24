@@ -12,11 +12,15 @@ import { NavComponent } from './layout/nav/nav.component';
 import { AdminModule } from './admin/admin.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PatientModule } from './patient/patient.module';
+import { VitalsComponent } from './vitals/vitals.component';
+import { VitalService } from './services/vitals.service';
+import { AlertService } from './services/alert.services';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    VitalsComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +31,7 @@ import { PatientModule } from './patient/patient.module';
     BrowserAnimationsModule,
     PatientModule
   ],
-  providers: [{provide:'apiBaseAddress',useValue:'http://localhost:61575/api/'}, AuthGuard,AuthService],
+  providers: [{provide:'apiBaseAddress',useValue:'http://localhost:61575/api/'}, AuthGuard,AuthService,VitalService,AlertService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

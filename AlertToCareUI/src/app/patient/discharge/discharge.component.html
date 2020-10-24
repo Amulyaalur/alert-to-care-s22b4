@@ -1,3 +1,48 @@
 <div>
-   <h2>Are you sure you want to discharge the patient {{patientObj.patientName}}</h2>
+   <div>
+      <h2>Are you sure you want to discharge the patient {{patientObj.patientName}}</h2>
+   </div>
+   <div>
+      <table>
+         <tr>
+            <th>Patient ID</th>
+            <td>{{patientObj.patientId}}</td>
+         </tr>
+         <tr>
+            <th>Patient Name</th>
+            <td>{{patientObj.patientName}}</td>
+         </tr>
+         <tr>
+            <th>ICU</th>
+            <td>{{patientObj.icuId}}</td>
+         </tr>
+         <tr>
+            <th>Bed Id</th>
+            <td>{{patientObj.bedId}}</td>
+         </tr>
+         <tr>
+            <th>Email</th>
+            <td>{{patientObj.email}}</td>
+         </tr>
+         <tr>
+            <th>Contact Number</th>
+            <td>{{patientObj.contactNumber}}</td>
+         </tr>
+         <tr>
+            <th>Age</th>
+            <td>{{patientObj.age}}</td>
+         </tr>
+         <tr>
+            <th>Address</th>
+            <td>{{patientObj.address}}</td>
+         </tr>
+      </table>
+   </div>
+   <div>
+      <div><button [disabled]='isDisabled' (click)="discharge()">Discharge</button></div>
+      <div><a href="patients">{{buttonMsg}}</a></div>
+   </div>
+   <div>
+      <h3>{{message}}</h3>
+   </div>
 </div>

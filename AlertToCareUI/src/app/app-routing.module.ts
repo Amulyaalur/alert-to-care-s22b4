@@ -13,6 +13,7 @@ import { AdmitPatientComponent } from './patient/admit-patient/admit-patient.com
 import { DischargeComponent } from './patient/discharge/discharge.component';
 import { PatientHomeComponent } from './patient/home/home.component';
 import { UpdatePatientComponent } from './patient/update-patient/update-patient.component';
+import { VitalsComponent } from './vitals/vitals.component';
 
 
 const routes: Routes = [
@@ -65,6 +66,11 @@ const routes: Routes = [
       }
       
     ]
+  },
+  {
+    path: 'vitals',
+    component:VitalsComponent,
+    canActivate:[AuthGuard]
   }
   
 ];

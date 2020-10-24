@@ -1,1 +1,52 @@
-<p>update-patient works!</p>
+<div class ='page'>
+    <div>
+        <a  href="patients" >All Patient</a>
+    </div>
+    <div class="login-page">
+        <div class="form">
+            <label>Update Patient</label>
+            <div class="login-form">
+                <input class='readonly' type="text" [(ngModel)]='patientObj.patientId'  placeholder="Patient Id" readonly/>
+                <input type="text" [(ngModel)]='patientObj.patientName'  placeholder="Patient Name"/>
+                <input type="number" [(ngModel)]='patientObj.age'  placeholder="Age"/>
+                <input type="text" [(ngModel)]='patientObj.contactNumber'  placeholder="Contact Number"/>
+                <input type="text" [(ngModel)]='patientObj.address'  placeholder="Address"/>
+                <input type="email" [(ngModel)]='patientObj.email'  placeholder="Email"/>
+                
+                <select (change)='getAvailableBeds(icu)' name="icu_list" [(ngModel)]="icu" ng-change="patientObj.icuId=icu_id.value" #icu_id="ngModel" required>
+                    <option value="" disabled selected>Select ICU ID</option>
+                    <option  *ngFor="let icu1 of icuList" [value]="icu1" >{{icu1}}</option>
+                </select>
+                <div><b> Current ICU ID: <u> {{oldIcu}}</u> </b> </div>
+                <!-- <input type="text" [(ngModel)]='patientObj.bedId' placeholder="Bed ID"/> -->
+                <select (change)='onBedChange()' name="bed_list" [(ngModel)]="bedId" #bed_id="ngModel" required>
+                    <option value="" disabled selected>Select ICU Bed</option>
+                    <option *ngIf='isDefaultIcu' >{{patientObj.bedId}}</option>
+                    <option  *ngFor="let bed of bedList" [value]="bed.bedId" >{{bed.bedId}}</option>
+                </select>
+                <div><b>Current BED ID:  <u>{{oldBed}}</u> </b></div>
+                <h3>{{errorMessage}}</h3>
+                <!-- <button class="layoutBtn" (click)='getLayout()'>Get Layout</button> -->
+                <button (click)='onUpdate()'>Update</button>
+                <button (click)='onReset()'>Reset</button>
+                <p class='successMessage'>{{message}}</p>
+            </div>
+        </div>
+    </div>
+  <!-- <div>
+      <div *ngIf=isSubmitted>
+          <img src={{imageSrc}} width="250px" height="250px">
+      </div>
+  </div> -->
+</div>
+  
+  <!-- patientObj={
+    address: "",
+    age: undefined,
+    bedId: "",
+    contactNumber: "",
+    email: "",
+    icuId: "",
+    patientId: "",
+    patientName: ""
+  }; -->

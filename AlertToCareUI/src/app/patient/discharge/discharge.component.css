@@ -1,0 +1,54 @@
+table{
+    width: max-content;
+}
+tr{
+    height: 30px;
+    /* width: 60px; */
+}
+th, td{
+    width: 180px;
+    padding: 10px;
+    text-align: left;
+}
+th{
+    font-size: 20px;
+}
+a:link, a:visited {
+    background-color:green;
+    color: white;
+    padding: 14px 25px;
+    margin: 20px;
+    text-align: center;
+    text-decoration: none;
+    float: left;
+    /* display: inline-block; */
+    font-size: 16px;
+    height: 28px;
+    width: 70px;
+    
+  }
+  button{
+    float: left;
+    padding: 14px 25px;
+    margin: 20px;
+    text-decoration: none;
+    background-color:green;
+    color: white;
+    height: 57px;
+    width: 120px;
+    font-size: 16px;
+  }
+  button:hover{
+    background-color:indianred;
+    border: 2px solid black;  
+  }
+  a:hover, a:active {
+    background-color:indianred;
+    border: 2px solid black;
+  }
+  h3{
+      color: red;
+  }
+  button:disabled{
+    visibility: hidden;
+  }

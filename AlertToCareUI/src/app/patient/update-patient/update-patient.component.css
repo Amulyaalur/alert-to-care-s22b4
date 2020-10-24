@@ -1,0 +1,98 @@
+.form {
+    position: relative;
+    background: #FFFFF1;
+    max-width: 360px;
+    margin: 0 auto 30px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  }
+  label{
+      font-size: 20px;
+      text-transform: uppercase;
+      font-weight: bold;
+  }
+  .form input {
+      font-family: sans-serif;
+      outline: 0;
+      background: #f2f2f2;
+      width: 100%;
+      border: 0;
+      margin: 5px 0 5px;
+      padding: 15px;
+      box-sizing: border-box;
+      font-size: 20px;
+    }
+    .form select {
+      font-family: sans-serif;
+      outline: 0;
+      background: #f2f2f2;
+      width: 60%;
+      border: 0;
+      margin: 10px 0 10px;
+      padding: 15px;
+      box-sizing: border-box;
+      font-size: 20px;
+    }
+    .form .layoutBtn{
+      font-family:  sans-serif;
+      text-transform: uppercase;
+      /* outline: 2px solid black; */
+      background: #4CAF50;
+      width: 35%;
+      border: 0;
+      padding: 5px;
+      margin:5px 5px;
+      color: #FFFFFF;
+      font-size: 18px;
+    }
+    .form button {
+      font-family:  sans-serif;
+      text-transform: uppercase;
+      /* outline: 2px solid black; */
+      background: #4CAF50;
+      width: 40%;
+      border: 0;
+      padding: 15px;
+      margin:10px 10px;
+      color: #FFFFFF;
+      font-size: 24px;
+    }
+    .form button:hover {
+      background: #43A047;
+    }
+    .form .message {
+      margin: 15px 0 0;
+      color: #b3b3b3;
+      font-size: 20px;
+    }
+    .form .message a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-size: 20px;
+    }
+    a:link, a:visited {
+      background-color:green;
+      color: white;
+      padding: 14px 25px;
+      margin: 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    a:hover, a:active {
+      background-color:indianred;
+    }
+    h3{
+      color: red;
+    }
+    .successMessage{
+      color: green;
+    }
+    .readonly{
+      
+      background: #3CBC8D;
+      color: rebeccapurple;
+      font-weight: bold;
+    }

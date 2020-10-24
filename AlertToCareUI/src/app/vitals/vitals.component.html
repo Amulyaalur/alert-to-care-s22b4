@@ -1,0 +1,20 @@
+<nav-comp></nav-comp>
+<h2>Continuous Patient Monitoring</h2>
+<div *ngIf="vitalInfo">
+    <table>
+        <tr>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>BPM</th>
+            <th>SPO2</th>
+            <th>RespRate</th>
+        </tr>
+        <tr *ngFor='let vital of vitalInfo' >
+            <td>{{vital.patientId}}</td>
+            <td>{{vital.name}}</td>
+            <td>{{vital.bpm}}</td>
+            <td>{{vital.spo2}}</td>
+            <td>{{vital.respRate}}</td>
+        </tr>
+    </table>
+   </div> 

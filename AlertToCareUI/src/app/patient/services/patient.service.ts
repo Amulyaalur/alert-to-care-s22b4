@@ -25,6 +25,15 @@ export class PatientService{
         let observableStream=this.httpClient.get(this.baseUrl+'IcuOccupancy/Patient/'+patientId);
         return observableStream;
     }
+    deletePatient(patientId:string){
+        let observableStream=this.httpClient.delete(this.baseUrl+'IcuOccupancy/Patient/'+patientId);
+        return observableStream;
+    }
+    updatePatient(patientObj:any){
+        console.log(patientObj);
+         let observableStream=this.httpClient.put(this.baseUrl+'IcuOccupancy/Patient/'+patientObj.patientId,patientObj);
+         return observableStream;
+    }
     // addIcu(data:any){
     //     console.log("Admin Add ICU method");
     //     console.log(data);
