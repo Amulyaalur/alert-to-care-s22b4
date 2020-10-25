@@ -1,4 +1,4 @@
-﻿
+﻿/*
 using System.Collections.Generic;
 using AlertToCareAPI.Models;
 
@@ -12,3 +12,4 @@ namespace AlertToCareAPI.Repositories
         IEnumerable<Icu> GetAllIcu();
     }
 }
+*/

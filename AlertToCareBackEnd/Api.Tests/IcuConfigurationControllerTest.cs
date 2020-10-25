@@ -1,31 +1,44 @@
-﻿using AlertToCareAPI.Models;
+﻿using System;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using DataModels;
 using Xunit;
 
 namespace API.Tests
 {
     public class IcuConfigurationControllerTest
     {
-       
+        public IcuConfigurationControllerTest()
+        {
+            var icu = new Icu()
+            {
+                IcuId = "ICUTest",
+                LayoutId = "LID04",
+                BedsCount = 2,
+
+            };
+            var x=AddIcu(icu);
+        }
+
         [Fact]
         public async Task CheckStatusCodeEqualOkGetAllIcuWards()
         {
             ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.GetAsync("api/IcuConfiguration/IcuWards");
+            var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async Task WhenWrongUrlIsGivenReturnsBadRequest()
         {
             {
                 ClientSetUp setter = new ClientSetUp();
-                var response = await setter.Client.GetAsync("api/IcuConfiguration/IcuWards/important");
+                var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu/important");
 
                 Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             }
@@ -35,212 +48,152 @@ namespace API.Tests
         public async Task CheckStatusCodeEqualOkIfIcuWardExists()
         {
             ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.GetAsync("api/IcuConfiguration/IcuWards/ICU01");
+            var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu/ICU1");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async Task CheckStatusCodeEqualBadRequestIfIcuWardDoNotExists()
         {
             ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.GetAsync("api/IcuConfiguration/IcuWards/ICU04");
+            var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu/ICU-1");
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-        [Fact]
-        public async Task ReturnsOkWhenIcuWardIsAdded()
-        {
-            ClientSetUp setter = new ClientSetUp();
-            var beds = new List<Bed>()
-            {
-                new Bed
-                {
-                    BedId = "BID8",
-                    Status = false,
-                    IcuId = "ICU02"
-                },
-                new Bed
-                {
-                    BedId = "BID9",
-                    Status = false,
-                    IcuId = "ICU02"
-                },
-                new Bed
-                {
-                    BedId = "BID10",
-                    Status = false,
-                    IcuId = "ICU02"
-                },
-                new Bed
-                {
-                    BedId = "BID11",
-                    Status = false,
-                    IcuId = "ICU02"
-                },
-                new Bed
-                {
-                    BedId = "BID12",
-                    Status = false,
-                    IcuId = "ICU02"
-                }
-            };
 
-            var icu = new Icu()
-            {
-                IcuId = "ICU02",
-                LayoutId = "LID01",
-                BedsCount = 5,
-                Beds = beds
-            };
-            var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PostAsync("api/IcuConfiguration/IcuWards", content);
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        [Fact]
+        public void ReturnsOkWhenIcuWardIsAdded()
+        {
+
+            var random = new Random().Next();
+            var icu = new Icu() {BedsCount = 4, IcuId = random.ToString(), LayoutId = "LID01"};
+            var response = AddIcu(icu);
+            
+            Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
+
+            var respo =DeleteIcu(icu.IcuId);
+            Assert.Equal(HttpStatusCode.OK, respo.Result.StatusCode);
+
         }
+
+
+
         [Fact]
         public async Task ReturnsBadRequestWhenUpdatingIcuDetailsIfIcuDoNotExists()
         {
-            ClientSetUp setter = new ClientSetUp();
-            var beds = new List<Bed>()
-            {
-                new Bed
-                {
-                    BedId = "B01",
-                    Status = true,
-                    IcuId = "ICU01"
-                },
-                new Bed
-                {
-                    BedId = "B02",
-                    Status = true,
-                    IcuId = "ICU01"
-                }
-            };
+            var setter = new ClientSetUp();
 
             var icu = new Icu()
             {
-                IcuId = "ICU05",
+                IcuId = "ICU--1",
                 LayoutId = "LID04",
                 BedsCount = 2,
-                Beds = beds
-            };
 
+            };
+           // var x=AddIcu(icu);
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PutAsync("api/IcuConfiguration/IcuWards/I", content);
+            var response = await setter.Client.PutAsync("api/IcuConfiguration/Icu/asd", content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+          // var d=DeleteIcu(icu.IcuId);
         }
+
         [Fact]
-        public async Task ReturnsOkWhenUpdatingIcuDetailsIfExists()
+        public void ReturnsOkWhenUpdatingIcuDetailsIfExists()
         {
-            ClientSetUp setter = new ClientSetUp();
-            var beds = new List<Bed>()
-            {
-                new Bed
-                {
-                    BedId = "BID1",
-                    Status = true,
-                    IcuId = "ICU01"
-                },
-                new Bed
-                {
-                    BedId = "BID2",
-                    Status = true,
-                    IcuId = "ICU01"
-                },
-                new Bed
-                {
-                    BedId = "BID3",
-                    Status = true,
-                    IcuId = "ICU01"
-                },
-                new Bed
-                {
-                    BedId = "BID4",
-                    Status = false,
-                    IcuId = "ICU01"
-                },
-                new Bed
-                {
-                    BedId = "BID5",
-                    Status = false,
-                    IcuId = "ICU01"
-                },
-                new Bed
-                {
-                    BedId = "BID6",
-                    Status = false,
-                    IcuId = "ICU01"
-                },
-                new Bed
-                {
-                    BedId = "BID7",
-                    Status = false,
-                    IcuId = "ICU01"
-                }
-            };
+            //ClientSetUp setter = new ClientSetUp();
+
 
             var icu = new Icu()
             {
                 IcuId = "ICU01",
                 LayoutId = "LID01",
                 BedsCount = 7,
-                Beds = beds
+
             };
+            var x = AddIcu(icu);
+          //  Thread.Sleep(500);
 
-            var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PutAsync("api/IcuConfiguration/IcuWards/ICU01", content);
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var response = UpdateIcu(icu);
+
+
+            Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
+          //  Thread.Sleep(500);
+          //  var d=  DeleteIcu(icu.IcuId);
         }
 
         [Fact]
-        public async Task CheckDeleteIcuReturnsOkIfIcuExists()
+        public void CheckDeleteIcuReturnsOkIfIcuExists()
         {
-            ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.DeleteAsync("api/IcuConfiguration/IcuWards/ICU01");
-            response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        [Fact]
-        public async Task CheckDeleteIcuReturnsOkIfIcuDoNotExists()
-        {
-            ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.DeleteAsync("api/IcuConfiguration/IcuWards/ICU02");
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        }
-
-        [Fact]
-        public async Task ReturnsBadRequestWhenIcuWardWithOldIdIsAdded()
-        {
-            ClientSetUp setter = new ClientSetUp(); 
-            var beds = new List<Bed>()
+            var icu = new Icu()
             {
-                new Bed
-                {
-                    BedId = "ID4",
-                    Status = false,
-                    IcuId = "ICU02"
-                },
-                new Bed
-                {
-                    BedId = "ID5",
-                    Status = false,
-                    IcuId = "ICU02"
-                }
+                IcuId = "ICUTest",
+                LayoutId = "LID04",
+                BedsCount = 2,
+
             };
+           
+            var response = DeleteIcu(icu.IcuId);
+            Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
+        }
+
+        [Fact]
+        public void CheckDeleteIcuReturnsBadRequestIfIcuDoNotExists()
+        {
+            /*ClientSetUp setter = new ClientSetUp();
+            var response = await setter.Client.DeleteAsync("api/IcuConfiguration/Icu/ICU");*/
+            var response=DeleteIcu("randomIcu");
+            Assert.Equal(HttpStatusCode.BadRequest, response.Result.StatusCode);
+        }
+
+        [Fact]
+        public void ReturnsBadRequestWhenIcuWardWithOldIdIsAdded()
+        {
+            //ClientSetUp setter = new ClientSetUp();
+            
 
             var icu = new Icu()
             {
-                IcuId = "ICU01",
+                IcuId = "ICU1",
                 LayoutId = "LID02",
                 BedsCount = 2,
-                Beds = beds
+               
             };
+            var response = AddIcu(icu);
+            /*var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
+            var response = await setter.Client.PostAsync("api/IcuConfiguration/IcuWards", content);*/
+            Assert.Equal(HttpStatusCode.BadRequest, response.Result.StatusCode);
+        }
+
+        private async Task<HttpResponseMessage> AddIcu(Icu icu)
+        {
+            var setter = new ClientSetUp();
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PostAsync("api/IcuConfiguration/IcuWards", content);
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var response = await setter.Client.PostAsync("api/IcuConfiguration/Icu", content);
+           // response.EnsureSuccessStatusCode();
+            return response;
+
+        }
+
+        private async Task<HttpResponseMessage> DeleteIcu(string icuId)
+        {
+            var setter = new ClientSetUp();
+            var response = await setter.Client.DeleteAsync("api/IcuConfiguration/Icu/"+icuId);
+           // response.EnsureSuccessStatusCode();
+          //  Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+          return response;
+        }
+        private async Task<HttpResponseMessage> UpdateIcu(Icu icu)
+        {
+            var setter = new ClientSetUp();
+            var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
+            var response = await setter.Client.PutAsync("api/IcuConfiguration/Icu/" + icu.IcuId, content);
+         //   response.EnsureSuccessStatusCode();
+            //  Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            return response;
         }
     }
-
 }
+

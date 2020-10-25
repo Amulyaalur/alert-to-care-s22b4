@@ -22,9 +22,9 @@ namespace AlertToCareAPI
         {
             services.AddControllers();
             
-            services.AddSingleton<IMonitoringRepository, MonitoringRepository>();
+          /*  services.AddSingleton<IMonitoringRepository, MonitoringRepository>();
             services.AddSingleton<IIcuConfigurationRepository, IcuConfigurationRepository>();
-            services.AddSingleton<IPatientDbRepository, PatientDbRepository>();
+            services.AddSingleton<IPatientDbRepository, PatientDbRepository>();*/
 
             services.AddSingleton<IAlertManagement, AlertManagementSqLite>();
             services.AddSingleton<IBedManagement, BedManagementSqLite>();

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 using AlertToCareAPI.Models;
 using AlertToCareAPI.Database;
 
@@ -8,10 +8,10 @@ namespace AlertToCareAPI.Repositories
     {
         
         private static List<Vitals> _vitals;
-        /*public MonitoringRepository()
+        *//*public MonitoringRepository()
         {
            
-        }*/
+        }*//*
       
         public IEnumerable<Vitals> GetAllVitals()
         {
@@ -69,7 +69,7 @@ namespace AlertToCareAPI.Repositories
             var creator = new DatabaseManager();
             _vitals = creator.ReadVitalsDatabase();
     }
-        /*public void SendMail(string body)
+        *//*public void SendMail(string body)
         {
              var mailMessage = new MailMessage("alerttocare@gmail.com", "alerttocare@gmail.com");
              mailMessage.Body = body;
@@ -83,6 +83,7 @@ namespace AlertToCareAPI.Repositories
 
              smtpClient.EnableSsl=true;
              smtpClient.Send(mailMessage);
-        }*/
+        }*//*
     }
 }
+*/

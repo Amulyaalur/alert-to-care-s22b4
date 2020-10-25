@@ -94,7 +94,7 @@ namespace DataAccessLayer.IcuManagement
         public void UpdateIcuById(string icuId, Icu icu)
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
-            CommonFieldValidator.StringValidator(icuId);
+           // CommonFieldValidator.StringValidator(icuId);
             if (CheckIfIcuIdExists(icu.IcuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId already exists");
             DeleteIcuById(icuId);
             AddIcu(icu);

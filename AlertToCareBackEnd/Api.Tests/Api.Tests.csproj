@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AlertToCareAPI\AlertToCareAPI.csproj" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="..\DataModels\DataModels.csproj" />
   </ItemGroup>
 
 </Project>
