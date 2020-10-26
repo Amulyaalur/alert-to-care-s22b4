@@ -23,14 +23,14 @@ export class LoginComponent implements OnInit {
   loginFunction(){
 
     let role=this.accountService.checkValidUser(this.username,this.password);
-   
+    console.log("Role:"+role);
      if(role=='admin'){
      
       localStorage.setItem('role','admin');
       this.route.navigate(['/admin']);
     }
    
-    else if(role=='nurse'){
+    else if(role=='staff'){
      
       localStorage.setItem('role','nurse');
       this.route.navigate(['/home']);

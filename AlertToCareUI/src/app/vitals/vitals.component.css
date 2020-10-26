@@ -19,7 +19,7 @@ a:link, a:visited {
     background-color:indianred;
   }
   table{
-    border: 5px solid steelblue;
+    border: 5px solid hotpink;
     width: 100%;
     border-collapse: collapse;
     /* margin-left: auto;
@@ -41,3 +41,4 @@ a:link, a:visited {
   }
   tr:hover {background-color: honeydew;}
   tr:nth-child(even) {background-color: #f3e6e6;}
+  tr:nth-child(odd) {background-color: #f3e6aa;}

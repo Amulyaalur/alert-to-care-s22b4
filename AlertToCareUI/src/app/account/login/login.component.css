@@ -1,8 +1,16 @@
+.philipsLogo{
+  margin-top: 60px;
+}
+.appname{
+  font-size: 40px;
+  font-weight: bold;
+  font-family:'Times New Roman', Times, serif;
+}
 div{
   overflow-y: hidden;
 }
 .login-page{
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .form {
   position: relative;
