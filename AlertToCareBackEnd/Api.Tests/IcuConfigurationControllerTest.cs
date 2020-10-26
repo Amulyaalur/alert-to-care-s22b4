@@ -169,6 +169,16 @@ namespace API.Tests
             Assert.Equal(HttpStatusCode.BadRequest, response.Result.StatusCode);
         }
 
+
+        [Fact]
+        public async Task TestGetAllLayouts()
+        {
+            var client = new TestClientProvider().Client;
+            var response = await client.GetAsync("api/IcuConfiguration/Layouts");
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
         private async Task<HttpResponseMessage> AddIcu(Icu icu)
         {
             var setter = new ClientSetUp();
