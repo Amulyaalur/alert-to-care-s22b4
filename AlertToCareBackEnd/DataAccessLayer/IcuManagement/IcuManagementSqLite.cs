@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Net.NetworkInformation;
 using DataAccessLayer.BedManagement;
 using DataAccessLayer.Utils;
 using DataAccessLayer.Utils.Validators;
@@ -103,11 +104,8 @@ namespace DataAccessLayer.IcuManagement
         {
             if (CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
             var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);
-
-            if (rowsAffected == 0)
-            {
-                throw new Exception();
-            }
+            CheckRowAffectedException(rowsAffected);
+            
 
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
@@ -121,10 +119,22 @@ namespace DataAccessLayer.IcuManagement
             cmd.Prepare();
             rowsAffected = cmd.ExecuteNonQuery();
             con.Dispose();
+            CheckRowAffected(rowsAffected, "IcuId does not exists");
+            
+        }
 
+        private static void CheckRowAffectedException(int rowsAffected)
+        {
             if (rowsAffected == 0)
             {
-                throw new SQLiteException(SQLiteErrorCode.NotFound, message: "IcuId does not exists");
+                throw new Exception();
+            }
+        }
+        private static void CheckRowAffected(int rowsAffected,string message)
+        {
+            if (rowsAffected == 0)
+            {
+                throw new SQLiteException(SQLiteErrorCode.NotFound, message: message);
             }
         }
         public static long CheckIfIcuIdExists(string icuId)

@@ -7,15 +7,28 @@ export class AuthService{
        
     }
     checkValidUser(username:string,password:string){
-        if(username=='admin' && password=='admin'){
-            return 'admin';
-        }
-        else if(username=='staff' && password=='staff'){
-            return 'staff';
+
+        return this.checkAdmin(username,password);
+        
+        
+    }
+    checkAdmin(username:string,password:string){
+        let role:string;
+        if( username=="admin" && password=='admin'){
+            role= "admin"
         }
         else{
-            return 'denied';
-        }    
+            role=this.checkStaff(username,password);
+        }
+        return role;
+    }
+    checkStaff(username:string,password:string){
+        if( username=="staff" && password=='staff'){
+            return "staff"
+        }
+        else{
+            return "denied";
+        }
     }
     
     loggedIn():boolean{

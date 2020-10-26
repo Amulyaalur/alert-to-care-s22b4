@@ -37,8 +37,26 @@ namespace DataAccessLayer.Utils
 
             reader.Dispose();
             con.Dispose();
-            var generateAlert = (vital.Bpm < minBpm || vital.Bpm > maxBpm) || (vital.Spo2 < minSpo2 || vital.Spo2 > maxSpo2) || (vital.RespRate < minRespRate || vital.RespRate > maxRespRate);
+           
+            
+            
+            var generateAlert = CheckBpm(vital.Bpm, minBpm, maxBpm) || CheckSpo2(vital.Spo2, minSpo2, maxSpo2) || CheckRespRate(vital.RespRate, minRespRate, maxRespRate);
             return generateAlert;
+        }
+
+        private static bool CheckRespRate(in float vitalRespRate, in float minRespRate, in float maxRespRate)
+        {
+           return  vitalRespRate < minRespRate || vitalRespRate > maxRespRate;
+        }
+
+        private static bool CheckSpo2(in float vitalSpo2, in float minSpo2, in float maxSpo2)
+        {
+            return vitalSpo2 < minSpo2 || vitalSpo2 > maxSpo2;
+        }
+
+        private static bool CheckBpm(in float vitalBpm, in float minBpm, in float maxBpm)
+        {
+            return vitalBpm < minBpm || vitalBpm > maxBpm;
         }
     }
 }

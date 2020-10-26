@@ -21,39 +21,25 @@ export class LoginComponent implements OnInit {
   }
   
   loginFunction(){
-    
-//     let data={username:this.username,password:this.password};
-//     let observableStream=this.accountService.login(data);
-//     observableStream.subscribe((data:any)=>{
 
-//       this.message="Valid User";
-//       this.route.navigate(['dashboard',this.username]);
-      
-//     },
-// (error:any)=>{
-    
-//       this.message="Invalid User";
-//     },
-//     ()=>{
-//       console.log("Completed");
-//     }
-//     );
-
-let role=this.accountService.checkValidUser(this.username,this.password);
-    if(role=='denied' || role==undefined){
-      this.message='Enter Valid Credentials';
-    }
-    else if(role=='admin'){
-      this.message='Transfer on Admin page';
+    let role=this.accountService.checkValidUser(this.username,this.password);
+   
+     if(role=='admin'){
+     
       localStorage.setItem('role','admin');
       this.route.navigate(['/admin']);
     }
-    else{
-      this.message='Transfer on Nurse page';
+   
+    else if(role=='nurse'){
+     
       localStorage.setItem('role','nurse');
       this.route.navigate(['/home']);
     }
+    else{
+      this.route.navigate(['/login'])
+    }
   }
+  // if(role=='denied' || role==undefined){
   onReset(){
     this.username='';
    this.password='';

@@ -7,27 +7,27 @@ export class AccountService{
        
     }
     checkValidUser(username:string,password:string){
-        if(username=='admin' && password=='admin'){
-            return 'admin';
-        }
-        else if(username=='staff' && password=='staff'){
-            return 'staff';
-        }
-        else{
-            return 'denied';
-        }
+
+        return this.checkAdmin(username,password);
+        
         
     }
-    // signup(user:any){
-    //     let observableStream=this.httpClient.post(this.baseUrl+'/accounts/register',user);
-    //     return observableStream;
-    // }
-    // login(data:any){
-    //     let observableStream=this.httpClient.post(this.baseUrl+'/accounts/validate',data);
-    //     return observableStream;
-    // }
-    // forgotPassword(data:any){
-    //     let observableStream=this.httpClient.get(this.baseUrl+'/accounts/recover/',{headers:new HttpHeaders().set("username",data.username)});
-    //     return observableStream;
-    // }
+    checkAdmin(username:string,password:string){
+        let role:string;
+        if( username=="admin" && password=='admin'){
+            role= "admin"
+        }
+        else{
+            role=this.checkStaff(username,password);
+        }
+        return role;
+    }
+    checkStaff(username:string,password:string){
+        if( username=="staff" && password=='staff'){
+            return "staff"
+        }
+        else{
+            return "denied";
+        }
+    }
 }
