@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using DataModels;
 using Xunit;
@@ -14,14 +13,16 @@ namespace API.Tests
     {
         public IcuConfigurationControllerTest()
         {
-            var icu = new Icu()
+            var icu = new Icu
             {
                 IcuId = "ICUTest",
                 LayoutId = "LID04",
-                BedsCount = 2,
+                BedsCount = 2
 
-            };
-            var x=AddIcu(icu);
+            }; 
+             var x=  AddIcu(icu);
+          //   Assert.True(x.Result.StatusCode==HttpStatusCode.OK);
+          Console.Write(x);
         }
 
         [Fact]
@@ -106,14 +107,15 @@ namespace API.Tests
             //ClientSetUp setter = new ClientSetUp();
 
 
-            var icu = new Icu()
+            var icu = new Icu
             {
                 IcuId = "ICU01",
                 LayoutId = "LID01",
                 BedsCount = 7,
 
             };
-            var x = AddIcu(icu);
+             var x = AddIcu(icu);
+             x.GetAwaiter();
           //  Thread.Sleep(500);
 
             var response = UpdateIcu(icu);
@@ -127,7 +129,7 @@ namespace API.Tests
         [Fact]
         public void CheckDeleteIcuReturnsOkIfIcuExists()
         {
-            var icu = new Icu()
+            var icu = new Icu
             {
                 IcuId = "ICUTest",
                 LayoutId = "LID04",

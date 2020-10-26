@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace DataModels
 {
+    [ExcludeFromCodeCoverage]
     public class Patient
     {
         public string PatientId { get; set; }

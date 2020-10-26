@@ -33,7 +33,7 @@ namespace API.Tests
             var vital = new Vital()
             {
                 Bpm = 180,
-                PatientId = "PID1",
+                PatientId = "PID4",
                 RespRate = 41,
                 Spo2 = 98
             };
@@ -41,8 +41,8 @@ namespace API.Tests
             var setter = new ClientSetUp();
             var content = new StringContent(JsonConvert.SerializeObject(vital), Encoding.UTF8, "application/json");
             var response = await setter.Client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
-              response.EnsureSuccessStatusCode();
-              Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace API.Tests
         public async Task TestDeleteAlert()
         {
             var x=new AlertManagementSqLite();
-            var pid = "PID1";
+            var pid = "PID7";
             var alertId=0;
             AlertManagementSqLite.AddToAlertsTable(pid);
 

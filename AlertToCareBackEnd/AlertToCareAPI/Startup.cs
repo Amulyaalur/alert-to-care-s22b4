@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using AlertToCareAPI.Repositories;
-using DataAccessLayer;
 using DataAccessLayer.AlertManagement;
 using DataAccessLayer.BedManagement;
 using DataAccessLayer.IcuManagement;

@@ -1,5 +1,8 @@
-﻿namespace DataModels
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DataModels
 {
+    [ExcludeFromCodeCoverage]
     public class Bed
     {
         public string BedId { get; set; }

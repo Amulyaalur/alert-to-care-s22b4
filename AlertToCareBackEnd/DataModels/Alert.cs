@@ -1,5 +1,8 @@
-﻿namespace DataModels
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DataModels
 {
+    [ExcludeFromCodeCoverage]
     public class Alert
     {
         public int AlertId { get; set; }
