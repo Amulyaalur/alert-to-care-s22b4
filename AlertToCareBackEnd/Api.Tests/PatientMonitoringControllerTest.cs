@@ -15,7 +15,6 @@ namespace API.Tests
         {
             var client = new TestClientProvider().Client;
             var response = await client.GetAsync("api/PatientMonitoring/Vitals");
-            response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
@@ -23,28 +22,24 @@ namespace API.Tests
         {
             var client = new TestClientProvider().Client;
             var response = await client.GetAsync("api/PatientMonitoring/Alerts");
-            response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
         [Fact]
         public async Task UpdateVitalsByValidPatientIdReturnOk()
         {
             var vital = new Vital()
             {
                 Bpm = 180,
-                PatientId = "PID4",
+                PatientId = "PID1",
                 RespRate = 41,
                 Spo2 = 98
             };
 
-            var setter = new ClientSetUp();
+            var client = new TestClientProvider().Client;
             var content = new StringContent(JsonConvert.SerializeObject(vital), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
-            response.EnsureSuccessStatusCode();
+            var response = await client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-
         [Fact]
         public async Task UpdateVitalsByInValidPatientIdReturnBadRequest()
         {
@@ -56,39 +51,19 @@ namespace API.Tests
                 Spo2 = 98
             };
 
-            var setter = new ClientSetUp();
+            var client = new TestClientProvider().Client;
             var content = new StringContent(JsonConvert.SerializeObject(vital), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
-           // response.EnsureSuccessStatusCode();
+            var response = await client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-
         [Fact]
-        public async Task TestToggleAlert()
+        public async Task TestToggleAlertWithValidAlertId()
         {
-            /*var vital = new Vital()
-            {
-                Bpm = 180,
-                PatientId = "PID1",
-                RespRate = 41,
-                Spo2 = 120
-            };*/
-
-            var setter = new ClientSetUp();
-           // var content = new StringContent(JsonConvert.SerializeObject(), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PutAsync("api/PatientMonitoring/Alert/6",null);
-            // response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        [Fact]
-        public async Task TestDeleteAlert()
-        {
-            var x=new AlertManagementSqLite();
-            var pid = "PID7";
-            var alertId=0;
+            var alertManagementSqLite = new AlertManagementSqLite();
+            var pid = "PID1";
+            var alertId = 0;
             AlertManagementSqLite.AddToAlertsTable(pid);
-
-            var alerts = x.GetAllAlerts();
+            var alerts = alertManagementSqLite.GetAllAlerts();
             foreach (var alert in alerts)
             {
                 if (alert.PatientId == pid)
@@ -96,11 +71,47 @@ namespace API.Tests
                     alertId = alert.AlertId;
                 }
             }
-            var setter = new ClientSetUp();
-            // var content = new StringContent(JsonConvert.SerializeObject(), Encoding.UTF8, "application/json");
-            var response = await setter.Client.DeleteAsync("api/PatientMonitoring/Alert/"+alertId);
-             response.EnsureSuccessStatusCode();
+            var client = new TestClientProvider().Client;
+            var response = await client.PutAsync("api/PatientMonitoring/Alert/" + alertId,null);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            alertManagementSqLite.DeleteAlertByAlertId(alertId);
+        }
+        [Fact]
+        public async Task TestToggleAlertWithInvalidAlertId()
+        {
+            var client = new TestClientProvider().Client;
+            var invalidAlertId = "666";
+            var response = await client.PutAsync("api/PatientMonitoring/Alert/" + invalidAlertId, null);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        [Fact]
+        public async Task TestDeleteAlertWithValidAlertId()
+        {
+            var alertManagementSqLite = new AlertManagementSqLite();
+            var pid = "PID1";
+            var alertId=0;
+            AlertManagementSqLite.AddToAlertsTable(pid);
+
+            var alerts = alertManagementSqLite.GetAllAlerts();
+            foreach (var alert in alerts)
+            {
+                if (alert.PatientId == pid)
+                {
+                    alertId = alert.AlertId;
+                }
+            }
+            var client = new TestClientProvider().Client;
+            var response = await client.DeleteAsync("api/PatientMonitoring/Alert/" + alertId);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+        [Fact]
+        public async Task TestDeleteAlertWithInValidAlertId()
+        {
+            var alertId = 999;
+            var client = new TestClientProvider().Client;
+            var response = await client.DeleteAsync("api/PatientMonitoring/Alert/" + alertId);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }

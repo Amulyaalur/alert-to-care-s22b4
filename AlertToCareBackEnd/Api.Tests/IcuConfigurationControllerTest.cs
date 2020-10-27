@@ -28,8 +28,8 @@ namespace API.Tests
         [Fact]
         public async Task CheckStatusCodeEqualOkGetAllIcuWards()
         {
-            ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu");
+            var client = new TestClientProvider().Client;
+            var response = await client.GetAsync("api/IcuConfiguration/Icu");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -38,8 +38,8 @@ namespace API.Tests
         public async Task WhenWrongUrlIsGivenReturnsBadRequest()
         {
             {
-                ClientSetUp setter = new ClientSetUp();
-                var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu/important");
+                var client = new TestClientProvider().Client;
+                var response = await client.GetAsync("api/IcuConfiguration/Icu/important");
 
                 Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             }
@@ -48,8 +48,8 @@ namespace API.Tests
         [Fact]
         public async Task CheckStatusCodeEqualOkIfIcuWardExists()
         {
-            ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu/ICU1");
+            var client = new TestClientProvider().Client;
+            var response = await client.GetAsync("api/IcuConfiguration/Icu/ICU1");
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -57,8 +57,8 @@ namespace API.Tests
         [Fact]
         public async Task CheckStatusCodeEqualBadRequestIfIcuWardDoNotExists()
         {
-            ClientSetUp setter = new ClientSetUp();
-            var response = await setter.Client.GetAsync("api/IcuConfiguration/Icu/ICU-1");
+            var client = new TestClientProvider().Client;
+            var response = await client.GetAsync("api/IcuConfiguration/Icu/ICU-1");
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -83,7 +83,7 @@ namespace API.Tests
         [Fact]
         public async Task ReturnsBadRequestWhenUpdatingIcuDetailsIfIcuDoNotExists()
         {
-            var setter = new ClientSetUp();
+            var client = new TestClientProvider().Client;
 
             var icu = new Icu()
             {
@@ -94,7 +94,7 @@ namespace API.Tests
             };
            // var x=AddIcu(icu);
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PutAsync("api/IcuConfiguration/Icu/asd", content);
+            var response = await client.PutAsync("api/IcuConfiguration/Icu/asd", content);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
@@ -181,9 +181,9 @@ namespace API.Tests
 
         private async Task<HttpResponseMessage> AddIcu(Icu icu)
         {
-            var setter = new ClientSetUp();
+            var client = new TestClientProvider().Client;
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PostAsync("api/IcuConfiguration/Icu", content);
+            var response = await client.PostAsync("api/IcuConfiguration/Icu", content);
            // response.EnsureSuccessStatusCode();
             return response;
 
@@ -191,17 +191,17 @@ namespace API.Tests
 
         private async Task<HttpResponseMessage> DeleteIcu(string icuId)
         {
-            var setter = new ClientSetUp();
-            var response = await setter.Client.DeleteAsync("api/IcuConfiguration/Icu/"+icuId);
+            var client = new TestClientProvider().Client;
+            var response = await client.DeleteAsync("api/IcuConfiguration/Icu/"+icuId);
            // response.EnsureSuccessStatusCode();
           //  Assert.Equal(HttpStatusCode.OK, response.StatusCode);
           return response;
         }
         private async Task<HttpResponseMessage> UpdateIcu(Icu icu)
         {
-            var setter = new ClientSetUp();
+            var client = new TestClientProvider().Client; ;
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
-            var response = await setter.Client.PutAsync("api/IcuConfiguration/Icu/" + icu.IcuId, content);
+            var response = await client.PutAsync("api/IcuConfiguration/Icu/" + icu.IcuId, content);
          //   response.EnsureSuccessStatusCode();
             //  Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             return response;
