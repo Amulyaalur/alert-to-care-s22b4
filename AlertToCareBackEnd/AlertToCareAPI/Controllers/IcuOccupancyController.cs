@@ -36,10 +36,6 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
         }
 
         [HttpGet(template: "Beds/{icuId}")]
@@ -52,10 +48,6 @@ namespace AlertToCareAPI.Controllers
             catch (SQLiteException exception)
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
             }
         }
 
@@ -89,10 +81,6 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
         }
 
         [HttpDelete("Patient/{PatientId}")]
@@ -106,10 +94,6 @@ namespace AlertToCareAPI.Controllers
             catch (SQLiteException exception)
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
             }
         }
     }
