@@ -22,29 +22,14 @@ namespace AlertToCareAPI.Controllers
         [HttpGet(template:"Vitals")]
         public IActionResult GetAllPatientsVitals()
         {
-            
-            try
-            {
-                return Ok(_vitalDb.GetAllPatientsVitals());
-            }
-
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
+            return Ok(_vitalDb.GetAllPatientsVitals());
         }
 
         [HttpGet(template:"Alerts")]
         public IActionResult GetAlerts()
         {
-            try
-            {
-                return Ok(_alertDb.GetAllAlerts());
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
+            return Ok(_alertDb.GetAllAlerts());
+            
         }
 
         [HttpPut(template: "Vital/{patientId}")]
@@ -57,7 +42,7 @@ namespace AlertToCareAPI.Controllers
             }
             catch (SQLiteException exception)
             {
-                return new ObjectResult(exception.Message) { StatusCode = 400 };
+                return new ObjectResult(exception.Message) {StatusCode = 400};
             }
             catch (Exception exception)
             {
@@ -77,10 +62,6 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
         }
 
         [HttpDelete(template: "Alert/{alertId}")]
@@ -94,10 +75,6 @@ namespace AlertToCareAPI.Controllers
             catch (SQLiteException exception)
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
             }
         }
 

@@ -22,15 +22,7 @@ namespace AlertToCareAPI.Controllers
         [HttpGet("Icu")]
         public IActionResult Get()
         {
-            try
-            {
-                return Ok(_icuDb.GetAllIcu());
-            }
-            
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
+            return Ok(_icuDb.GetAllIcu());
         }
 
         [HttpGet("Icu/{IcuId}")]
@@ -44,23 +36,12 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
-            catch(Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
         }
 
         [HttpGet(template: "Layouts")]
         public IActionResult GetAllLayouts()
         {
-            try
-            {
-                return Ok(_layoutDb.GetAllLayouts());
-            }
-            catch(Exception exception)
-            {
-                return StatusCode(400, exception.Message);
-            }
+            return Ok(_layoutDb.GetAllLayouts());
         }
 
         [HttpPost("Icu")]
@@ -76,10 +57,6 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) {StatusCode = 400};
             }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
         }
 
         [HttpPut("Icu/{IcuId}")]
@@ -94,10 +71,6 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
-            }
         }
 
         [HttpDelete("Icu/{IcuId}")]
@@ -111,10 +84,6 @@ namespace AlertToCareAPI.Controllers
             catch (SQLiteException exception)
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(500, exception.Message);
             }
         }
     }

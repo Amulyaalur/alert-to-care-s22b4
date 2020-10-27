@@ -2,6 +2,7 @@
 using System.Data.SQLite;
 using DataAccessLayer.IcuManagement;
 using DataAccessLayer.Utils;
+using DataAccessLayer.Utils.Validators;
 using DataModels;
 
 namespace DataAccessLayer.BedManagement
@@ -68,6 +69,7 @@ namespace DataAccessLayer.BedManagement
         }
         public static int DeleteBedsByIcuId(string icuId)
         {
+            CommonFieldValidator.StringValidator(icuId);
             if (IcuManagementSqLite.CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();

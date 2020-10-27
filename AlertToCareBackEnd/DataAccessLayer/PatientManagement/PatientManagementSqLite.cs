@@ -52,6 +52,7 @@ namespace DataAccessLayer.PatientManagement
         }
         public Patient GetPatientById(string patientId)
         {
+            CommonFieldValidator.StringValidator(patientId);
             if (CheckIfPatientIdExists(patientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
