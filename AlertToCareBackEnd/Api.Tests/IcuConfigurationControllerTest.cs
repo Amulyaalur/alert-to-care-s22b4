@@ -179,7 +179,7 @@ namespace API.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private async Task<HttpResponseMessage> AddIcu(Icu icu)
+        private static async Task<HttpResponseMessage> AddIcu(Icu icu)
         {
             var client = new TestClientProvider().Client;
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
@@ -189,7 +189,7 @@ namespace API.Tests
 
         }
 
-        private async Task<HttpResponseMessage> DeleteIcu(string icuId)
+        private static async Task<HttpResponseMessage> DeleteIcu(string icuId)
         {
             var client = new TestClientProvider().Client;
             var response = await client.DeleteAsync("api/IcuConfiguration/Icu/"+icuId);
@@ -197,9 +197,9 @@ namespace API.Tests
           //  Assert.Equal(HttpStatusCode.OK, response.StatusCode);
           return response;
         }
-        private async Task<HttpResponseMessage> UpdateIcu(Icu icu)
+        private static async Task<HttpResponseMessage> UpdateIcu(Icu icu)
         {
-            var client = new TestClientProvider().Client; ;
+            var client = new TestClientProvider().Client; 
             var content = new StringContent(JsonConvert.SerializeObject(icu), Encoding.UTF8, "application/json");
             var response = await client.PutAsync("api/IcuConfiguration/Icu/" + icu.IcuId, content);
          //   response.EnsureSuccessStatusCode();

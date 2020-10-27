@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Net.NetworkInformation;
 using DataAccessLayer.BedManagement;
 using DataAccessLayer.Utils;
 using DataAccessLayer.Utils.Validators;
 using DataModels;
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
 namespace DataAccessLayer.IcuManagement
 {

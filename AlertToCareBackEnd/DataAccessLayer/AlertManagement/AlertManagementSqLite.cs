@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
 using DataAccessLayer.Utils;
 using DataModels;
@@ -136,10 +135,10 @@ namespace DataAccessLayer.AlertManagement
             };
             cmd.Parameters.AddWithValue("@AlertId", alertId);
             cmd.Prepare();
-            var rowsAffected = cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
             con.Dispose();
         }
-        public static long CheckIfAlertIdExists(int alertId)
+        private static long CheckIfAlertIdExists(int alertId)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();

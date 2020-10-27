@@ -2,6 +2,7 @@
 
 namespace DataModels
 {
+    // ReSharper disable All
     [ExcludeFromCodeCoverage]
     public class Bed
     {

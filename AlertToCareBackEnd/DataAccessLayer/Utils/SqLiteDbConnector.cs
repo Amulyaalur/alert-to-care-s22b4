@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DataAccessLayer.Utils
 {
-    public class SqLiteDbConnector
+    public static class SqLiteDbConnector
     {
         public static SQLiteConnection GetSqLiteDbConnection()
         {

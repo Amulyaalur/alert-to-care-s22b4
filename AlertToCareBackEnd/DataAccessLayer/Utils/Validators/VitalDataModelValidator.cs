@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Utils.Validators
 {
-    public class VitalDataModelValidator
+    public static class VitalDataModelValidator
     {
         public static void ValidateVitalDataModel(Vital vital)
         {
