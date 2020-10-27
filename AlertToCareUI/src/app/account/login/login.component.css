@@ -1,6 +1,10 @@
 .philipsLogo{
   margin-top: 60px;
 }
+.errorMessage{
+  font-size: 20px;
+  color:red;
+}
 .appname{
   font-size: 40px;
   font-weight: bold;

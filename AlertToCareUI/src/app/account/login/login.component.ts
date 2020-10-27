@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
     }
     else{
       this.route.navigate(['/login'])
+      this.message='Wrong Username or Password'
     }
   }
   // if(role=='denied' || role==undefined){

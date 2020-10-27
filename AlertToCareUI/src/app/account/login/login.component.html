@@ -3,17 +3,17 @@
         <img src="../../../assets/images/philipsshield.svg" height="200px" width="150px">
     </div>
     <div>
-        <p class='appname'>Continuous Patient Monitoring</p>
+        <p class='appname'>Alert To Care</p>
     </div>
     <div class="login-page">
         <div class="form">
             <label>Login</label>
             <div class="login-form">
-                <input type="text" [(ngModel)]='username'  placeholder="username" name="loginUsername" id="loginUsername"/>
+                <input type="text" [(ngModel)]='username'  placeholder="username" name="loginUsername" id="loginUsername" />
                 <input type="password" [(ngModel)]='password' placeholder="password" name="loginPassword" id="loginPassword"/>
                 <button (click)='loginFunction()' name="loginBtn" id="loginBtn">login</button>
                 <button (click)='onReset()'>Reset</button>
-                <p >{{message}}</p>
+                <p class="errorMessage">{{message}}</p>
             </div>
         </div>
     </div>
