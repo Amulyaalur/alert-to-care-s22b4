@@ -39,5 +39,14 @@ a:link, a:visited {
   tr,td{
     height: 30px;
   }
-  tr:hover {background-color: honeydew;}
+  /* tr:hover {background-color: rosybrown;} */
   tr:nth-child(even) {background-color: #f3e6e6;}
+  tr:nth-child(odd) {background-color: #f3e6e6;}
+  .layoutImage{
+    width: 40px;
+    height: 40px;
+  }
+  .layoutImage:hover{
+    width: 300px;
+    height: 300px;
+  }

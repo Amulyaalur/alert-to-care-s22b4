@@ -1,0 +1,501 @@
+swagger: "2.0"
+info:
+  description: "This project implements a service that receives measurements from devices that monitor patients.\nIt is part of a solution that provides care in an ICU."
+  version: "1.0.0"
+  title: "Alert To Care"
+host: "localhost:61575"
+basePath: "/api/"
+
+schemes:
+- "http"
+
+paths:
+  /IcuConfiguration/Icu/:
+    post:
+      tags:
+      - "ICU Configuration"
+      summary: "Adds a new ICU to DB"
+      description: ""
+      operationId: "addIcu"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "ICU entered to store in Db"
+        required: true
+        schema:
+          $ref: "#/definitions/Icu"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Icu"
+        "400":
+          description: "ICUId Exists in Db or LayoutId is not Present"
+        "500":
+          description: "Empty Field"
+    get:
+      tags:
+      - "ICU Configuration"
+      summary: "Get All the ICU from Db"
+      description: "This will fetch all the ICU from the DB with the Layout Id and Total Beds"
+      operationId: "getAll"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Successful operation return list of ICU"
+          schema:
+            $ref: "#/definitions/Icu"
+        "500":
+          description: "The DB is down"
+  /IcuConfiguration/Icu/{IcuId}:
+    get:
+      tags:
+      - "ICU Configuration"
+      summary: "Get the ICU from Db"
+      description: "This will fetch the ICU from the DB with the Layout Id and Total Beds with corresponding ICU id"
+      operationId: "getIcuById"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "IcuId"
+        description: "ICU whose details to be fetched from Db"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "Successful operation returns ICU"
+          schema:
+            $ref: "#/definitions/Icu"
+        "400":
+          description: "Incorrect IcuId"
+        "500":
+          description: "The DB is down"
+    delete:
+      tags:
+      - "ICU Configuration"
+      summary: "Deletes ICU from DB"
+      description: ""
+      operationId: "deleteIcu"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "IcuId"
+        description: "ICU to be deleted from Db"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "ICU Deleted successfully"
+        "400":
+          description: "ICU ID not found in DB"
+        "500":
+          description: "Could not Delete ICU Bed from DB"
+    put:
+      tags:
+      - "ICU Configuration"
+      summary: "Updates ICU in the DB"
+      description: "Updates the ICU from the DB.\nUpdates the ICU Beds Count and Layout ID\nCannot Update ICU if all the ICU bed is not Empty."
+      operationId: "updateICU"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "IcuId"
+        description: "ICU to be updated "
+        type: "string"
+        required: true
+      - in: "body"
+        name: "body"
+        description: "ICU object to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/Icu"
+      responses:
+        "200":
+          description: "ICU Updated successfully"
+        "400":
+          description: "SQL Exception / Wrong Data provided"
+        "500":
+          description: "Could not delete Bed (Bed Not Empty)"
+  /IcuConfiguration/Layouts/:
+    get:
+      tags:
+      - "ICU Configuration"
+      summary: "Get All the ICU Layouts from Db"
+      description: ""
+      operationId: "getAllLayouts"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Successful operation return list of ICU Layouts"
+          schema:
+            $ref: "#/definitions/Layouts"
+        "400":
+          description: "The DB is down"
+  
+  /IcuOccupancy/Patients/:
+    get:
+      tags:
+      - "ICU Occupancy"
+      summary: "Get All the Patients from Db"
+      description: "This will fetch all the Patients from the DB with the ICU Id and Bed Id"
+      operationId: "getAllPatients"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Successful operation return list of Patients"
+          schema:
+            $ref: "#/definitions/Patients"
+        "500":
+          description: "The DB is down"
+  
+  /IcuOccupancy/Patient/:
+    post:
+      tags:
+      - "ICU Occupancy"
+      summary: "Adds a new Patients into Db"
+      description: ""
+      operationId: "AddPatient"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "ICU entered to store in Db"
+        required: true
+        schema:
+          $ref: "#/definitions/Patients"
+      responses:
+        "200":
+          description: "Successful operation Adds Patient to DB"
+          schema:
+            $ref: "#/definitions/Patients"
+        "400":
+          description: "Patient ID already exists"
+        "500":
+          description: "The Patient Data field is inconsistent"
+          
+  /IcuOccupancy/Patient/{PatientId}:
+    get:
+      tags:
+      - "ICU Occupancy"
+      summary: "Get the Patient from Db "
+      description: "Get the Patient from the DB with the corresponding Patient ID"
+      operationId: "getPatientById"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "PatientId"
+        description: "Patient whose details to be fetched from Db"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "Successful operation returns Patient"
+          schema:
+            $ref: "#/definitions/Patients"
+        "400":
+          description: "Incorrect Patient ID"
+        "500":
+          description: "The DB is down"
+    delete:
+      tags:
+      - "ICU Occupancy"
+      summary: "Deletes Patient from DB"
+      description: ""
+      operationId: "deletePatient"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "PatientId"
+        description: "Patient to be deleted from Db"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "Patient Deleted successfully"
+        "400":
+          description: "Patient ID not found in DB"
+        "500":
+          description: "Could not Delete Patient from DB"
+    put:
+      tags:
+      - "ICU Occupancy"
+      summary: "Updates Patient in the DB"
+      description: "Updates the Patient from the DB.\nUpdates the Patient Bed, ICU and other details\n"
+      operationId: "updatePatient"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "PatientId"
+        description: "Patient to be updated "
+        type: "string"
+        required: true
+      - in: "body"
+        name: "body"
+        description: "Patient object to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/Patients"
+      responses:
+        "200":
+          description: "Patient Updated successfully"
+        "400":
+          description: "SQL Exception / Wrong Data provided"
+        "500":
+          description: "Different Patient Id in URL and Object"
+
+  /IcuOccupancy/Beds/{IcuId}:
+    get:
+      tags:
+      - "ICU Occupancy"
+      summary: "Gets the Beds from Db"
+      description: "Get all the available Beds from the DB for the corresponding ICU ID"
+      operationId: "getBedByIcuId"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "IcuId"
+        description: "IcuId whose bed details to be fetched from Db"
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "Successful operation returns available Beds"
+          schema:
+            $ref: "#/definitions/Beds"
+        "400":
+          description: "Incorrect ICU ID"
+        "500":
+          description: "The DB is down"
+
+  /PatientMonitoring/Vitals/:
+    get:
+      tags:
+      - "Patient Monitoring"
+      summary: "Get All the Patients Vitals from Db"
+      description: "This will fetch all the Patients Vitals from the DB with Patient Id and PatientName"
+      operationId: "getAllPatientVitals"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Successful operation return list of Patient Vitals"
+          schema:
+            $ref: "#/definitions/Vitals"
+        "500":
+          description: "The DB is down"
+          
+  /PatientMonitoring/Vital/{PatientId}:
+    put:
+      tags:
+      - "Patient Monitoring"
+      summary: "Updates Patient in the DB"
+      description: "Updates the Patient Vitals in the DB. (Used to Generate the Alert)"
+      operationId: "updatePatientVitals"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "PatientId"
+        description: "Patient to be updated "
+        type: "string"
+        required: true
+      - in: "body"
+        name: "body"
+        description: "Patient object to be updated"
+        required: true
+        schema:
+          $ref: "#/definitions/Vitals"
+      responses:
+        "200":
+          description: "Vital Updated successfully"
+        "400":
+          description: "Patient Id does not exist"
+        "500":
+          description: "Inconsistent Vital"
+  
+  /PatientMonitoring/Alerts/:
+    get:
+      tags:
+      - "Patient Monitoring"
+      summary: "Get All the Alerts from Db"
+      description: "This will fetch all the Patients Vitals from the DB with Patient Id and PatientName"
+      operationId: "getAllPatientAlerts"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Successful operation return list of Alerts"
+          schema:
+            $ref: "#/definitions/Alerts"
+        "500":
+          description: "The DB is down"
+  
+  /PatientMonitoring/Alerts/{AlertId}:
+    put:
+      tags:
+      - "Patient Monitoring"
+      summary: "Updates Patient Alert in the DB"
+      description: "Toggles the Patient Alert from the DB from Active to Inactive."
+      operationId: "updatePatientAlerts"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "AlertId"
+        description: "AlertId of Alert to be updated "
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "Alert Updated successfully"
+        "400":
+          description: "Alert Id does not exist"
+        "500":
+          description: "Internal Server Error/ DB down"
+    delete:
+      tags:
+      - "Patient Monitoring"
+      summary: "Updates Patient Alert in the DB"
+      description: "Deletes the Patient Alert from the DB which is Inactive based on the Alert ID."
+      operationId: "DeletePatientAlerts"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "AlertId"
+        description: "AlertId of Alert to be Deleted "
+        type: "string"
+        required: true
+      responses:
+        "200":
+          description: "Alert Deleted successfully"
+        "500":
+          description: "Could not Delete Alert"
+  
+definitions:
+  Icu:
+    type: "object"
+    properties:
+      IcuId:
+        type: "string"
+        format: "string"
+      LayoutId:
+        type: "string"
+        format: "string"
+      BedsCount:
+        type: "integer"
+        description: "Total Beds in the ICU"
+  Layouts:
+    type: "object"
+    properties:
+      LayoutId:
+        type: "string"
+        format: "string"
+      LayoutName:
+        type: "string"
+        format: "string"
+  Patients:
+    type: "object"
+    properties:
+      PatientId:
+        type: "string"
+        format: "string"
+      PatientName:
+        type: "string"
+        format: "string"
+      Address:
+        type: "string"
+        format: "string"
+      Email:
+        type: "string"
+        format: "string"
+      ContactNumber:
+        type: "string"
+        format: "string"  
+      IcuId:
+        type: "string"
+        format: "string"
+      BedtId:
+        type: "string"
+        format: "string"
+      Age:
+        type: "integer"
+        description: "Patient Age"
+  Beds:
+    type: "object"
+    properties:
+      IcuId:
+        type: "string"
+        format: "string"
+      BedId:
+        type: "string"
+        format: "string"
+  Vitals:
+    type: "object"
+    properties:
+      PatientId:
+        type: "string"
+        format: "string"
+      PatientName:
+        type: "string"
+        format: "string"
+      BPM:
+        type: "number"
+        format: "double"
+        description: "Patient BPM"
+      SPO2:
+        type: "number"
+        format: "double"
+        description: "Patient SPO2"
+      RespRate:
+        type: "number"
+        format: "double"
+        description: "Patient RespRate"
+  Alerts:
+    type: "object"
+    properties:
+      AlertId:
+        type: "integer"
+      IcuId:
+        type: "string"
+      LayoutId:
+        type: "string"
+      BedId:
+        type: "string"
+      PatientId:
+        type: "string"
+      PatientName:
+        type: "string"
+      BPM:
+        type: "number"
+        format: "double"
+        description: "Patient BPM"
+      SPO2:
+        type: "number"
+        format: "double"
+        description: "Patient SPO2"
+      RespRate:
+        type: "number"
+        format: "double"
+        description: "Patient RespRate"
+      AlertStatus:
+        type: "boolean"
+        description: "Active / Inactive Alert"
+        
+externalDocs:
+  description: "GitHub Repository"
+  url: "https://github.com/Engin-Boot/alert-to-care-s22b4"
+  

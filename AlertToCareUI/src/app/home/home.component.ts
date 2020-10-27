@@ -88,6 +88,10 @@ export class HomeComponent implements OnInit {
       console.log("Alert removed....");
     });
   }
+  getLayoutImage(layoutId:string){
+    //console.log("hello");
+    return "../../assets/images/LShape.jpg";
+  }
   ngOnInit() {
   }
 

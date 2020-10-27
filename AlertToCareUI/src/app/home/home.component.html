@@ -17,9 +17,11 @@
                 <th>Handle Alert</th>
                 <th>Delete Alert</th>
             </tr>
-            <tr *ngFor='let alert of alertInfo' >
+            <tr  *ngFor='let alert of alertInfo' >
                 <td>{{alert.alertId}}</td>
-                <td>{{alert.layoutId}}</td>
+                <td ><p *ngIf="!alert.alertStatus"> {{alert.layoutId}} </p>
+                     <p *ngIf="alert.alertStatus"> <img class="layoutImage" src="{{getLayoutImage(alert.layoutId)}}" alt="Image"></p>
+                </td>
                 <td>{{alert.icuId}}</td>
                 <td>{{alert.bedId}}</td>
                 <td>{{alert.patientId}}</td>
