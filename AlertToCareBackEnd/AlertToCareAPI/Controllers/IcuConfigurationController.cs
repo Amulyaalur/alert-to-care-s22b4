@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLayer.IcuManagement;
 using DataAccessLayer.LayoutManagement;

@@ -3,7 +3,7 @@ using System.Data.SQLite;
 
 namespace DataAccessLayer.Utils
 {
-    public class VitalsChecker
+    public static class VitalsChecker
     {
         public static bool CheckAllVitals(Vital vital)
         {
