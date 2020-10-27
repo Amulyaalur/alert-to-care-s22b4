@@ -8,17 +8,11 @@ namespace API.Tests
     internal class  TestClientProvider
     {
         public HttpClient Client { get; set; }
-        private TestServer _server;
 
         public TestClientProvider()
         {
-            SetupClient();
+            Client = new TestServer(new WebHostBuilder().UseStartup<Startup>()).CreateClient();
         }
 
-        private void SetupClient()
-        {
-            _server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            Client = _server.CreateClient();
-        }
     }
 }

@@ -144,7 +144,6 @@ namespace DataAccessLayer.PatientManagement
         {
             if (BedManagementSqLite.CheckIfBedIdExists(patient.BedId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "BedId does not exists");
             if (BedManagementSqLite.CheckIfBedIsAvailableByBedIdAndIcuId(patient.IcuId, patient.BedId)) throw new SQLiteException(SQLiteErrorCode.NotFound, message: "Bed is not Available");
-
         }
 
         public void RemovePatient(string patientId)
@@ -171,8 +170,7 @@ namespace DataAccessLayer.PatientManagement
         }
         public void UpdatePatient(string patientId, Patient patient)
         {
-            CommonFieldValidator.StringValidator(patientId); 
-            PatientDataModelValidator.ValidatePatientDataModel(patient);
+            CommonFieldValidator.StringValidator(patientId);
             if (CheckIfPatientIdExists(patientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
             if (!patientId.Equals(patient.PatientId)) throw new ArgumentException(message:"PatientIds does not match");
 
@@ -180,7 +178,6 @@ namespace DataAccessLayer.PatientManagement
             
             ExecuteRemovePatientQuery(patientId);
 
-            //if (CheckIfPatientIdExists(patient.PatientId) != 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
             AddPatient(patient);
         }
         public static long CheckIfPatientIdExists(string patientId)

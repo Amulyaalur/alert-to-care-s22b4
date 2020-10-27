@@ -55,6 +55,7 @@ namespace DataAccessLayer.AlertManagement
         }
         public void ToggleAlertStatusByAlertId(int alertId)
         {
+            if (CheckIfAlertIdExists(alertId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "AlertId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
             var cmd = new SQLiteCommand(con)
@@ -81,6 +82,7 @@ namespace DataAccessLayer.AlertManagement
         }
         public static void AddToAlertsTable(string patientId)
         {
+            
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -124,6 +126,7 @@ namespace DataAccessLayer.AlertManagement
         }
         public void DeleteAlertByAlertId(int alertId)
         {
+            if (CheckIfAlertIdExists(alertId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "AlertId does not exists");
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -135,7 +138,22 @@ namespace DataAccessLayer.AlertManagement
             cmd.Prepare();
             var rowsAffected = cmd.ExecuteNonQuery();
             con.Dispose();
-            if (rowsAffected == 0) throw new Exception();
+        }
+        public static long CheckIfAlertIdExists(int alertId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT COUNT(*) from Alerts WHERE AlertId = @AlertId"
+            };
+
+            cmd.Parameters.AddWithValue("@AlertId", alertId);
+            cmd.Prepare();
+            var count = (long)cmd.ExecuteScalar();
+            con.Dispose();
+            return count;
         }
     }
 }
