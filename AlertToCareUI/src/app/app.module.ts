@@ -15,6 +15,7 @@ import { PatientModule } from './patient/patient.module';
 import { VitalsComponent } from './vitals/vitals.component';
 import { VitalService } from './services/vitals.service';
 import { AlertService } from './services/alert.services';
+import { CommonServices } from './services/common.services';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { AlertService } from './services/alert.services';
     BrowserAnimationsModule,
     PatientModule
   ],
-  providers: [{provide:'apiBaseAddress',useValue:'http://localhost:61575/api/'}, AuthGuard,AuthService,VitalService,AlertService],
+  providers: [{provide:'apiBaseAddress',useValue:'http://localhost:61575/api/'}, AuthGuard,AuthService,VitalService,AlertService,CommonServices],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
