@@ -7,11 +7,11 @@
 1. Go to folder "Deployment Scripts".
 2. Run "Deployment.bat" file.
 3. The Project will be running in 30 seconds.
-4. Click here to start run the Website  ( http://localhost:4200 )
+4. Click here to start the Website  ( http://localhost:4200 )
 
 ## API Documentation
 
-### Steps to see Documentation
+### Steps to see API Documentation
 
 1. Clone the repository.
 2. Open Swagger Editor from https://editor.swagger.io/ .
