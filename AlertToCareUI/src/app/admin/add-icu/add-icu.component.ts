@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonServices } from 'src/app/services/common.services';
 import { AdminService } from '../services/admin.service';
 
 @Component({
@@ -10,27 +11,30 @@ export class AddIcuComponent implements OnInit {
 
   icuId:string;
   bedCount:number;
-  layoutId:any;
+  layoutList=[];
   layouts:string;
   isSubmitted=false;
   imageSrc:string;
-  adminService:any;
   message:string;
-  constructor(private adminservice:AdminService) {
-    this.adminService=adminservice;
-    // let a=
-    this.layoutId=[
-                    {
-                      id:'LID01',name:'LShape'
-                    },
-                    {
-                      id:'LID02',name:'Parallel'
-                    },
-                    {
-                      id:'LID03',name:'SingleRow'
-                    },
-                    {id:'LID04',name:'UShape'}
-                  ];
+  constructor(private adminService:AdminService,private commonServices:CommonServices) {
+    this.getAllLayouts();
+   
+   }
+
+   getAllLayouts(){
+    let observable=this.commonServices.getAllLayouts();
+    
+    observable.subscribe((data:any)=>{
+      this.layoutList=data;
+      
+      console.log(this.layoutList);
+    },
+    (error:any)=>{
+      console.log(error);
+    },
+    ()=>{
+      console.log("Layouts Fetched");
+    });
    }
 
    dropdown(){
@@ -45,12 +49,12 @@ export class AddIcuComponent implements OnInit {
    addFunction(){
      //Add Layout ID for loop here
      let layoutId:string;
-     for(let i=0;i<this.layoutId.length;i++)
+     for(let i=0;i<this.layoutList.length;i++)
      {
-       console.log(this.layoutId[i].name+" : "+this.layouts);
-        if(this.layoutId[i].name==this.layouts)
+       console.log(this.layoutList[i].layoutName+" : "+this.layouts);
+        if(this.layoutList[i].layoutName==this.layouts)
         {
-          layoutId=this.layoutId[i].id;
+          layoutId=this.layoutList[i].layoutId;
         }
      }
      console.log(layoutId);

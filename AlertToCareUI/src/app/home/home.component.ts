@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
     
     observable.subscribe((data:any)=>{
       this.layoutList=data;
-      //console.log()
+      
       console.log(this.layoutList);
     },
     (error:any)=>{
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
     });
   }
   getLayoutImage(layoutId:string){
-    //console.log("hello");
+    
     let layoutName:string;
     this.layoutList.forEach(element => {
       if(element.layoutId==layoutId){

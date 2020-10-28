@@ -9,7 +9,7 @@
             <input type="number" [(ngModel)]='bedCount' placeholder="Bed Count"/>
             <select (change)='getLayoutImage()' name="layout_id" [(ngModel)]="layouts" #name_id="ngModel" required>
                 <option value="" disabled selected>Select Layout</option>
-                <option (click)='dropdown()' *ngFor="let layout of layoutId" [value]="layout.name"  >{{layout.name}}</option>
+                <option (click)='dropdown()' *ngFor="let layout of layoutList" [value]="layout.layoutName"  >{{layout.layoutName}}</option>
             </select>
             
             <div *ngIf=isChanged>

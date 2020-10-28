@@ -6,7 +6,7 @@
             <input type="number" [(ngModel)]='bedCount' placeholder="Bed Count"/>
             <select (change)='getLayout()' name="layout_id" [(ngModel)]="layouts" #name_id="ngModel" required>
                 <option value="" disabled selected>Select Layout ID</option>
-                <option (change)='getLayout()' *ngFor="let layout of layoutId" [value]="layout.name"  >{{layout.name}}</option>
+                <option (change)='getLayout()' *ngFor="let layout of layoutList" [value]="layout.layoutName"  >{{layout.layoutName}}</option>
             </select>
             <!-- <button class="layoutBtn" (click)='getLayout()'>Get Layout</button> -->
             <button (click)='addFunction()'>Add</button>

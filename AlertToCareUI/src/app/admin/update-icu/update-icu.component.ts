@@ -1,5 +1,6 @@
 import { formattedError } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { CommonServices } from 'src/app/services/common.services';
 import { AdminService } from '../services/admin.service';
 
 @Component({
@@ -20,25 +21,42 @@ export class UpdateIcuComponent implements OnInit {
   isSubmitted=false;
   imageSrc:string;
   newLayoutId:string;
-
-  layoutId=[
-    {
-      id:'LID01',name:'LShape'
-    },
-    {
-      id:'LID02',name:'Parallel'
-    },
-    {
-      id:'LID03',name:'SingleRow'
-    },
-    {id:'LID04',name:'UShape'}
-  ]
-  adminService:any;
+  layoutList=[]
+  // layoutId=[
+  //   {
+  //     id:'LID01',name:'LShape'
+  //   },
+  //   {
+  //     id:'LID02',name:'Parallel'
+  //   },
+  //   {
+  //     id:'LID03',name:'SingleRow'
+  //   },
+  //   {id:'LID04',name:'UShape'}
+  // ]
+ // adminService:any;
   
-  constructor(private adminservice:AdminService) {
-    this.adminService=adminservice;
-  
+  constructor(private adminService:AdminService,private commonServices:CommonServices) {
+    //this.adminService=adminservice;
+    this.getAllLayouts();
    }
+
+   getAllLayouts(){
+    let observable=this.commonServices.getAllLayouts();
+    
+    observable.subscribe((data:any)=>{
+      this.layoutList=data;
+      
+      console.log(this.layoutList);
+    },
+    (error:any)=>{
+      console.log(error);
+    },
+    ()=>{
+      console.log("Layouts Fetched");
+    });
+   }
+
    getIcuDetails(){
       this.isChanged=true;
     
@@ -50,11 +68,11 @@ export class UpdateIcuComponent implements OnInit {
         this.icuObj=data;
         console.log(this.icuObj);
         this.bedCount=this.icuObj.bedsCount;
-        for(let i=0;i<this.layoutId.length;i++)
+        for(let i=0;i<this.layoutList.length;i++)
         {
-          if(this.layoutId[i].id==this.icuObj.layoutId)
+          if(this.layoutList[i].layoutId==this.icuObj.layoutId)
           {
-            this.layoutName=this.layoutId[i].name;
+            this.layoutName=this.layoutList[i].layoutName;
             this.imageSrc='../../../assets/images/'+this.layoutName+'.jpg';
           }
         }
@@ -70,12 +88,12 @@ export class UpdateIcuComponent implements OnInit {
 
    getLayoutImage(){
     //To get Layout ID
-    for(let i=0;i<this.layoutId.length;i++)
+    for(let i=0;i<this.layoutList.length;i++)
         {
-          if(this.layoutId[i].name==this.layouts)
+          if(this.layoutList[i].layoutName==this.layouts)
           {
-            this.newLayoutId=this.layoutId[i].id;
-            this.layoutName=this.layoutId[i].name;
+            this.newLayoutId=this.layoutList[i].layoutId;
+            this.layoutName=this.layoutList[i].layoutName;
             
           }
         }
