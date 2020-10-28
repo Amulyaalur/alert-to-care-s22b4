@@ -134,7 +134,7 @@ namespace DataAccessLayer.AlertManagement
             };
             cmd.Parameters.AddWithValue("@AlertId", alertId);
             cmd.Prepare();
-            var rowsAffected = cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
             con.Dispose();
         }
         public static void ThrowExceptionIfAlertIdDoesNotExists(int alertId)
