@@ -1,6 +1,6 @@
 Write-Host "Starting Client..."
 $ClientProcess = Start-Process npm -ArgumentList "start --prefix ..\AlertToCareUI"
-Write-Host "Build Build Server Project"
+Write-Host "Build Server Project"
 $BuildServer = Start-Process dotnet -ArgumentList "build  ..\AlertToCareBackEnd\"
 Start-Sleep -s 20
 Write-Host "Starting Server..."
