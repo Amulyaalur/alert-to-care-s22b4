@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Utils.Validators
 {
-    public static class IcuDataModelValidator
+    public class IcuDataModelValidator
     {
         
         public static void ValidateIcuDataModel(Icu icu)

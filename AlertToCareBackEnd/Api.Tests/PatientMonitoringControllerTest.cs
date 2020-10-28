@@ -25,15 +25,21 @@ namespace API.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         [Fact]
-        public async Task UpdateVitalsByValidPatientIdReturnOk()
+        public async Task UpdateVitalsByValidPatientIdReturnOkWithVitalOutOfRange()
         {
-            var vital = new Vital()
-            {
-                Bpm = 180,
-                PatientId = "PID1",
-                RespRate = 41,
-                Spo2 = 98
-            };
+            var vital = GetVitalObject("PID2");
+            vital.Bpm = 200;
+            vital.Spo2 = 200;
+            vital.RespRate = 200;
+            var client = new TestClientProvider().Client;
+            var content = new StringContent(JsonConvert.SerializeObject(vital), Encoding.UTF8, "application/json");
+            var response = await client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+        [Fact]
+        public async Task UpdateVitalsByValidPatientIdReturnOkWithNormalVitals()
+        {
+            var vital = GetVitalObject("PID1");
 
             var client = new TestClientProvider().Client;
             var content = new StringContent(JsonConvert.SerializeObject(vital), Encoding.UTF8, "application/json");
@@ -43,18 +49,22 @@ namespace API.Tests
         [Fact]
         public async Task UpdateVitalsByInValidPatientIdReturnBadRequest()
         {
-            var vital = new Vital()
-            {
-                Bpm = 180,
-                PatientId = "PID11111",
-                RespRate = 41,
-                Spo2 = 98
-            };
+            var vital = GetVitalObject("random");
 
             var client = new TestClientProvider().Client;
             var content = new StringContent(JsonConvert.SerializeObject(vital), Encoding.UTF8, "application/json");
             var response = await client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        [Fact]
+        public async Task UpdateVitalsByInValidVitalDataModelReturnsInternalServerError()
+        {
+            var vital = GetVitalObject("PID1");
+            vital.Bpm = -1;
+            var client = new TestClientProvider().Client;
+            var content = new StringContent(JsonConvert.SerializeObject(vital), Encoding.UTF8, "application/json");
+            var response = await client.PutAsync("api/PatientMonitoring/Vital/" + vital.PatientId, content);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
         [Fact]
         public async Task TestToggleAlertWithValidAlertId()
@@ -81,7 +91,7 @@ namespace API.Tests
         public async Task TestToggleAlertWithInvalidAlertId()
         {
             var client = new TestClientProvider().Client;
-            var invalidAlertId = "666";
+            var invalidAlertId = -1;
             var response = await client.PutAsync("api/PatientMonitoring/Alert/" + invalidAlertId, null);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -108,10 +118,22 @@ namespace API.Tests
         [Fact]
         public async Task TestDeleteAlertWithInValidAlertId()
         {
-            var alertId = 999;
+            var alertId = -1;
             var client = new TestClientProvider().Client;
             var response = await client.DeleteAsync("api/PatientMonitoring/Alert/" + alertId);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        private Vital GetVitalObject(string patientId)
+        {
+            var vital = new Vital()
+            {
+                Bpm = 72,
+                PatientId = patientId,
+                RespRate = 16,
+                Spo2 = 98
+            };
+            return vital;
         }
     }
 }

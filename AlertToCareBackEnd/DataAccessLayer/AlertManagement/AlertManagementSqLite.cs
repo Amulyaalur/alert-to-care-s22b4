@@ -54,7 +54,7 @@ namespace DataAccessLayer.AlertManagement
         }
         public void ToggleAlertStatusByAlertId(int alertId)
         {
-            if (CheckIfAlertIdExists(alertId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "AlertId does not exists");
+            ThrowExceptionIfAlertIdDoesNotExists(alertId);
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
             var cmd = new SQLiteCommand(con)
@@ -81,7 +81,6 @@ namespace DataAccessLayer.AlertManagement
         }
         public static void AddToAlertsTable(string patientId)
         {
-            
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -125,7 +124,7 @@ namespace DataAccessLayer.AlertManagement
         }
         public void DeleteAlertByAlertId(int alertId)
         {
-            if (CheckIfAlertIdExists(alertId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "AlertId does not exists");
+            ThrowExceptionIfAlertIdDoesNotExists(alertId);
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -135,10 +134,10 @@ namespace DataAccessLayer.AlertManagement
             };
             cmd.Parameters.AddWithValue("@AlertId", alertId);
             cmd.Prepare();
-            cmd.ExecuteNonQuery();
+            var rowsAffected = cmd.ExecuteNonQuery();
             con.Dispose();
         }
-        private static long CheckIfAlertIdExists(int alertId)
+        public static void ThrowExceptionIfAlertIdDoesNotExists(int alertId)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
@@ -152,7 +151,8 @@ namespace DataAccessLayer.AlertManagement
             cmd.Prepare();
             var count = (long)cmd.ExecuteScalar();
             con.Dispose();
-            return count;
+            if (count == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "AlertId does not exists");
+            
         }
     }
 }

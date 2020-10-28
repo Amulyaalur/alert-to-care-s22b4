@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Utils.Validators
 {
-    public static class PatientDataModelValidator
+    public class PatientDataModelValidator
     {
         public static void ValidatePatientDataModel(Patient patient)
         {

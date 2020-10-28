@@ -81,6 +81,10 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
             }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
+            }
         }
 
         [HttpDelete("Patient/{PatientId}")]

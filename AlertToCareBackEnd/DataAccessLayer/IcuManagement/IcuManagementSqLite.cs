@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
 using DataAccessLayer.BedManagement;
 using DataAccessLayer.Utils;
 using DataAccessLayer.Utils.Validators;
 using DataModels;
-// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
 namespace DataAccessLayer.IcuManagement
 {
@@ -39,7 +37,8 @@ namespace DataAccessLayer.IcuManagement
         }
         public Icu GetIcuById(string icuId)
         {
-            if (CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey,"IcuId does not exists");
+            ThrowExceptionIfIcuIdDoesNotExists(icuId);
+
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
             var cmd = new SQLiteCommand(con)
@@ -63,7 +62,8 @@ namespace DataAccessLayer.IcuManagement
         public void AddIcu(Icu icu)
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
-            if (CheckIfIcuIdExists(icu.IcuId) > 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId exists");
+            ThrowExceptionIfIcuIdExists(icu.IcuId);
+
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -95,18 +95,18 @@ namespace DataAccessLayer.IcuManagement
         public void UpdateIcuById(string icuId, Icu icu)
         {
             IcuDataModelValidator.ValidateIcuDataModel(icu);
-           // CommonFieldValidator.StringValidator(icuId);
-            if (CheckIfIcuIdExists(icu.IcuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId already exists");
+            ThrowExceptionIfIcuIdDoesNotExists(icuId); // checking if the old icu id exists
+            if (!icuId.Equals(icu.IcuId)) ThrowExceptionIfIcuIdExists(icu.IcuId); // checking if the new icu id already exits
+            
             DeleteIcuById(icuId);
             AddIcu(icu);
         }
         public void DeleteIcuById(string icuId)
         {
-            if (CheckIfIcuIdExists(icuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
-            var rowsAffected = BedManagementSqLite.DeleteBedsByIcuId(icuId);
-            CheckRowAffectedException(rowsAffected);
+            ThrowExceptionIfIcuIdDoesNotExists(icuId);
             
-
+            BedManagementSqLite.DeleteBedsByIcuId(icuId);
+            
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -117,25 +117,8 @@ namespace DataAccessLayer.IcuManagement
 
             cmd.Parameters.AddWithValue("@icuId", icuId);
             cmd.Prepare();
-            rowsAffected = cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();
             con.Dispose();
-            CheckRowAffected(rowsAffected, "IcuId does not exists");
-            
-        }
-
-        private static void CheckRowAffectedException(int rowsAffected)
-        {
-            if (rowsAffected == 0)
-            {
-                throw new Exception();
-            }
-        }
-        private static void CheckRowAffected(int rowsAffected,string message)
-        {
-            if (rowsAffected == 0)
-            {
-                throw new SQLiteException(SQLiteErrorCode.NotFound, message: message);
-            }
         }
         public static long CheckIfIcuIdExists(string icuId)
         {
@@ -152,6 +135,38 @@ namespace DataAccessLayer.IcuManagement
             var count = (long)cmd.ExecuteScalar();
             con.Dispose();
             return count;
+        }
+        public static void ThrowExceptionIfIcuIdExists(string icuId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT COUNT(*) from Icu WHERE IcuId = @IcuId"
+            };
+
+            cmd.Parameters.AddWithValue("@IcuId", icuId);
+            cmd.Prepare();
+            var count = (long)cmd.ExecuteScalar();
+            con.Dispose();
+            if (count > 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, "IcuId exists");
+        }
+        public static void ThrowExceptionIfIcuIdDoesNotExists(string icuId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT COUNT(*) from Icu WHERE IcuId = @IcuId"
+            };
+
+            cmd.Parameters.AddWithValue("@IcuId", icuId);
+            cmd.Prepare();
+            var count = (long)cmd.ExecuteScalar();
+            con.Dispose();
+            if (count == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, "IcuId does not exists");
         }
     }
 }

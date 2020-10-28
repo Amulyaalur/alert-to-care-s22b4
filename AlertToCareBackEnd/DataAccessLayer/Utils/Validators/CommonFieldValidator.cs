@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Utils.Validators
 {
-    public static class CommonFieldValidator
+    public class CommonFieldValidator
     {
         public static void StringValidator(string field)
         {

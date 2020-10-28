@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using DataAccessLayer.AlertManagement;
 using DataAccessLayer.PatientManagement;
@@ -42,8 +43,9 @@ namespace DataAccessLayer.VitalManagement
         }
         public void UpdateVitalByPatientId(string patientId, Vital vital)
         {
-            if (PatientManagementSqLite.CheckIfPatientIdExists(patientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
+            PatientManagementSqLite.ThrowExceptionIfPatientIdDoesNotExists(patientId);
             VitalDataModelValidator.ValidateVitalDataModel(vital);
+
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 

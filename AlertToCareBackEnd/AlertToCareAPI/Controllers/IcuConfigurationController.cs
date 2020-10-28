@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLayer.IcuManagement;
 using DataAccessLayer.LayoutManagement;
@@ -56,6 +57,10 @@ namespace AlertToCareAPI.Controllers
             {
                 return new ObjectResult(exception.Message) {StatusCode = 400};
             }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
+            }
         }
 
         [HttpPut("Icu/{IcuId}")]
@@ -69,6 +74,10 @@ namespace AlertToCareAPI.Controllers
             catch (SQLiteException exception)
             {
                 return new ObjectResult(exception.Message) { StatusCode = 400 };
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(500, exception.Message);
             }
         }
 

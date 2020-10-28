@@ -52,8 +52,7 @@ namespace DataAccessLayer.PatientManagement
         }
         public Patient GetPatientById(string patientId)
         {
-            CommonFieldValidator.StringValidator(patientId);
-            if (CheckIfPatientIdExists(patientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
+            ThrowExceptionIfPatientIdDoesNotExists(patientId);
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
             var cmd = new SQLiteCommand(con)
@@ -92,10 +91,11 @@ namespace DataAccessLayer.PatientManagement
         public void AddPatient(Patient patient)
         {
             PatientDataModelValidator.ValidatePatientDataModel(patient);
-            if (CheckIfPatientIdExists(patient.PatientId) > 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId already exists");
-            if (IcuManagementSqLite.CheckIfIcuIdExists(patient.IcuId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "IcuId does not exists");
-            CheckBedError(patient);
-            
+            ThrowExceptionIfPatientIdExists(patient.PatientId);
+            IcuManagementSqLite.ThrowExceptionIfIcuIdDoesNotExists(patient.IcuId);
+            BedManagementSqLite.ThrowExceptionIfBedIdDoesNotExists(patient.BedId);
+            BedManagementSqLite.ThrowExceptionIfBedStatusIsTrueByBedIdAndIcuId(patient.IcuId, patient.BedId);
+
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
 
@@ -140,19 +140,12 @@ namespace DataAccessLayer.PatientManagement
             VitalManagementSqLite.AddPatientIntoVitalsTable(patient.PatientId);
             BedManagementSqLite.ChangeBedStatusToTrueByBedId(patient.BedId);
         }
-
-        private static void CheckBedError(Patient patient)
-        {
-            if (BedManagementSqLite.CheckIfBedIdExists(patient.BedId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "BedId does not exists");
-            if (BedManagementSqLite.CheckIfBedIsAvailableByBedIdAndIcuId(patient.IcuId, patient.BedId)) throw new SQLiteException(SQLiteErrorCode.NotFound, message: "Bed is not Available");
-        }
-
         public void RemovePatient(string patientId)
         {
-            if (CheckIfPatientIdExists(patientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
+            ThrowExceptionIfPatientIdDoesNotExists(patientId);
+            
             VitalManagementSqLite.DeletePatientFromVitalsTable(patientId);
             BedManagementSqLite.ChangeBedStatusToFalseByPatientId(patientId);
-
             ExecuteRemovePatientQuery(patientId);
         }
         private void ExecuteRemovePatientQuery(string patientId)
@@ -171,17 +164,15 @@ namespace DataAccessLayer.PatientManagement
         }
         public void UpdatePatient(string patientId, Patient patient)
         {
-            CommonFieldValidator.StringValidator(patientId);
-            if (CheckIfPatientIdExists(patientId) == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
+            PatientDataModelValidator.ValidatePatientDataModel(patient);
+            ThrowExceptionIfPatientIdDoesNotExists(patientId);
             if (!patientId.Equals(patient.PatientId)) throw new ArgumentException(message:"PatientIds does not match");
 
-            BedManagementSqLite.ChangeBedStatusToFalseByPatientId(patientId); 
-            
+            BedManagementSqLite.ChangeBedStatusToFalseByPatientId(patientId);
             ExecuteRemovePatientQuery(patientId);
-
             AddPatient(patient);
         }
-        public static long CheckIfPatientIdExists(string patientId)
+        public static void ThrowExceptionIfPatientIdExists(string patientId)
         {
             var con = SqLiteDbConnector.GetSqLiteDbConnection();
             con.Open();
@@ -195,7 +186,23 @@ namespace DataAccessLayer.PatientManagement
             cmd.Prepare();
             var count = (long)cmd.ExecuteScalar();
             con.Dispose();
-            return count;
+            if (count > 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId already exists");
+        }
+        public static void ThrowExceptionIfPatientIdDoesNotExists(string patientId)
+        {
+            var con = SqLiteDbConnector.GetSqLiteDbConnection();
+            con.Open();
+
+            var cmd = new SQLiteCommand(con)
+            {
+                CommandText = @"SELECT COUNT(*) from Patients WHERE PatientId = @PatientId"
+            };
+
+            cmd.Parameters.AddWithValue("@PatientId", patientId);
+            cmd.Prepare();
+            var count = (long)cmd.ExecuteScalar();
+            con.Dispose();
+            if (count == 0) throw new SQLiteException(SQLiteErrorCode.Constraint_PrimaryKey, message: "PatientId does not exists");
         }
     }
 }
